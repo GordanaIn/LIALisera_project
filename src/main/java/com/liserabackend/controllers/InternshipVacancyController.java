@@ -15,37 +15,37 @@ import java.util.stream.Collectors;
 @RestController
 @AllArgsConstructor
 @CrossOrigin(origins = "*", allowedHeaders ="*")
-@RequestMapping("/api/advert")
+@RequestMapping("/api/internship")
 public class InternshipVacancyController {
     private final InternshipVacancyServiceImp advertService;
     private final StudentServiceImp studentServiceImp;
 
     @GetMapping()
     public List<InternshipVacancyDTO> getAllInternship(){
-        return advertService.getAllInternships().map(this::toAdvertDTO).collect(Collectors.toList());
+        return advertService.getAllInternships().map(this::toInternshipVacancyDTO).collect(Collectors.toList());
     }
     @PutMapping("/addInternship/{id}")
     public InternshipVacancyDTO addInternshipToList(@PathVariable("id") String id, @RequestBody CreateInternship createInternship ) {
-        return advertService.addToList(id, createInternship).map(this::toAdvertDTO).get();
+        return advertService.addToList(id, createInternship).map(this::toInternshipVacancyDTO).get();
     }
 
     @PatchMapping("/editInternship/{Id}")
     public InternshipVacancyDTO updateInternship(@PathVariable("Id") String Id,
                                                  @RequestBody InternshipVacancy internship) throws UseException {
-        return advertService.updateInternship(Id,internship).map(this::toAdvertDTO).get();
+        return advertService.updateInternship(Id,internship).map(this::toInternshipVacancyDTO).get();
     }
     @GetMapping("/{userId}")
     public List<InternshipVacancyDTO> getFavoritesList(@PathVariable("userId") String userId){
-        return studentServiceImp.getFavoritesList(userId).map(this::toAdvertDTO).collect(Collectors.toList());
+        return studentServiceImp.getFavoritesList(userId).map(this::toInternshipVacancyDTO).collect(Collectors.toList());
     }
     /**
      * How to know the favourite is a particular student??
      */
     @GetMapping("/getFavList")
     public List<InternshipVacancyDTO> getFavList(){
-        return advertService.getFavorite().map(this::toAdvertDTO).collect(Collectors.toList());
+        return advertService.getFavorite().map(this::toInternshipVacancyDTO).collect(Collectors.toList());
     }
-    private InternshipVacancyDTO toAdvertDTO(InternshipVacancy internshipVacancy){
+    public InternshipVacancyDTO toInternshipVacancyDTO(InternshipVacancy internshipVacancy){
         return new InternshipVacancyDTO(
                 internshipVacancy.getId(),
                 internshipVacancy.getContactEmployer(),

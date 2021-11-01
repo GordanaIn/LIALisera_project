@@ -1,6 +1,7 @@
 package com.liserabackend.entity;
 
 import com.liserabackend.enums.EnumProfession;
+import com.liserabackend.enums.InternshipVacancyStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,10 +22,12 @@ public class InternshipVacancy {
     private String title;
     private String description;
     private String duration; /** how long the internship lasts */
-    private com.liserabackend.enums.InternshipVacancy status;
+
+    private InternshipVacancyStatus status;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate datePosted;
     private String contactEmployer;
+
     private String contactPhone;
 
 
@@ -44,7 +47,7 @@ public class InternshipVacancy {
 
     private boolean approved;/** why? */
 
-    public InternshipVacancy(String title, String description, String duration, com.liserabackend.enums.InternshipVacancy status, LocalDate datePosted, String contactPerson,
+    public InternshipVacancy(String title, String description, String duration, InternshipVacancyStatus status, LocalDate datePosted, String contactPerson,
                              String contactPhone ){
         this.Id= UUID.randomUUID().toString();
         this.title = title;
