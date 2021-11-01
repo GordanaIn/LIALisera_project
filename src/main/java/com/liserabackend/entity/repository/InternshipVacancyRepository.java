@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface InternshipVacancyRepository extends JpaRepository<InternshipVacancy, String> {
-        List<InternshipVacancy> findByAdvertByTitle(String title);
-        List<InternshipVacancy> findByAdvertStatus(AdvertStatus status);
+        List<InternshipVacancy> findInternshipVacancyByTitle(String title);
+        List<InternshipVacancy> findInternshipVacancyByByStatus(AdvertStatus status);
 }
