@@ -1,12 +1,11 @@
 package com.liserabackend.services;
 
-import com.liserabackend.entity.InternshipVacancy;
 import com.liserabackend.entity.Student;
 import com.liserabackend.entity.User;
 import com.liserabackend.entity.repository.InternshipVacancyRepository;
 import com.liserabackend.entity.repository.StudentRepository;
 import com.liserabackend.entity.repository.UserRepository;
-import com.liserabackend.enums.AdvertStatus;
+import com.liserabackend.enums.InternshipVacancy;
 import com.liserabackend.enums.EnumProfession;
 import com.liserabackend.enums.EnumRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +36,11 @@ public class LoadDataService implements CommandLineRunner {
 
     private void registerAdvert() {
         if(advertRepository.findAll().isEmpty()){
-            InternshipVacancy internshipVacancy1 = new InternshipVacancy("Junior Java Developer", "Junior Java developer that has a good skill in react and springboot",
-                    "5 month duration", AdvertStatus.OPEN, LocalDate.of(2021,10,20), "Jafer", "0745672391");
+            com.liserabackend.entity.InternshipVacancy internshipVacancy1 = new com.liserabackend.entity.InternshipVacancy("Junior Java Developer", "Junior Java developer that has a good skill in react and springboot",
+                    "5 month duration", InternshipVacancy.OPEN, LocalDate.of(2021,10,20), "Jafer", "0745672391");
             internshipVacancy1.setRequiredProfession(EnumProfession.PROFESSION_JAVAUTVECKLARE);
-            InternshipVacancy internshipVacancy2 = new InternshipVacancy("Junior C# Developer", "Junior C# developer that has a good skill in react and springboot",
-                    "5 month duration", AdvertStatus.CLOSED,LocalDate.of(2021,10,21),"Selam", "0345672391");
+            com.liserabackend.entity.InternshipVacancy internshipVacancy2 = new com.liserabackend.entity.InternshipVacancy("Junior C# Developer", "Junior C# developer that has a good skill in react and springboot",
+                    "5 month duration", InternshipVacancy.CLOSED,LocalDate.of(2021,10,21),"Selam", "0345672391");
             internshipVacancy2.setRequiredProfession(EnumProfession.PROFESSION_CSHARP);
             advertRepository.save(internshipVacancy1);
             advertRepository.save(internshipVacancy2);
@@ -50,7 +49,7 @@ public class LoadDataService implements CommandLineRunner {
 
     }
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         registerStudent();
     }
 }

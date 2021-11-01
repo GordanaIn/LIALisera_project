@@ -1,7 +1,5 @@
 package com.liserabackend.entity;
 
-import com.liserabackend.enums.EnumStatus;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

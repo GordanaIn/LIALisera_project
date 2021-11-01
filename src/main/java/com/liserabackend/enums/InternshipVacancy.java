@@ -1,6 +1,6 @@
 package com.liserabackend.enums;
 
-public enum AdvertStatus {
+public enum InternshipVacancy {
     OPEN,
     CLOSED
 }

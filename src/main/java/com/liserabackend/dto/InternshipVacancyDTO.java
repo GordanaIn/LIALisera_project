@@ -2,7 +2,6 @@ package com.liserabackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.liserabackend.enums.AdvertStatus;
 import lombok.Value;
 
 @Value
