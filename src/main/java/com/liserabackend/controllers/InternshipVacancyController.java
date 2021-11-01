@@ -1,10 +1,10 @@
 package com.liserabackend.controllers;
 
 import com.liserabackend.dto.CreateInternship;
-import com.liserabackend.dto.AdvertDTO;
+import com.liserabackend.dto.InternshipVacancyDTO;
 import com.liserabackend.entity.InternshipVacancy;
 import com.liserabackend.exceptions.UseException;
-import com.liserabackend.services.AdvertServiceImp;
+import com.liserabackend.services.InternshipVacancyServiceImp;
 import com.liserabackend.services.StudentServiceImp;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,36 +16,37 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @CrossOrigin(origins = "*", allowedHeaders ="*")
 @RequestMapping("/api/advert")
-public class AdvertController {
-    private final AdvertServiceImp advertService;
+public class InternshipVacancyController {
+    private final InternshipVacancyServiceImp advertService;
     private final StudentServiceImp studentServiceImp;
+
     @GetMapping()
-    public List<AdvertDTO> getAllInternship(){
+    public List<InternshipVacancyDTO> getAllInternship(){
         return advertService.getAllInternships().map(this::toAdvertDTO).collect(Collectors.toList());
     }
     @PutMapping("/addInternship/{id}")
-    public AdvertDTO addInternshipToList(@PathVariable("id") String id, @RequestBody CreateInternship createInternship ) {
+    public InternshipVacancyDTO addInternshipToList(@PathVariable("id") String id, @RequestBody CreateInternship createInternship ) {
         return advertService.addToList(id, createInternship).map(this::toAdvertDTO).get();
     }
 
     @PatchMapping("/editInternship/{Id}")
-    public AdvertDTO updateInternship(@PathVariable("Id") String Id,
-                                      @RequestBody InternshipVacancy internship) throws UseException {
+    public InternshipVacancyDTO updateInternship(@PathVariable("Id") String Id,
+                                                 @RequestBody InternshipVacancy internship) throws UseException {
         return advertService.updateInternship(Id,internship).map(this::toAdvertDTO).get();
     }
     @GetMapping("/{userId}")
-    public List<AdvertDTO> getFavoritesList(@PathVariable("userId") String userId){
+    public List<InternshipVacancyDTO> getFavoritesList(@PathVariable("userId") String userId){
         return studentServiceImp.getFavoritesList(userId).map(this::toAdvertDTO).collect(Collectors.toList());
     }
     /**
      * How to know the favourite is a particular student??
      */
     @GetMapping("/getFavList")
-    public List<AdvertDTO> getFavList(){
+    public List<InternshipVacancyDTO> getFavList(){
         return advertService.getFavorite().map(this::toAdvertDTO).collect(Collectors.toList());
     }
-    private AdvertDTO toAdvertDTO(InternshipVacancy internshipVacancy){
-        return new AdvertDTO(
+    private InternshipVacancyDTO toAdvertDTO(InternshipVacancy internshipVacancy){
+        return new InternshipVacancyDTO(
                 internshipVacancy.getId(),
                 internshipVacancy.getContactEmployer(),
                 internshipVacancy.getTitle(),

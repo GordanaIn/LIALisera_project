@@ -138,16 +138,4 @@ public class StudentServiceImp implements IStudent {
         return student;
     }
 
-    private Student getStudent(CreateStudent createStudent){
-        User user=new User(
-                createStudent.getUsername(),
-                createStudent.getEmail(),
-                createStudent.getPassword(),EnumRole.ROLE_STUDENT);
-       saveUser(user);
-        return new Student(
-                createStudent.getFirstName(),
-                createStudent.getLastName(),
-                createStudent.getPhone(),
-                user);
-    }
 }

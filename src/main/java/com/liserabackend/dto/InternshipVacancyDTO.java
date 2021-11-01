@@ -6,7 +6,7 @@ import com.liserabackend.enums.AdvertStatus;
 import lombok.Value;
 
 @Value
-public class AdvertDTO {
+public class InternshipVacancyDTO {
     String id;
     String contactEmployer;
     String title;
@@ -17,7 +17,7 @@ public class AdvertDTO {
     String duration; //how long the internship last ex- 3 months
 
     @JsonCreator
-    public AdvertDTO(
+    public InternshipVacancyDTO(
             @JsonProperty("id") String id,
             @JsonProperty("employersName") String contactEmployer,
             @JsonProperty("title")  String title,

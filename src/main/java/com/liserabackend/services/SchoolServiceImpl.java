@@ -1,12 +1,15 @@
 package com.liserabackend.services;
 
 import com.liserabackend.entity.School;
-import com.liserabackend.exceptions.UseException;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class ISchoolImpl implements ISchool {
+@Service
+@AllArgsConstructor
+public class SchoolServiceImpl implements ISchool {
     @Override
     public School saveStudent(School school) {
         return null;

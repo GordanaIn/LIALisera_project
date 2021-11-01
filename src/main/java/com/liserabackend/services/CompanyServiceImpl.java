@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 @Service
 @AllArgsConstructor
-public class ICompanyImpl implements ICompany {
+public class CompanyServiceImpl implements ICompany {
     private final CompanyRepository companyRepository;
     @Override
     public Company saveCompany(Company company) {

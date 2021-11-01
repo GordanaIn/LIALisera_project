@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*", allowedHeaders ="*")
 @RequestMapping("/api/student")
 public class StudentController {
-    StudentServiceImp studentService;
+    private final StudentServiceImp studentService;
 
     @GetMapping()
     public List<StudentDTO> getStudents() {

@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
-public class AdvertServiceImp implements IVacancyAdvert {
+public class InternshipVacancyServiceImp implements IVacancyAdvert {
     private InternshipVacancyRepository advertRepository;
 
     public Stream<InternshipVacancy> getAllInternships()  {
