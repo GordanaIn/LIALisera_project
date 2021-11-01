@@ -1,0 +1,16 @@
+package com.liserabackend.exceptions;
+
+public enum UseExceptionType {
+    User_NOT_FOUND,
+    USER_ALREADY_EXIST,
+    ADMIN_NOT_FOUND,
+    ADMIN_ALREADY_EXIST,
+    STUDENT_NOT_FOUND,
+    STUDENT_ALREADY_EXIST,
+    EMPLOYEE_NOT_FOUND,
+    EMPLOYEE_ALREADY_EXIST,
+    SCHOOL_NOT_FOUND,
+    SCHOOL_ALREADY_EXIST,
+    File_TOO_LARGE,
+    INTERNSHIP_NOT_FOUND;
+}
