@@ -6,6 +6,7 @@ import com.liserabackend.entity.Student;
 import com.liserabackend.entity.User;
 import com.liserabackend.entity.repository.InternshipVacancyRepository;
 import com.liserabackend.entity.repository.StudentRepository;
+import com.liserabackend.enums.EnumRole;
 import com.liserabackend.exceptions.UseException;
 import com.liserabackend.exceptions.UseExceptionType;
 import com.liserabackend.entity.repository.UserRepository;
@@ -82,6 +83,10 @@ public class StudentServiceImp implements IStudent {
     }
 
     @Override
+    public Optional<Student> getStudentByUserName(String username) throws UseException {
+        return Optional.empty();
+    }
+
     public Optional<User> getAUserById(String userId) throws UseException {
         return  Optional.ofNullable(userRepository.findById(userId).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND)));
     }
@@ -115,7 +120,7 @@ public class StudentServiceImp implements IStudent {
         if(userRepository.findByUsername(createStudent.getUsername()).isPresent())
             throw new UseException(UseExceptionType.USER_ALREADY_EXIST);
 
-        User user=new User(createStudent.getUsername(), createStudent.getEmail(),createStudent.getPassword());
+        User user=new User(createStudent.getUsername(), createStudent.getEmail(),createStudent.getPassword(), EnumRole.ROLE_STUDENT);
         saveUser(user);
 
         //get userId
@@ -137,7 +142,7 @@ public class StudentServiceImp implements IStudent {
         User user=new User(
                 createStudent.getUsername(),
                 createStudent.getEmail(),
-                createStudent.getPassword());
+                createStudent.getPassword(),EnumRole.ROLE_STUDENT);
        saveUser(user);
         return new Student(
                 createStudent.getFirstName(),

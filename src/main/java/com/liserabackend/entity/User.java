@@ -4,7 +4,6 @@ import com.liserabackend.enums.EnumRole;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -31,10 +30,11 @@ public class User {
     @Column(length = 25)
     private EnumRole role;
 
-    public User(String username, String email, String password){
+    public User(String username, String email, String password, EnumRole role){
         this.Id= UUID.randomUUID().toString();
         this.username = username;
         this.email = email;
         this.password = password;
+        this.role=role;
     }
 }

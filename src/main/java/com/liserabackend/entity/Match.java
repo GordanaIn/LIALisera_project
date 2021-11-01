@@ -1,5 +1,6 @@
 package com.liserabackend.entity;
 
+import com.liserabackend.enums.EnumStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,11 +8,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 /** Who is the candidate for what company: Offer  */
 @Data
 @Entity(name="matches")
-@AllArgsConstructor
 @NoArgsConstructor
 public class Match {
     @Id
@@ -25,4 +26,14 @@ public class Match {
     @OneToOne()
     @JoinColumn(name="advert_id", nullable = false)
     private InternshipVacancy internshipVacancy;
+
+    public Match(String name,Company company,Set<Student> students,InternshipVacancy internshipVacancy  ){
+        assert company!=null; /** A match without company, student, and internshipVacancy is not allowed */
+        assert  students!=null;
+        assert  internshipVacancy!=null;
+        this.Id= UUID.randomUUID().toString();
+        this.company = company;
+        this.students.addAll(students);
+        this.internshipVacancy= internshipVacancy;
+    }
 }

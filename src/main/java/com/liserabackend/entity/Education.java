@@ -8,8 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -23,6 +21,7 @@ public class Education {
     @Enumerated(EnumType.STRING)
     @Column(length = 50)
     private SchoolName schoolName;
+
     @Enumerated(EnumType.STRING)
     @Column(length = 50)
     private EducationType educationType;

@@ -14,5 +14,6 @@ public interface IStudent extends IUser {
     Stream<Student> getStudents();
     Optional<Student> updateStudent(String studentId, Student student) throws UseException;
     Optional<Student> getStudentByUserId(String userId) throws UseException;
+    Optional<Student> getStudentByUserName(String username) throws UseException;
 
 }

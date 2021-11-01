@@ -1,14 +1,5 @@
 package com.liserabackend.entity;
 
-/**
- * Student
- *      private User user -> one to one or Many to one??
- *      private SchoolName schoolName-> A student belonging to one school
- *      Boolean status to prove later by Admin - handle if a student is potential candidate for internship.
- *      A student has many favourites:- Set of favorite Advert List<Advert> favourites
- *      A Student has many document like personalLetter, resume, video (List<Document> documents )
- *      List<Advert>
- */
 import com.liserabackend.enums.EnumStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,7 +18,7 @@ public class Student {
     @Id
     @Column(columnDefinition = "varchar(100)") private String Id;
 
-    /**  @ManyToOne( ) Many student associated with one user??  or @OneToOne ?? */
+    /** ManyToOne or OneToOne ?? */
     @OneToOne
     @JoinColumn(name="user_id", nullable = false)
     private User user;

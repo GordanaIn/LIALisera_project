@@ -1,9 +1,5 @@
 package com.liserabackend.entity;
 
-/**
- * Advert
- *     An advert belongs to a company but a company can have many advert.
- */
 import com.liserabackend.enums.AdvertStatus;
 import com.liserabackend.enums.EnumProfession;
 import lombok.AllArgsConstructor;
@@ -17,7 +13,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
-@Entity(name="adverts")
+@Entity(name="internshipVacancies")
 @AllArgsConstructor
 @NoArgsConstructor
 public class InternshipVacancy {
@@ -25,7 +21,7 @@ public class InternshipVacancy {
     @Column(columnDefinition = "varchar(100)") private String Id;
     private String title;
     private String description;
-    private String duration; //how long the internship lasts
+    private String duration; /** how long the internship lasts */
     private AdvertStatus status;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate datePosted;
@@ -62,7 +58,8 @@ public class InternshipVacancy {
     }
     public List<String> getStudentsListAppliedForAdvert(){
         return students.stream()
-                .map(student -> student.getPhone())
+                .map(Student::getPhone)
                 .collect(Collectors.toList());
     }
+
 }

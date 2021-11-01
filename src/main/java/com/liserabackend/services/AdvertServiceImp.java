@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
-public class AdvertServiceImp implements IAdvert {
+public class AdvertServiceImp implements IVacancyAdvert {
     private InternshipVacancyRepository advertRepository;
 
     public Stream<InternshipVacancy> getAllInternships()  {
@@ -26,9 +26,9 @@ public class AdvertServiceImp implements IAdvert {
     @Override
     public Optional<InternshipVacancy> updateInternship(String Id, InternshipVacancy internship) throws UseException {
         InternshipVacancy oldInternship=advertRepository.findById(Id).orElseThrow( ()-> new UseException(UseExceptionType.INTERNSHIP_NOT_FOUND));
-        oldInternship=updateInternship(oldInternship,internship);
+        updateInternship(oldInternship, internship);
 
-       return Optional.of(oldInternship);
+        return Optional.of(oldInternship);
     }
 
     private InternshipVacancy updateInternship(InternshipVacancy oldInternship, InternshipVacancy internshipVacancy){

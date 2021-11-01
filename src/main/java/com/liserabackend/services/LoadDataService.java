@@ -24,16 +24,15 @@ public class LoadDataService implements CommandLineRunner {
 
     private void registerStudent() {
         if (userRepository.findAll().isEmpty()) {
-           User eyuel= new User("eyuel@gmail.com", "eyuel@gmail.com","eyuel21");
-           User jafer=new User("jafer@gmail.com", "jafer@gmail.com","jafer21");
-           eyuel.setRole(EnumRole.ROLE_STUDENT);
-           jafer.setRole(EnumRole.ROLE_STUDENT);
+           User eyuel= new User("eyuel@gmail.com", "eyuel@gmail.com","eyuel21",EnumRole.ROLE_STUDENT);
+           User jafer=new User("jafer@gmail.com", "jafer@gmail.com","jafer21", EnumRole.ROLE_STUDENT);
+
            if(studentRepository.findAll().isEmpty()){
                studentRepository.save(new Student( "Eyuel", "Belay","0712345611", eyuel));
                studentRepository.save(new Student( "Jafer", "Redi","0712345667",jafer));
            }
        }
-        studentRepository.findAll().stream().forEach(System.out::println);
+        studentRepository.findAll().forEach(System.out::println);
     }
 
     private void registerAdvert() {
@@ -46,7 +45,7 @@ public class LoadDataService implements CommandLineRunner {
             internshipVacancy2.setRequiredProfession(EnumProfession.PROFESSION_CSHARP);
             advertRepository.save(internshipVacancy1);
             advertRepository.save(internshipVacancy2);
-            advertRepository.findAll().stream().forEach(System.out::println);
+            advertRepository.findAll().forEach(System.out::println);
         }
 
     }

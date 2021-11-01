@@ -7,6 +7,7 @@ package com.liserabackend.entity;
  *      A company has many favourites:- Set of favorite internship List<Internship> favourites
  *      A Student has many document like personalLetter, resume, video (List<Document> documents )
  */
+import com.liserabackend.enums.EnumStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 @Entity(name="companies")
@@ -27,11 +29,11 @@ public class Company {
 
     @OneToMany()
     @JoinColumn(name="user_id", nullable = false)
-    private List<User> users;/** Just to be able to login to the school admin */
+    private Set<User> users=new HashSet<>();/** Just to be able to login to the school admin */
 
-    private String name; //enum is not good
+    private String name;
     private String orgNumber;
-    private boolean status=false; /** To handle if a company is potential and valid candidate for Advert Internship */
+    private EnumStatus status; /** To handle if a company is potential and valid candidate for Advert Internship */
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name="student_id")
@@ -41,5 +43,14 @@ public class Company {
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name="advert_id")
     private Set<InternshipVacancy> internshipVacancyList =new HashSet<>();
+
+    public Company(String name,String orgNumber,User user ){
+        assert user!=null; /** A student without user not allowed */
+        this.Id= UUID.randomUUID().toString();
+        this.name = name;
+        this.orgNumber = orgNumber;
+        this.status= EnumStatus.NOT_APPROVED;
+        this.users.add(user);
+    }
 
 }
