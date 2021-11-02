@@ -14,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Match {
     @Id
-    @Column(columnDefinition = "varchar(100)") private String Id;
+    @Column(columnDefinition = "varchar(100)") private String id;
     @OneToOne()
     @JoinColumn(name="company_id", nullable = false)
     private Company company;
@@ -29,7 +29,7 @@ public class Match {
         assert company!=null; /** A match without company, student, and internshipVacancy is not allowed */
         assert  students!=null;
         assert  internshipVacancy!=null;
-        this.Id= UUID.randomUUID().toString();
+        this.id= UUID.randomUUID().toString();
         this.company = company;
         this.students.addAll(students);
         this.internshipVacancy= internshipVacancy;

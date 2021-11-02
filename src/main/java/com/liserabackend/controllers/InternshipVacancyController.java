@@ -16,9 +16,10 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @CrossOrigin(origins = "*", allowedHeaders ="*")
 @RequestMapping("/api/internship")
+
 public class InternshipVacancyController {
-    private final InternshipVacancyServiceImp advertService;
-    private final StudentServiceImp studentServiceImp;
+    private InternshipVacancyServiceImp advertService;
+    private StudentServiceImp studentServiceImp;
 
     @GetMapping()
     public List<InternshipVacancyDTO> getAllInternship(){

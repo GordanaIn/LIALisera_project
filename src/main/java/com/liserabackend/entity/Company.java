@@ -25,7 +25,7 @@ import java.util.UUID;
 /** If the company handle only advert no need to have a class */
 public class Company {
     @Id
-    @Column(columnDefinition = "varchar(100)") private String Id;
+    @Column(columnDefinition = "varchar(100)") private String id;
 
     @OneToMany()
     @JoinColumn(name="user_id", nullable = false)
@@ -44,9 +44,9 @@ public class Company {
     @JoinColumn(name="advert_id")
     private Set<InternshipVacancy> internshipVacancyList =new HashSet<>();
 
-    public Company(String name,String orgNumber,User user ){
-        assert user!=null; /** A student without user not allowed */
-        this.Id= UUID.randomUUID().toString();
+    public Company(String name,String orgNumber, User user ){
+        assert users!=null; /** A student without user not allowed */
+        this.id= UUID.randomUUID().toString();
         this.name = name;
         this.orgNumber = orgNumber;
         this.status= EnumStatus.NOT_APPROVED;

@@ -14,22 +14,24 @@ import java.util.*;
 @AllArgsConstructor
 public class School {
     @Id
-    @Column(columnDefinition = "varchar(100)") private String Id;
+    @Column(columnDefinition = "varchar(100)") private String id;
 
     @OneToMany()
-    @JoinColumn(name="user_id", nullable = false)
+    @JoinColumn(name="user_id")
     private Set<User> users=new HashSet<>();/** Just to be able to login to the school admin */
+
+
     @Column(length = 50)
     private String name;
     private String phone;
     private String orgNumber;
 
-    public School(String name,String phone, String orgNumber,Set<User> users ){
+    public School(String name,String phone, String orgNumber, User user){
         assert users!=null; /** A School without user not allowed */
-        this.Id= UUID.randomUUID().toString();
+        this.id= UUID.randomUUID().toString();
         this.name = name;
         this.phone = phone;
         this.orgNumber=orgNumber;
-        this.users.addAll(users);
+        this.users.add(user);
     }
 }

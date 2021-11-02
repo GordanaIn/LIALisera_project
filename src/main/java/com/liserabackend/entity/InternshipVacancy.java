@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class InternshipVacancy {
     @Id
-    @Column(columnDefinition = "varchar(100)") private String Id;
+    @Column(columnDefinition = "varchar(100)") private String id;
     private String title;
     private String description;
     private String duration; /** how long the internship lasts */
@@ -49,7 +49,7 @@ public class InternshipVacancy {
 
     public InternshipVacancy(String title, String description, String duration, InternshipVacancyStatus status, LocalDate datePosted, String contactPerson,
                              String contactPhone ){
-        this.Id= UUID.randomUUID().toString();
+        this.id= UUID.randomUUID().toString();
         this.title = title;
         this.description = description;
         this.duration = duration;

@@ -8,11 +8,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Data
+/*@Data
 @Entity(name = "documents")
 @NoArgsConstructor
 public class Document {
     @javax.persistence.Id
     @Column(columnDefinition = "varchar(100)") private String Id;
     private DocumentType documentType;
-}
+}*/

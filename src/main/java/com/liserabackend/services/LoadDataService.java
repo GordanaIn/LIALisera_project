@@ -18,20 +18,24 @@ import java.time.LocalDate;
 public class LoadDataService implements CommandLineRunner {
     @Autowired UserRepository userRepository;
     @Autowired StudentRepository studentRepository;
-    @Autowired
-    InternshipVacancyRepository advertRepository;
+    @Autowired InternshipVacancyRepository advertRepository;
 
     private void registerStudent() {
         if (userRepository.findAll().isEmpty()) {
            User eyuel= new User("eyuel@gmail.com", "eyuel@gmail.com","eyuel21",EnumRole.ROLE_STUDENT);
            User jafer=new User("jafer@gmail.com", "jafer@gmail.com","jafer21", EnumRole.ROLE_STUDENT);
-
+           userRepository.save(eyuel);
+           userRepository.save(jafer);
            if(studentRepository.findAll().isEmpty()){
-               studentRepository.save(new Student( "Eyuel", "Belay","0712345611", eyuel));
-               studentRepository.save(new Student( "Jafer", "Redi","0712345667",jafer));
+               Student studentEyuel=new Student( "Eyuel", "Belay","0712345611", eyuel);
+               Student studentJafer=new Student( "Jafer", "Redi","0712345667",jafer);
+
+               studentRepository.save(studentEyuel);
+               studentRepository.save(studentJafer);
            }
+
        }
-        studentRepository.findAll().forEach(System.out::println);
+       //studentRepository.findAll().forEach(System.out::println);
     }
 
     private void registerAdvert() {
@@ -44,12 +48,13 @@ public class LoadDataService implements CommandLineRunner {
             internshipVacancy2.setRequiredProfession(EnumProfession.PROFESSION_CSHARP);
             advertRepository.save(internshipVacancy1);
             advertRepository.save(internshipVacancy2);
-            advertRepository.findAll().forEach(System.out::println);
+            //advertRepository.findAll().forEach(System.out::println);
         }
 
     }
     @Override
     public void run(String... args) {
         registerStudent();
+        registerAdvert();
     }
 }

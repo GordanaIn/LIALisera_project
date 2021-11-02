@@ -16,7 +16,7 @@ import java.util.*;
 @AllArgsConstructor
 public class Student {
     @Id
-    @Column(columnDefinition = "varchar(100)") private String Id;
+    @Column(columnDefinition = "varchar(100)") private String id;
 
     /** ManyToOne or OneToOne ?? */
     @OneToOne
@@ -26,6 +26,7 @@ public class Student {
     @NotBlank
     @Size(max = 30)
     private String firstName;
+
     @NotBlank
     @Size(max = 30)
     private String lastName;
@@ -37,8 +38,7 @@ public class Student {
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Set<Education> educations=new HashSet<>();
-
-     private EnumStatus status; /** to handle if a student is potential candidate for internship */
+    private EnumStatus status=EnumStatus.NOT_APPROVED;; /** to handle if a student is potential candidate for internship */
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name="advert_id")
@@ -52,12 +52,11 @@ public class Student {
 
     public Student(String firstName,String lastName,String phone, User user ){
         assert user!=null; /** A student without user not allowed */
-        this.Id= UUID.randomUUID().toString();
+        this.id= UUID.randomUUID().toString();
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
-        this.user = user;
-        this.status=EnumStatus.NOT_APPROVED;
+        this.user=user;
     }
     //find advert
 }

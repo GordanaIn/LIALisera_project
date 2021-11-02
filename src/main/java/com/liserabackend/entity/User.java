@@ -14,7 +14,7 @@ import java.util.*;
 @Entity(name="users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
-    @Id @Column(columnDefinition = "varchar(100)") private String Id;
+    @Id @Column(columnDefinition = "varchar(100)") private String id;
     @NotBlank
     @Size(max = 20)
     private String username;
@@ -31,7 +31,7 @@ public class User {
     private EnumRole role;
 
     public User(String username, String email, String password, EnumRole role){
-        this.Id= UUID.randomUUID().toString();
+        this.id= UUID.randomUUID().toString();
         this.username = username;
         this.email = email;
         this.password = password;

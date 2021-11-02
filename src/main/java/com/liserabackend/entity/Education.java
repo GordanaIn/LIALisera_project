@@ -16,7 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Education {
     @Id
-    @Column(columnDefinition = "varchar(100)") private String Id;
+    @Column(columnDefinition = "varchar(100)") private String id;
     private String title;
     @Enumerated(EnumType.STRING)
     @Column(length = 50)
@@ -30,7 +30,7 @@ public class Education {
     List<Student> students=new ArrayList<>();*/
 
     public Education(String name, SchoolName schoolName,EducationType educationType){
-        this.Id= UUID.randomUUID().toString();
+        this.id= UUID.randomUUID().toString();
         this.title=name;
         this.schoolName=schoolName;
         this.educationType=educationType;

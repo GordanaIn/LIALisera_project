@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class StudentInformation {
     @Id
-    @Column(columnDefinition = "varchar(100)") private String Id;
+    @Column(columnDefinition = "varchar(100)") private String id;
     private String personalLetter;
     @Lob
     private String resume;
@@ -22,7 +22,7 @@ public class StudentInformation {
     private String video;
 
     public StudentInformation(String personalLetter, String resume, String linkedInUrl, String video){
-        this.Id= UUID.randomUUID().toString();
+        this.id= UUID.randomUUID().toString();
         this.personalLetter = personalLetter;
         this.resume = resume;
         this.video = video;
