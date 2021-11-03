@@ -27,30 +27,33 @@ public class Company {
     @Id
     @Column(columnDefinition = "varchar(100)") private String id;
 
-    @OneToMany()
+   /* @OneToMany()
+    @JoinColumn(name="user_id")//, nullable = false
+    private Set<User> users=new HashSet<>();*//** Just to be able to login to the school admin */
+    @OneToOne
     @JoinColumn(name="user_id", nullable = false)
-    private Set<User> users=new HashSet<>();/** Just to be able to login to the school admin */
+    private User user;
+
 
     private String name;
     private String orgNumber;
-    private EnumStatus status; /** To handle if a company is potential and valid candidate for Advert Internship */
+    private EnumStatus status=EnumStatus.NOT_APPROVED; /** To handle if a company is potential and valid candidate for Advert Internship */
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name="student_id")
     private Set<Student> favourites=new HashSet<>();
 
     /** A company can post many Advert */
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name="advert_id")
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)//, mappedBy = "internshipVacancy"
+    @JoinColumn(name="internshipvacancy_id")
     private Set<InternshipVacancy> internshipVacancyList =new HashSet<>();
 
     public Company(String name,String orgNumber, User user ){
-        assert users!=null; /** A student without user not allowed */
+        assert user!=null; /** A company without user not allowed */
         this.id= UUID.randomUUID().toString();
         this.name = name;
         this.orgNumber = orgNumber;
-        this.status= EnumStatus.NOT_APPROVED;
-        this.users.add(user);
+        this.user=user;
     }
 
 }

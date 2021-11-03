@@ -16,13 +16,13 @@ public class Match {
     @Id
     @Column(columnDefinition = "varchar(100)") private String id;
     @OneToOne()
-    @JoinColumn(name="company_id", nullable = false)
+    @JoinColumn(name="company_id")
     private Company company;
     @ManyToMany()
-    @JoinColumn(name="student_id", nullable = false)
+    @JoinColumn(name="student_id")
     private Set<Student> students=new HashSet<>();/** What if a company have many candidate student offer */
     @OneToOne()
-    @JoinColumn(name="advert_id", nullable = false)
+    @JoinColumn(name="advert_id")//, nullable = false
     private InternshipVacancy internshipVacancy;
 
     public Match(String name,Company company,Set<Student> students,InternshipVacancy internshipVacancy  ){

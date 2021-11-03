@@ -4,7 +4,9 @@ import com.liserabackend.dto.InternshipVacancyDTO;
 import com.liserabackend.entity.Company;
 import com.liserabackend.entity.InternshipVacancy;
 import com.liserabackend.entity.User;
+import com.liserabackend.entity.repository.CompanyRepository;
 import com.liserabackend.entity.repository.InternshipVacancyRepository;
+import com.liserabackend.entity.repository.UserRepository;
 import com.liserabackend.enums.EnumRole;
 import com.liserabackend.enums.EnumStatus;
 import com.liserabackend.enums.InternshipVacancyStatus;
@@ -41,19 +43,20 @@ public class InternshipVacancyControllerTests {
     InternshipVacancy internshipVacancy1;
     InternshipVacancy internshipVacancy2;
     @Autowired InternshipVacancyController internshipVacancyController;
+    @Autowired CompanyRepository companyRepository;
+    @Autowired UserRepository userRepository;
     @BeforeEach
     @Transactional
     void setUp() {
         User jafer= new User("jafer@gmail.com", "jafer@gmail.com","jafer21", EnumRole.ROLE_EMPLOYER);
+        userRepository.save(jafer);
         Company microsoft=new Company("Microsoft","Microsoft-12345", jafer);
-        microsoft.setStatus(EnumStatus.APPROVED);
+        companyRepository.save(microsoft);
 
-        internshipVacancy1 = new InternshipVacancy("Java Full-stack", "Javakunnig person med intresse för frontend","4 months" ,InternshipVacancyStatus.OPEN,LocalDate.of(2021,11,20),"Ms.Tsion","0718123456");
-        internshipVacancy2 = new InternshipVacancy("C# Full-stack", "C# FULL-STACK med intresse för frontend","3 months", InternshipVacancyStatus.OPEN,LocalDate.of(2021,11,20),"Ms.Tsion","0718123123");
-        internshipVacancy1.getCompanies().add(microsoft);
-        internshipVacancy2.getCompanies().add(microsoft);
+        internshipVacancy1 = new InternshipVacancy("Java Full-stack", "Javakunnig person med intresse för frontend","4 months" ,InternshipVacancyStatus.OPEN,LocalDate.of(2021,11,20),"Ms.Tsion","0718123456",microsoft);
         internshipVacancyRepository.save(internshipVacancy1);
-        internshipVacancyRepository.save(internshipVacancy1);
+        internshipVacancy2 = new InternshipVacancy("C# Full-stack", "C# FULL-STACK med intresse för frontend","3 months", InternshipVacancyStatus.OPEN,LocalDate.of(2021,11,20),"Ms.Tsion","0718123123",microsoft);
+        internshipVacancyRepository.save(internshipVacancy2);
 
         internshipVacancyDTO1 = internshipVacancyController.toInternshipVacancyDTO(internshipVacancy1);
         internshipVacancyDTO2 = internshipVacancyController.toInternshipVacancyDTO(internshipVacancy2);

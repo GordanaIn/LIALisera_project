@@ -38,10 +38,8 @@ public class InternshipVacancyServiceTests {
         Company microsoft=new Company("Microsoft","Microsoft-12345", jafer);
         microsoft.setStatus(EnumStatus.APPROVED);
 
-        internshipVacancy1 = new InternshipVacancy("Java Full-stack", "Javakunnig person med intresse för frontend","4 months" , InternshipVacancyStatus.OPEN, LocalDate.of(2021,11,20),"Ms.Tsion","0718123456");
-        internshipVacancy2 = new InternshipVacancy("C# Full-stack", "C# FULL-STACK med intresse för frontend","3 months", InternshipVacancyStatus.OPEN,LocalDate.of(2021,11,20),"Ms.Tsion","0718123123");
-        internshipVacancy1.getCompanies().add(microsoft);
-        internshipVacancy2.getCompanies().add(microsoft);
+        internshipVacancy1 = new InternshipVacancy("Java Full-stack", "Javakunnig person med intresse för frontend","4 months" , InternshipVacancyStatus.OPEN, LocalDate.of(2021,11,20),"Ms.Tsion","0718123456",microsoft);
+        internshipVacancy2 = new InternshipVacancy("C# Full-stack", "C# FULL-STACK med intresse för frontend","3 months", InternshipVacancyStatus.OPEN,LocalDate.of(2021,11,20),"Ms.Tsion","0718123123",microsoft);
         internshipVacancyRepository.save(internshipVacancy1);
         internshipVacancyRepository.save(internshipVacancy1);
     }

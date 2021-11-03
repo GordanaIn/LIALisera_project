@@ -27,7 +27,6 @@ public class InternshipVacancy {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate datePosted;
     private String contactEmployer;
-
     private String contactPhone;
 
 
@@ -36,9 +35,9 @@ public class InternshipVacancy {
     private EnumProfession requiredProfession;
     /** A single advert associated with one company only but a company can post several advert */
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="company_id")
-    private Set<Company> companies=new HashSet<>();
+    private Company company;
 
     /** List of students applied for an advert- Many student can be applied to a single advert */
     @ManyToMany()
@@ -48,7 +47,7 @@ public class InternshipVacancy {
     private boolean approved;/** why? */
 
     public InternshipVacancy(String title, String description, String duration, InternshipVacancyStatus status, LocalDate datePosted, String contactPerson,
-                             String contactPhone ){
+                             String contactPhone, Company company ){
         this.id= UUID.randomUUID().toString();
         this.title = title;
         this.description = description;
@@ -57,6 +56,7 @@ public class InternshipVacancy {
         this.datePosted = datePosted;
         this.contactEmployer=contactPerson;
         this.contactPhone=contactPhone;
+        this.company=company;
     }
     public List<String> getStudentsListAppliedForAdvert(){
         return students.stream()
