@@ -9,7 +9,7 @@ import javax.persistence.Lob;
 import java.util.UUID;
 
 @Data
-@Entity(name = "files")
+@Entity(name = "student_files")
 @NoArgsConstructor
 public class StudentInformation {
     @Id

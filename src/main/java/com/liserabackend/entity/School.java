@@ -16,10 +16,6 @@ public class School {
     @Id
     @Column(columnDefinition = "varchar(100)") private String id;
 
-    /*@OneToMany()
-    @JoinColumn(name="user_id")
-    private Set<User> users=new HashSet<>();*//** Just to be able to login to the school admin */
-
     @OneToOne
     @JoinColumn(name="user_id", nullable = false)
     private User user;

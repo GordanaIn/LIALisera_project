@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
-@Component
+//@Component
 public class LoadDataService implements CommandLineRunner {
     @Autowired UserRepository userRepository;
     @Autowired StudentRepository studentRepository;
@@ -44,7 +44,6 @@ public class LoadDataService implements CommandLineRunner {
     private void registerAdvert() {
        if(userRepository.findAll().stream().anyMatch(user -> !user.getRole().equals(EnumRole.ROLE_EMPLOYER))) {
            User microsoftUser= new User("helen@microsoft.com", "helen@microsoft.com","helen21",EnumRole.ROLE_EMPLOYER);
-           //User user1=userRepository.findByUsername("helen@microsoft.com").get();
            userRepository.save(microsoftUser);
            if (companyRepository.findAll().isEmpty()) {
                Company companyMicrosoft = new Company("Microsoft", "microsoft101", microsoftUser);

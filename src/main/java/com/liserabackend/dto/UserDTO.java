@@ -9,7 +9,7 @@ public class UserDTO {
     String username;
     String email;
     String role;
-    public UserDTO(@JsonProperty("userId")String userId,
+  /*  public UserDTO(@JsonProperty("userId")String userId,
                    @JsonProperty("username")String username,
                    @JsonProperty("email")String email,
                    @JsonProperty("role")String role){
@@ -17,5 +17,5 @@ public class UserDTO {
         this.username = username;
         this.email=email;
         this.role=role;
-    }
+    }*/
 }

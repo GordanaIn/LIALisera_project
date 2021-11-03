@@ -26,6 +26,7 @@ public class StudentController {
     public List<StudentDTO> getStudents() {
         return studentService.getStudents().map(this::toStudentDTO).collect(Collectors.toList());
     }
+
     @GetMapping("/{userId}")
     public StudentDTO getStudentByUserId(@PathVariable("userId") String userId) throws UseException {
         return studentService.getStudentByUserId(userId).map(this::toStudentDTO).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND));
@@ -55,17 +56,12 @@ public class StudentController {
                 student.getId(),
                 student.getFirstName(),
                 student.getLastName(),
+                user.getId(),
                 user.getUsername(),
                 user.getEmail(),
-                student.getId(),
                 student.getPhone(),
-                student.getDocument().getId(),// need to map
-                student.getDocument().getPersonalLetter(),
-                student.getDocument().getResume(),
-                student.getDocument().getLinkedInUrl(),
-                user.getRole().toString(),
-               ""
-            );
+                user.getRole().toString()
+              );
     }
    private UserDTO toUserDTO(User user){
         return new UserDTO(

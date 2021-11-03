@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 
 import org.springframework.stereotype.Service;
 import java.util.Optional;
+import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
 @Service
@@ -37,6 +38,8 @@ public class StudentServiceImp implements IStudent {
 
     @Override
     public Optional<User> updateUsername(String userId, String username) throws UseException {
+        //find user by userId
+
         User user=Optional.ofNullable(userRepository.findById(userId).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND))).get();
         user.setUsername(username);
         user=saveUser(user);
@@ -57,7 +60,7 @@ public class StudentServiceImp implements IStudent {
 
     @Override
     public Stream<Student> getStudents() {
-        return studentRepository.findAll().stream();
+       return studentRepository.findAll().stream();
     }
 
     @Override
@@ -79,7 +82,17 @@ public class StudentServiceImp implements IStudent {
 
     @Override
     public Optional<Student> getStudentByUserId(String userId) throws UseException {
-        return Optional.ofNullable(studentRepository.findByUserId(userId).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND)));
+       //check if a user found by userId
+        /*if(userRepository.findById(userId).isPresent()){
+            //check if a student found by userId
+            if(studentRepository.findByUserId(userId).isPresent()){
+                //find student by userId
+                return studentRepository.findByUserId(userId);
+            }
+            throw new UseException(UseExceptionType.STUDENT_NOT_FOUND);
+        }
+        throw new UseException(UseExceptionType.User_NOT_FOUND);*/
+        return Optional.of(studentRepository.findByUserId(userId).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND)));
     }
 
     @Override
