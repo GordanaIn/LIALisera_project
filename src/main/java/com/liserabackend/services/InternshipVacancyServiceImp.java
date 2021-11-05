@@ -14,18 +14,15 @@ import java.util.stream.Stream;
 @Service
 @AllArgsConstructor
 public class InternshipVacancyServiceImp implements IVacancyAdvert {
-    private InternshipVacancyRepository advertRepository;
+    private InternshipVacancyRepository internshipVacancyRepository;
 
     public Stream<InternshipVacancy> getAllInternships()  {
-        return advertRepository.findAll().stream();
-    }
-    public Stream<InternshipVacancy> getFavorite(){
-        return null;//advertRepository.findAll().stream().filter(fav->fav.getFavorite().equals(true));
+        return internshipVacancyRepository.findAll().stream();
     }
 
     @Override
     public Optional<InternshipVacancy> updateInternship(String Id, InternshipVacancy internship) throws UseException {
-        InternshipVacancy oldInternship=advertRepository.findById(Id).orElseThrow( ()-> new UseException(UseExceptionType.INTERNSHIP_NOT_FOUND));
+        InternshipVacancy oldInternship= internshipVacancyRepository.findById(Id).orElseThrow( ()-> new UseException(UseExceptionType.INTERNSHIP_NOT_FOUND));
         updateInternship(oldInternship, internship);
 
         return Optional.of(oldInternship);
@@ -43,5 +40,9 @@ public class InternshipVacancyServiceImp implements IVacancyAdvert {
 
     public Optional<InternshipVacancy> addToList(String id, CreateInternship internship) {
         return null;
+    }
+
+    public Optional<InternshipVacancy> getInternshipVacancy(String id) {
+        return internshipVacancyRepository.findById(id);
     }
 }

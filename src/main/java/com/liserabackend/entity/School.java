@@ -24,13 +24,15 @@ public class School {
     private String name;
     private String phone;
     private String orgNumber;
+    private String email; /** school email */
 
-    public School(String name,String phone, String orgNumber, User user){
+    public School(String name,String phone, String orgNumber, String email, User user){
         assert user!=null; /** A School without user not allowed */
         this.id= UUID.randomUUID().toString();
         this.name = name;
         this.phone = phone;
         this.orgNumber=orgNumber;
+        this.email=email;
         this.user=user;
     }
 }

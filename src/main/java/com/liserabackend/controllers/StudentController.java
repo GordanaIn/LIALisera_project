@@ -2,6 +2,7 @@ package com.liserabackend.controllers;
 
 import com.liserabackend.dto.*;
 import com.liserabackend.dto.CreateStudent;
+import com.liserabackend.entity.Education;
 import com.liserabackend.entity.Student;
 import com.liserabackend.entity.User;
 import com.liserabackend.exceptions.UseException;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @AllArgsConstructor
@@ -36,13 +38,17 @@ public class StudentController {
 
         return  null;
     }
-    @GetMapping("/{userId}/update/email")
+    @PostMapping("/update/email/{userId}")
     public UserDTO updateEmail(@PathVariable ("userId") String userId, @RequestBody EmailDTO emailDTO) throws UseException {
         return studentService.updateEmail(userId, emailDTO.getEmail()).map(this::toUserDTO).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND));
     }
-    @GetMapping("/{userId}/update/username")
+    @PostMapping("/update/username/{userId}")
     public UserDTO updateUserName(@PathVariable ("userId") String userId, @RequestBody UsernameDTO usernameDTO) throws UseException {
         return studentService.updateUsername(userId, usernameDTO.getUsername()).map(this::toUserDTO).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND));
+    }
+    @GetMapping("/eduction/{userId}")
+    public List<Education> getStudentEducations(@PathVariable ("userId") String userId) throws UseException {
+        return studentService.getStudentEducations(userId).collect(Collectors.toList());
     }
     @PutMapping("/update/{userId}")
     public StudentDTO updateStudentProfile(@PathVariable("userId") String userId, @RequestBody CreateStudent student) throws UseException {
@@ -51,7 +57,6 @@ public class StudentController {
     @SneakyThrows
     private StudentDTO toStudentDTO(Student student) {
         User user=student.getUser();
-
         return new StudentDTO(
                 student.getId(),
                 student.getFirstName(),
@@ -63,7 +68,7 @@ public class StudentController {
                 user.getRole().toString()
               );
     }
-   private UserDTO toUserDTO(User user){
+    private UserDTO toUserDTO(User user){
         return new UserDTO(
                 user.getId(),
                 user.getUsername(),

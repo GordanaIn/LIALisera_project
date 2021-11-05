@@ -4,8 +4,8 @@ public enum SchoolName {
     SCHOOL_ECUTBILDNING("EC Utbildning AB"),
     SCHOOL_NACKADEMIN("Nackademin AB"),
     SCHOOL_KTH("KTH University"),
-    SCHOOL_LNU("Linnaeus University");
-
+    SCHOOL_LNU("Linnaeus University"),
+    SCHOOL_JENSEN("Jensen Academy ");
     private final String textVal;
 
     SchoolName(String textVal){

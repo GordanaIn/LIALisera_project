@@ -18,33 +18,30 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/internship")
 
 public class InternshipVacancyController {
-    private InternshipVacancyServiceImp advertService;
+    private InternshipVacancyServiceImp internshipVacancyService;
     private StudentServiceImp studentServiceImp;
 
     @GetMapping()
     public List<InternshipVacancyDTO> getAllInternship(){
-        return advertService.getAllInternships().map(this::toInternshipVacancyDTO).collect(Collectors.toList());
+        return internshipVacancyService.getAllInternships().map(this::toInternshipVacancyDTO).collect(Collectors.toList());
     }
     @PutMapping("/addInternship/{id}")
     public InternshipVacancyDTO addInternshipToList(@PathVariable("id") String id, @RequestBody CreateInternship createInternship ) {
-        return advertService.addToList(id, createInternship).map(this::toInternshipVacancyDTO).get();
+        return internshipVacancyService.addToList(id, createInternship).map(this::toInternshipVacancyDTO).get();
     }
 
     @PatchMapping("/editInternship/{Id}")
     public InternshipVacancyDTO updateInternship(@PathVariable("Id") String Id,
                                                  @RequestBody InternshipVacancy internship) throws UseException {
-        return advertService.updateInternship(Id,internship).map(this::toInternshipVacancyDTO).get();
+        return internshipVacancyService.updateInternship(Id,internship).map(this::toInternshipVacancyDTO).get();
     }
-    @GetMapping("/{userId}")
+    @GetMapping("/getFavorites/{userId}")
     public List<InternshipVacancyDTO> getFavoritesList(@PathVariable("userId") String userId){
         return studentServiceImp.getFavoritesList(userId).map(this::toInternshipVacancyDTO).collect(Collectors.toList());
     }
-    /**
-     * How to know the favourite is a particular student??
-     */
-    @GetMapping("/getFavList")
-    public List<InternshipVacancyDTO> getFavList(){
-        return advertService.getFavorite().map(this::toInternshipVacancyDTO).collect(Collectors.toList());
+    @GetMapping("/{id}")
+    public InternshipVacancyDTO InternshipVacancy(@PathVariable("id") String id){
+        return internshipVacancyService.getInternshipVacancy(id).map(this::toInternshipVacancyDTO).get();
     }
     public InternshipVacancyDTO toInternshipVacancyDTO(InternshipVacancy internshipVacancy){
         return new InternshipVacancyDTO(

@@ -1,12 +1,15 @@
 package com.liserabackend.services;
 
 import com.liserabackend.dto.CreateStudent;
+import com.liserabackend.dto.StudentDTO;
+import com.liserabackend.entity.Education;
 import com.liserabackend.entity.InternshipVacancy;
 import com.liserabackend.entity.Student;
 import com.liserabackend.entity.User;
 import com.liserabackend.entity.repository.InternshipVacancyRepository;
 import com.liserabackend.entity.repository.StudentRepository;
 import com.liserabackend.enums.EnumRole;
+import com.liserabackend.enums.SearchStudentBy;
 import com.liserabackend.exceptions.UseException;
 import com.liserabackend.exceptions.UseExceptionType;
 import com.liserabackend.entity.repository.UserRepository;
@@ -14,6 +17,7 @@ import lombok.AllArgsConstructor;
 
 import org.springframework.stereotype.Service;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
@@ -33,16 +37,20 @@ public class StudentServiceImp implements IStudent {
     public Optional<User> updateEmail(String userId, String email) throws UseException {
         User user=Optional.ofNullable(userRepository.findById(userId).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND))).get();
         user.setEmail(email);
+
+        System.out.println(user);
         return Optional.ofNullable(saveUser(user));
     }
 
     @Override
-    public Optional<User> updateUsername(String userId, String username) throws UseException {
+    public Optional<User> updateUsername(String userId, String username)  {
         //find user by userId
-
-        User user=Optional.ofNullable(userRepository.findById(userId).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND))).get();
+        User user=userRepository.findById(userId).get();
+        //User user=Optional.ofNullable(userRepository.findById(userId).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND))).get();
+        System.out.println(user);
         user.setUsername(username);
         user=saveUser(user);
+        System.out.println(user.getUsername());
         return Optional.ofNullable(user);
     }
 
@@ -96,7 +104,7 @@ public class StudentServiceImp implements IStudent {
     }
 
     @Override
-    public Optional<Student> getStudentByUserName(String username) throws UseException {
+    public Optional<Student> getStudentByUserName(String username)  {
         return Optional.empty();
     }
 
@@ -151,4 +159,16 @@ public class StudentServiceImp implements IStudent {
         return student;
     }
 
+    private Stream<Student> searchStudent(SearchStudentBy searchStudentBy) {
+        return switch(searchStudentBy){
+            case First_NAME-> studentRepository.findAll().stream().filter(s -> Boolean.parseBoolean(s.getFirstName()));
+
+        };
+    }
+
+    public Stream<Education> getStudentEducations(String userId) throws UseException {
+        //get studentId then search eduction by studentId
+        return  studentRepository.findByUserId(userId).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND)).getEducations().stream();
+
+    }
 }

@@ -1,21 +1,16 @@
 package com.liserabackend.services;
 
-import com.liserabackend.entity.Company;
-import com.liserabackend.entity.InternshipVacancy;
-import com.liserabackend.entity.Student;
-import com.liserabackend.entity.User;
-import com.liserabackend.entity.repository.CompanyRepository;
-import com.liserabackend.entity.repository.InternshipVacancyRepository;
-import com.liserabackend.entity.repository.StudentRepository;
-import com.liserabackend.entity.repository.UserRepository;
-import com.liserabackend.enums.InternshipVacancyStatus;
-import com.liserabackend.enums.EnumProfession;
-import com.liserabackend.enums.EnumRole;
+import com.liserabackend.entity.*;
+import com.liserabackend.entity.repository.*;
+import com.liserabackend.enums.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Stream;
 
 //@Component
 public class LoadDataService implements CommandLineRunner {
@@ -23,6 +18,9 @@ public class LoadDataService implements CommandLineRunner {
     @Autowired StudentRepository studentRepository;
     @Autowired InternshipVacancyRepository advertRepository;
     @Autowired CompanyRepository companyRepository;
+    @Autowired SchoolRepository schoolRepository;
+    @Autowired EducationRepository educationRepository;
+
     private void registerStudent() {
         if (userRepository.findAll().isEmpty()) {
            User eyuel= new User("eyuel@gmail.com", "eyuel@gmail.com","eyuel21",EnumRole.ROLE_STUDENT);
@@ -46,8 +44,8 @@ public class LoadDataService implements CommandLineRunner {
            User microsoftUser= new User("helen@microsoft.com", "helen@microsoft.com","helen21",EnumRole.ROLE_EMPLOYER);
            userRepository.save(microsoftUser);
            if (companyRepository.findAll().isEmpty()) {
-               Company companyMicrosoft = new Company("Microsoft", "microsoft101", microsoftUser);
-               companyRepository.save(companyMicrosoft);
+               Company companyMicrosoft = new Company("Microsoft", "microsoft101", "microsoft@microsoft.com",microsoftUser);
+                 companyRepository.save(companyMicrosoft);
                if (advertRepository.findAll().isEmpty()) {
                    InternshipVacancy internshipVacancy1 = new com.liserabackend.entity.InternshipVacancy("Junior Java Developer", "Junior Java developer that has a good skill in react and springboot",
                            "5 month duration", InternshipVacancyStatus.OPEN, LocalDate.of(2021, 10, 20), "Jafer", "0745672391", companyMicrosoft);
@@ -61,9 +59,41 @@ public class LoadDataService implements CommandLineRunner {
            }
        }
     }
+    private void registerEductionForStudent(){
+        //find a userId
+      String userId=userRepository.findAll().stream().filter(u->u.getUsername().equals("eyuel@gmail.com")).map(User::getId).findAny().get();
+
+     //find a student by a userId
+      Student studentEyuel= studentRepository.findByUserId(userId).get();
+      //register eduction associated with a given student
+        if (educationRepository.findAll().isEmpty()) {
+            Set<Education> educationSet=new HashSet<>();
+            Education eductionEyuel1=new Education("Diploma in Java programming", SchoolName.SCHOOL_ECUTBILDNING, EducationType.DIPLOMA);
+            Education eductionEyuel2=new Education("Diploma in software Testing", SchoolName.SCHOOL_JENSEN, EducationType.DIPLOMA);
+            educationSet.add(eductionEyuel1);
+            educationSet.add(eductionEyuel2);
+            educationRepository.save(eductionEyuel1);
+            educationRepository.save(eductionEyuel2);
+            studentEyuel.setEducations(educationSet);
+            studentRepository.save(studentEyuel);
+        }
+    }
+    private void registerSchool(){
+        if(userRepository.findAll().stream().anyMatch(user -> !user.getRole().equals(EnumRole.ROLE_SCHOOL))) {
+            User ecUser= new User("ecUser@ec.com", "ecUser@ec.com","ecUser21",EnumRole.ROLE_SCHOOL);
+            userRepository.save(ecUser);
+            if (schoolRepository.findAll().isEmpty()) {
+                School schoolEC = new School("EC Utbildning","040-6416300", "671285-5677"," info@ecutbildning.se", ecUser);
+                schoolRepository.save(schoolEC);
+            }
+        }
+
+    }
     @Override
     public void run(String... args) {
         registerStudent();
         registerAdvert();
+        registerSchool();
+        registerEductionForStudent();
     }
 }

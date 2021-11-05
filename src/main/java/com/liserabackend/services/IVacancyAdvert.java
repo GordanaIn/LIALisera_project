@@ -8,6 +8,5 @@ import java.util.stream.Stream;
 
 public interface IVacancyAdvert {
     Stream<InternshipVacancy> getAllInternships() ;
-    Stream<InternshipVacancy> getFavorite() ;
     Optional<InternshipVacancy> updateInternship(String Id, InternshipVacancy internshipVacancy) throws UseException;
 }

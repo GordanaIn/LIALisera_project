@@ -35,7 +35,7 @@ public class InternshipVacancyServiceTests {
     @Transactional
     void setUp() {
         User jafer= new User("jafer@gmail.com", "jafer@gmail.com","jafer21", EnumRole.ROLE_EMPLOYER);
-        Company microsoft=new Company("Microsoft","Microsoft-12345", jafer);
+        Company microsoft=new Company("Microsoft","Microsoft-12345", "microsoft@microsoft.com",jafer);
         microsoft.setStatus(EnumStatus.APPROVED);
 
         internshipVacancy1 = new InternshipVacancy("Java Full-stack", "Javakunnig person med intresse för frontend","4 months" , InternshipVacancyStatus.OPEN, LocalDate.of(2021,11,20),"Ms.Tsion","0718123456",microsoft);

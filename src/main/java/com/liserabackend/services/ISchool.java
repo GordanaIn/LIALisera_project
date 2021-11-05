@@ -11,6 +11,6 @@ import java.util.stream.Stream;
 public interface ISchool {
     School saveStudent(School school);
     Stream<School> getSchools();
-    Stream<School> getByOrgNumber();
+    Stream<School> getByOrgNumber(String orgNo);
     Optional<School> updateSchool(String schoolId, School school);
 }

@@ -6,8 +6,9 @@ import lombok.Value;
 @Value
 public class UsernameDTO {
     String username;
-
-    public UsernameDTO(@JsonProperty("username")String username){
+    /** Cannot construct instance and cannot deserialize from Object value problem is fixed using @JsonCreator */
+    public UsernameDTO(@JsonProperty("username") String username){
+        super();
         this.username = username;
     }
 }
