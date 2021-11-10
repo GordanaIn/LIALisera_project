@@ -8,11 +8,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
-//@Component
+@Component
 public class LoadDataService implements CommandLineRunner {
     @Autowired UserRepository userRepository;
     @Autowired StudentRepository studentRepository;
@@ -30,9 +32,27 @@ public class LoadDataService implements CommandLineRunner {
            if(studentRepository.findAll().isEmpty()){
                Student studentEyuel=new Student( "Eyuel", "Belay","0712345611", eyuel);
                Student studentJafer=new Student( "Jafer", "Redi","0712345667",jafer);
+               if (educationRepository.findAll().isEmpty()) {
+                   Set<Education> educationsEyuel=new HashSet<>();
+                   Set<Education> educationsJafer=new HashSet<>();
+                   Education eductionEyuel1=new Education("Diploma in Java programming", SchoolName.SCHOOL_ECUTBILDNING, EducationType.DIPLOMA,eyuel);
+                   Education eductionEyuel2=new Education("Diploma in software Testing", SchoolName.SCHOOL_JENSEN, EducationType.DIPLOMA,eyuel);
+                   Education eductionJafer=new Education("Msc in Software Technology", SchoolName.SCHOOL_LNU, EducationType.MSC,jafer);
+                   studentRepository.save(studentEyuel);
+                   studentRepository.save(studentJafer);
 
-               studentRepository.save(studentEyuel);
-               studentRepository.save(studentJafer);
+                   educationRepository.save(eductionEyuel1);
+                   educationRepository.save(eductionEyuel2);
+                   educationRepository.save(eductionJafer);
+
+                   educationsEyuel.add(eductionEyuel1);
+                   educationsEyuel.add(eductionEyuel2);
+                   studentEyuel.setEducations(educationsEyuel);
+                   educationsJafer.add(eductionJafer);
+                   studentJafer.setEducations(educationsJafer);
+
+               }
+
            }
 
        }
@@ -65,18 +85,19 @@ public class LoadDataService implements CommandLineRunner {
 
      //find a student by a userId
       Student studentEyuel= studentRepository.findByUserId(userId).get();
+      User userEyuel= userRepository.findById(userId).get();
       //register eduction associated with a given student
         if (educationRepository.findAll().isEmpty()) {
             Set<Education> educationSet=new HashSet<>();
-            Education eductionEyuel1=new Education("Diploma in Java programming", SchoolName.SCHOOL_ECUTBILDNING, EducationType.DIPLOMA);
-            Education eductionEyuel2=new Education("Diploma in software Testing", SchoolName.SCHOOL_JENSEN, EducationType.DIPLOMA);
+            Education eductionEyuel1=new Education("Diploma in Java programming", SchoolName.SCHOOL_ECUTBILDNING, EducationType.DIPLOMA,userEyuel);
+            Education eductionEyuel2=new Education("Diploma in software Testing", SchoolName.SCHOOL_JENSEN, EducationType.DIPLOMA,userEyuel);
             educationSet.add(eductionEyuel1);
             educationSet.add(eductionEyuel2);
             educationRepository.save(eductionEyuel1);
             educationRepository.save(eductionEyuel2);
             studentEyuel.setEducations(educationSet);
             studentRepository.save(studentEyuel);
-        }
+      }
     }
     private void registerSchool(){
         if(userRepository.findAll().stream().anyMatch(user -> !user.getRole().equals(EnumRole.ROLE_SCHOOL))) {
@@ -89,11 +110,13 @@ public class LoadDataService implements CommandLineRunner {
         }
 
     }
+
     @Override
     public void run(String... args) {
         registerStudent();
         registerAdvert();
         registerSchool();
-        registerEductionForStudent();
+        //registerEductionForStudent();
+
     }
 }

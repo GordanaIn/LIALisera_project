@@ -38,7 +38,7 @@ public class Student {
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Set<Education> educations=new HashSet<>();
-    private EnumStatus status=EnumStatus.NOT_APPROVED;; /** to handle if a student is potential candidate for internship */
+    private EnumStatus status=EnumStatus.NOT_APPROVED; /** to handle if a student is potential candidate for internship */
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name="advert_id")
@@ -57,5 +57,6 @@ public class Student {
         this.phone = phone;
         this.user=user;
     }
+
     //find advert
 }

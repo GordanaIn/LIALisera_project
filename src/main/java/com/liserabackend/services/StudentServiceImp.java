@@ -2,10 +2,12 @@ package com.liserabackend.services;
 
 import com.liserabackend.dto.CreateStudent;
 import com.liserabackend.dto.StudentDTO;
+import com.liserabackend.dto.UserDTO;
 import com.liserabackend.entity.Education;
 import com.liserabackend.entity.InternshipVacancy;
 import com.liserabackend.entity.Student;
 import com.liserabackend.entity.User;
+import com.liserabackend.entity.repository.EducationRepository;
 import com.liserabackend.entity.repository.InternshipVacancyRepository;
 import com.liserabackend.entity.repository.StudentRepository;
 import com.liserabackend.enums.EnumRole;
@@ -27,6 +29,7 @@ public class StudentServiceImp implements IStudent {
     UserRepository userRepository;
     StudentRepository studentRepository;
     InternshipVacancyRepository internshipVacancyRepository;
+    EducationRepository educationRepository;
 
     @Override
     public User saveUser(User user) {
@@ -43,10 +46,8 @@ public class StudentServiceImp implements IStudent {
     }
 
     @Override
-    public Optional<User> updateUsername(String userId, String username)  {
-        //find user by userId
-        User user=userRepository.findById(userId).get();
-        //User user=Optional.ofNullable(userRepository.findById(userId).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND))).get();
+    public Optional<User> updateUsername(String userId, String username) throws UseException {
+        User user=Optional.ofNullable(userRepository.findById(userId).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND))).get();
         System.out.println(user);
         user.setUsername(username);
         user=saveUser(user);
@@ -64,7 +65,6 @@ public class StudentServiceImp implements IStudent {
     public Student saveStudent(Student student ) {
         return studentRepository.save(student);
     } //StudentDTO
-
 
     @Override
     public Stream<Student> getStudents() {
@@ -90,16 +90,6 @@ public class StudentServiceImp implements IStudent {
 
     @Override
     public Optional<Student> getStudentByUserId(String userId) throws UseException {
-       //check if a user found by userId
-        /*if(userRepository.findById(userId).isPresent()){
-            //check if a student found by userId
-            if(studentRepository.findByUserId(userId).isPresent()){
-                //find student by userId
-                return studentRepository.findByUserId(userId);
-            }
-            throw new UseException(UseExceptionType.STUDENT_NOT_FOUND);
-        }
-        throw new UseException(UseExceptionType.User_NOT_FOUND);*/
         return Optional.of(studentRepository.findByUserId(userId).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND)));
     }
 
@@ -107,11 +97,6 @@ public class StudentServiceImp implements IStudent {
     public Optional<Student> getStudentByUserName(String username)  {
         return Optional.empty();
     }
-
-    public Optional<User> getAUserById(String userId) throws UseException {
-        return  Optional.ofNullable(userRepository.findById(userId).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND)));
-    }
-
     public Optional<Student> updateProfile(String Id, CreateStudent student) throws UseException {
         //find student by username
         User user=Optional.ofNullable(userRepository.findByUsername(student.getUsername()).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND))).get();
@@ -170,5 +155,13 @@ public class StudentServiceImp implements IStudent {
         //get studentId then search eduction by studentId
         return  studentRepository.findByUserId(userId).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND)).getEducations().stream();
 
+    }
+
+    public  Stream<User> updateUser(String userId, UserDTO userDTO) {
+            return null;
+    }
+
+    public Stream<Education> getEducations(String userId) {
+        return  educationRepository.findAll().stream().filter(education -> education.getUser().getId().equals(userId));
     }
 }

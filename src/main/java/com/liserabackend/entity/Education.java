@@ -26,13 +26,16 @@ public class Education {
     @Column(length = 50)
     private EducationType educationType;
 
-  /*  @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    List<Student> students=new ArrayList<>();*/
 
-    public Education(String name, SchoolName schoolName,EducationType educationType){
+    @OneToOne
+    @JoinColumn(name="user_id", nullable = false)
+    private User user;
+
+    public Education(String title, SchoolName schoolName,EducationType educationType, User user){
         this.id= UUID.randomUUID().toString();
-        this.title=name;
+        this.title=title;
         this.schoolName=schoolName;
         this.educationType=educationType;
+        this.user=user;
     }
 }

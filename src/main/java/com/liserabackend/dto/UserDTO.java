@@ -9,13 +9,13 @@ public class UserDTO {
     String username;
     String email;
     String role;
-  /*  public UserDTO(@JsonProperty("userId")String userId,
-                   @JsonProperty("username")String username,
-                   @JsonProperty("email")String email,
-                   @JsonProperty("role")String role){
-        this.userId=userId;
-        this.username = username;
-        this.email=email;
-        this.role=role;
-    }*/
+    public UserDTO(@JsonProperty("userId")String userId,
+                       @JsonProperty("username")String username,
+                       @JsonProperty("email")String email,
+                       @JsonProperty("role")String role){
+            this.userId=userId;
+            this.username = username;
+            this.email=email;
+            this.role=role;
+    }
 }

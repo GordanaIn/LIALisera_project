@@ -3,8 +3,10 @@ package com.liserabackend.controllers;
 import com.liserabackend.dto.*;
 import com.liserabackend.dto.CreateStudent;
 import com.liserabackend.entity.Education;
+import com.liserabackend.entity.InternshipVacancy;
 import com.liserabackend.entity.Student;
 import com.liserabackend.entity.User;
+import com.liserabackend.enums.SchoolName;
 import com.liserabackend.exceptions.UseException;
 import com.liserabackend.exceptions.UseExceptionType;
 import com.liserabackend.services.StudentServiceImp;
@@ -14,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -33,6 +37,7 @@ public class StudentController {
     public StudentDTO getStudentByUserId(@PathVariable("userId") String userId) throws UseException {
         return studentService.getStudentByUserId(userId).map(this::toStudentDTO).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND));
     }
+
     @PostMapping("/save")
     public ResponseEntity<Student> saveStudent(CreateStudent student){
 
@@ -46,6 +51,10 @@ public class StudentController {
     public UserDTO updateUserName(@PathVariable ("userId") String userId, @RequestBody UsernameDTO usernameDTO) throws UseException {
         return studentService.updateUsername(userId, usernameDTO.getUsername()).map(this::toUserDTO).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND));
     }
+    @PostMapping("/update/user/{userId}")
+    public UserDTO updateUser(@PathVariable ("userId") String userId, @RequestBody UserDTO userDTO) throws UseException {
+        return null;//studentService.updateUser(userId, userDTO).map(this::toUserDTO).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND));
+    }
     @GetMapping("/eduction/{userId}")
     public List<Education> getStudentEducations(@PathVariable ("userId") String userId) throws UseException {
         return studentService.getStudentEducations(userId).collect(Collectors.toList());
@@ -57,6 +66,8 @@ public class StudentController {
     @SneakyThrows
     private StudentDTO toStudentDTO(Student student) {
         User user=student.getUser();
+        Optional<Education> education = studentService.getEducations(user.getId()).findFirst();
+
         return new StudentDTO(
                 student.getId(),
                 student.getFirstName(),
@@ -65,8 +76,12 @@ public class StudentController {
                 user.getUsername(),
                 user.getEmail(),
                 student.getPhone(),
-                user.getRole().toString()
-              );
+                user.getRole().toString(),
+                (education.isPresent())? education.get().getSchoolName().toString() : " ",
+                (education.isPresent())? education.get().getTitle() : " ",
+                (education.isPresent())? education.get().getEducationType().toString() : " "
+         );
+
     }
     private UserDTO toUserDTO(User user){
         return new UserDTO(
@@ -74,7 +89,6 @@ public class StudentController {
                 user.getUsername(),
                 user.getEmail(),
                 user.getRole().toString()
-                // or user.getRoles().stream().map(role->role.getName().toString()).collect(Collectors.toList())
         );
     }
 

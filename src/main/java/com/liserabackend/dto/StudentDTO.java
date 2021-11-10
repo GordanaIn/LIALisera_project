@@ -1,7 +1,10 @@
 package com.liserabackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.liserabackend.entity.Education;
 import lombok.Value;
+
+import java.util.List;
 
 @Value
 public class StudentDTO {
@@ -13,7 +16,10 @@ public class StudentDTO {
     String email;
     String phone;
     String role;
-    //String schoolName;
+    String eductionTitle;
+    String schoolName;
+    String educationType;
+    //List<Education> educationList;
    /* String resume;
     String personalLetter;
     String linkedInUrl;*/
@@ -21,14 +27,17 @@ public class StudentDTO {
     //List<Long> professions;
 
     public StudentDTO(
-                   @JsonProperty("studentId")String studentId,
-                   @JsonProperty("firstName")String firstName,
-                   @JsonProperty("lastName")String lastName,
-                   @JsonProperty("userId")String userId,
-                   @JsonProperty("username")String username,
-                   @JsonProperty("email")String email,
-                   @JsonProperty("phone")String phone,
-                   @JsonProperty("role")String role){
+            @JsonProperty("studentId") String studentId,
+            @JsonProperty("firstName") String firstName,
+            @JsonProperty("lastName") String lastName,
+            @JsonProperty("userId") String userId,
+            @JsonProperty("username") String username,
+            @JsonProperty("email") String email,
+            @JsonProperty("phone") String phone,
+            @JsonProperty("role") String role,
+            @JsonProperty("schoolName") String schoolName,
+            @JsonProperty("eductionTitle") String eductionTitle,
+            @JsonProperty("educationType") String educationType){
         this.studentId=studentId;
         this.firstName=firstName;
         this.lastName=lastName;
@@ -37,5 +46,8 @@ public class StudentDTO {
         this.email=email;
         this.phone=phone;
         this.role=role;
-    }
+        this.schoolName = schoolName;
+        this.eductionTitle = eductionTitle;
+        this.educationType = educationType;
+     }
 }

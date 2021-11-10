@@ -1,5 +1,6 @@
 package com.liserabackend.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Value;
 
@@ -14,6 +15,7 @@ public class SchoolDTO {
     String username;
     String email;
     String role;
+
     public SchoolDTO(
             @JsonProperty("id")String id,
             @JsonProperty("name")String name,
