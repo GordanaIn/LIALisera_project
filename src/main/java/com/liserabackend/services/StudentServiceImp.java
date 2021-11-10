@@ -1,7 +1,6 @@
 package com.liserabackend.services;
 
 import com.liserabackend.dto.CreateStudent;
-import com.liserabackend.dto.StudentDTO;
 import com.liserabackend.dto.UserDTO;
 import com.liserabackend.entity.Education;
 import com.liserabackend.entity.InternshipVacancy;
@@ -15,12 +14,12 @@ import com.liserabackend.enums.SearchStudentBy;
 import com.liserabackend.exceptions.UseException;
 import com.liserabackend.exceptions.UseExceptionType;
 import com.liserabackend.entity.repository.UserRepository;
+import com.liserabackend.services.interfaces.IStudent;
 import lombok.AllArgsConstructor;
 
 import org.springframework.stereotype.Service;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.DoubleStream;
+
 import java.util.stream.Stream;
 
 @Service
@@ -38,7 +37,7 @@ public class StudentServiceImp implements IStudent {
 
     @Override
     public Optional<User> updateEmail(String userId, String email) throws UseException {
-        User user=Optional.ofNullable(userRepository.findById(userId).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND))).get();
+        User user=Optional.ofNullable(userRepository.findById(userId).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND))).get();
         user.setEmail(email);
 
         System.out.println(user);
@@ -47,7 +46,7 @@ public class StudentServiceImp implements IStudent {
 
     @Override
     public Optional<User> updateUsername(String userId, String username) throws UseException {
-        User user=Optional.ofNullable(userRepository.findById(userId).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND))).get();
+        User user=Optional.ofNullable(userRepository.findById(userId).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND))).get();
         System.out.println(user);
         user.setUsername(username);
         user=saveUser(user);
@@ -57,7 +56,7 @@ public class StudentServiceImp implements IStudent {
 
     @Override
     public Optional<User> updatePassword(String userId, String password) throws UseException {
-        User user=Optional.ofNullable(userRepository.findById(userId).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND))).get();
+        User user=Optional.ofNullable(userRepository.findById(userId).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND))).get();
         user.setPassword(password);
         return Optional.of(saveUser(user));
     }
@@ -78,10 +77,10 @@ public class StudentServiceImp implements IStudent {
 
     @Override
     public Optional<User> getAUserByUserName(String username) throws UseException {
-        return Optional.ofNullable(userRepository.findByUsername(username).orElseThrow(() -> new UseException(UseExceptionType.User_NOT_FOUND)));
+        return Optional.ofNullable(userRepository.findByUsername(username).orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND)));
     }
     public Optional<User> getAUserByEmail(String email) throws UseException {
-        return Optional.ofNullable(userRepository.findByEmail(email).orElseThrow(() -> new UseException(UseExceptionType.User_NOT_FOUND)));
+        return Optional.ofNullable(userRepository.findByEmail(email).orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND)));
     }
 
     public Optional<Student> getStudentById(String studentId) throws UseException {
@@ -90,7 +89,7 @@ public class StudentServiceImp implements IStudent {
 
     @Override
     public Optional<Student> getStudentByUserId(String userId) throws UseException {
-        return Optional.of(studentRepository.findByUserId(userId).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND)));
+        return Optional.of(studentRepository.findByUserId(userId).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND)));
     }
 
     @Override
@@ -99,7 +98,7 @@ public class StudentServiceImp implements IStudent {
     }
     public Optional<Student> updateProfile(String Id, CreateStudent student) throws UseException {
         //find student by username
-        User user=Optional.ofNullable(userRepository.findByUsername(student.getUsername()).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND))).get();
+        User user=Optional.ofNullable(userRepository.findByUsername(student.getUsername()).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND))).get();
         Student oldStudent=Optional.ofNullable(studentRepository.findByUserId(user.getId())).orElseThrow(()->new UseException(UseExceptionType.STUDENT_NOT_FOUND)).get();
         oldStudent.setFirstName(student.getFirstName());
         //set other properties too
@@ -138,7 +137,8 @@ public class StudentServiceImp implements IStudent {
                 createStudent.getFirstName(),
                 createStudent.getLastName(),
                 createStudent.getPhone(),
-                user
+                user,
+                createStudent.getLinkedInUrl()
         );
         student=saveStudent(student);
         return student;
@@ -153,7 +153,7 @@ public class StudentServiceImp implements IStudent {
 
     public Stream<Education> getStudentEducations(String userId) throws UseException {
         //get studentId then search eduction by studentId
-        return  studentRepository.findByUserId(userId).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND)).getEducations().stream();
+        return  studentRepository.findByUserId(userId).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND)).getEducations().stream();
 
     }
 

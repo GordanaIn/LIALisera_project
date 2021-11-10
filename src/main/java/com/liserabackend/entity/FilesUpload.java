@@ -5,36 +5,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.UUID;
 
 @Data
 @Entity(name = "files")
 @NoArgsConstructor
 public class FilesUpload {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Column(columnDefinition = "varchar(100)") private String id;
+    @Lob
     private String resume;
+    @Lob
     private String video;
+    @Lob
     private String persLetter;
-
-
 
     @JsonCreator
     public void getOriginalFileName(
-            @JsonProperty("id") Long id,
             @JsonProperty("resume") String resume,
             @JsonProperty("video") String video,
             @JsonProperty("persLetter") String persLetter){
-        this.id = id;
+
+        this.id= UUID.randomUUID().toString();
         this.resume = resume;
         this.video = video;
         this.persLetter = persLetter;
-
     }
-
 }

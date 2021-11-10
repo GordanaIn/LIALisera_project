@@ -31,10 +31,11 @@ public class Student {
     @Size(max = 30)
     private String lastName;
     private String phone;
+    private String linkedInUrl;
 
     @OneToOne()
-    @JoinColumn(name="studentInformation_id")
-    StudentInformation document;
+    @JoinColumn(name="files_id")
+    FilesUpload document;
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Set<Education> educations=new HashSet<>();
@@ -49,13 +50,14 @@ public class Student {
     @JoinColumn(name="advert_id")
     private Set<InternshipVacancy> internshipVacancies =new HashSet<>();
 
-    public Student(String firstName,String lastName,String phone, User user ){
+    public Student(String firstName,String lastName,String phone, User user,String linkedInUrl ){
         assert user!=null; /** A student without user not allowed */
         this.id= UUID.randomUUID().toString();
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
         this.user=user;
+        this.linkedInUrl=linkedInUrl;
     }
 
     //find advert

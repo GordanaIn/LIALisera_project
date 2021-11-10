@@ -30,13 +30,13 @@ public class LoadDataService implements CommandLineRunner {
            userRepository.save(eyuel);
            userRepository.save(jafer);
            if(studentRepository.findAll().isEmpty()){
-               Student studentEyuel=new Student( "Eyuel", "Belay","0712345611", eyuel);
-               Student studentJafer=new Student( "Jafer", "Redi","0712345667",jafer);
+               Student studentEyuel=new Student( "Eyuel", "Belay","0712345611", eyuel,"https://www.linkedin.com/in/eyuel-t-belay-633889167/");
+               Student studentJafer=new Student( "Jafer", "Redi","0712345667",jafer,"https://www.linkedin.com/in/adamjafer/");
                if (educationRepository.findAll().isEmpty()) {
                    Set<Education> educationsEyuel=new HashSet<>();
                    Set<Education> educationsJafer=new HashSet<>();
-                   Education eductionEyuel1=new Education("Diploma in Java programming", SchoolName.ECUTBILDNING, EducationType.DIPLOMA,eyuel);
-                   Education eductionEyuel2=new Education("Diploma in software Testing", SchoolName.JENSEN, EducationType.DIPLOMA,eyuel);
+                   Education eductionEyuel1=new Education("Javautvecklare", SchoolName.ECUTBILDNING, EducationType.DIPLOMA,eyuel);
+                   Education eductionEyuel2=new Education("Teknisk testare", SchoolName.JENSEN, EducationType.DIPLOMA,eyuel);
                    Education eductionJafer=new Education("Msc in Software Technology", SchoolName.LNU, EducationType.MSC,jafer);
                    studentRepository.save(studentEyuel);
                    studentRepository.save(studentJafer);
