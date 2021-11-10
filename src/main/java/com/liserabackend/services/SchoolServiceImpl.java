@@ -2,6 +2,7 @@ package com.liserabackend.services;
 
 import com.liserabackend.entity.School;
 import com.liserabackend.entity.repository.SchoolRepository;
+import com.liserabackend.services.interfaces.ISchool;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

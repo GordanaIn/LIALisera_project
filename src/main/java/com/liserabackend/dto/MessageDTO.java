@@ -4,15 +4,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Value;
 
-import javax.validation.constraints.Email;
-
 @Value
-public class EmailDTO {
-    @Email String email;
+public class MessageDTO {
+    String message;
 
     @JsonCreator
-    public EmailDTO(
-            @JsonProperty("email") String email){
-        this.email = email;
+    public MessageDTO(
+            @JsonProperty("message")String message){
+        this.message = message;
     }
+
 }

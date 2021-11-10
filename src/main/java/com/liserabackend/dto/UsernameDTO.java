@@ -1,5 +1,6 @@
 package com.liserabackend.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Value;
 
@@ -7,6 +8,7 @@ import lombok.Value;
 public class UsernameDTO {
     String username;
     /** Cannot construct instance and cannot deserialize from Object value problem is fixed using @JsonCreator */
+    @JsonCreator
     public UsernameDTO(@JsonProperty("username") String username){
         super();
         this.username = username;

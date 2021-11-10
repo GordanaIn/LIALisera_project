@@ -1,4 +1,4 @@
-package com.liserabackend.services;
+package com.liserabackend.services.interfaces;
 
 import com.liserabackend.entity.Company;
 import com.liserabackend.exceptions.UseException;

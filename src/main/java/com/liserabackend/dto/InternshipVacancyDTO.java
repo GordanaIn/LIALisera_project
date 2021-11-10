@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Value;
 
 @Value
-public class InternshipVacancyDTO {
+public class  InternshipVacancyDTO {
     String id;
     String contactEmployer;
     String title;

@@ -1,4 +1,4 @@
-package com.liserabackend.services;
+package com.liserabackend.services.interfaces;
 
 import com.liserabackend.entity.InternshipVacancy;
 import com.liserabackend.exceptions.UseException;

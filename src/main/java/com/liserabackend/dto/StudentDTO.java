@@ -1,5 +1,6 @@
 package com.liserabackend.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.liserabackend.entity.Education;
 import lombok.Value;
@@ -26,6 +27,7 @@ public class StudentDTO {
     //String systemStatus;
     //List<Long> professions;
 
+    @JsonCreator
     public StudentDTO(
             @JsonProperty("studentId") String studentId,
             @JsonProperty("firstName") String firstName,

@@ -9,6 +9,8 @@ public class UserDTO {
     String username;
     String email;
     String role;
+
+    @JsonCreator
     public UserDTO(@JsonProperty("userId")String userId,
                        @JsonProperty("username")String username,
                        @JsonProperty("email")String email,

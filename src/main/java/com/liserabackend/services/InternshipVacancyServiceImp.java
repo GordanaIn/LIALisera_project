@@ -5,6 +5,7 @@ import com.liserabackend.entity.InternshipVacancy;
 import com.liserabackend.entity.repository.InternshipVacancyRepository;
 import com.liserabackend.exceptions.UseException;
 import com.liserabackend.exceptions.UseExceptionType;
+import com.liserabackend.services.interfaces.IVacancyAdvert;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

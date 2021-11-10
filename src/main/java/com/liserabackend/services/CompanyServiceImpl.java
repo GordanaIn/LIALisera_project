@@ -3,6 +3,7 @@ package com.liserabackend.services;
 import com.liserabackend.entity.Company;
 import com.liserabackend.entity.repository.CompanyRepository;
 import com.liserabackend.exceptions.UseException;
+import com.liserabackend.services.interfaces.ICompany;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

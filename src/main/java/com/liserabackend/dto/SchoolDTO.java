@@ -16,6 +16,7 @@ public class SchoolDTO {
     String email;
     String role;
 
+    @JsonCreator
     public SchoolDTO(
             @JsonProperty("id")String id,
             @JsonProperty("name")String name,

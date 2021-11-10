@@ -1,9 +1,8 @@
-package com.liserabackend.services;
+package com.liserabackend.services.interfaces;
 
-import com.liserabackend.dto.CreateStudent;
 import com.liserabackend.entity.Student;
-import com.liserabackend.entity.User;
 import com.liserabackend.exceptions.UseException;
+
 import java.util.Optional;
 import java.util.stream.Stream;
 
