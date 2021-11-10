@@ -35,9 +35,9 @@ public class LoadDataService implements CommandLineRunner {
                if (educationRepository.findAll().isEmpty()) {
                    Set<Education> educationsEyuel=new HashSet<>();
                    Set<Education> educationsJafer=new HashSet<>();
-                   Education eductionEyuel1=new Education("Diploma in Java programming", SchoolName.SCHOOL_ECUTBILDNING, EducationType.DIPLOMA,eyuel);
-                   Education eductionEyuel2=new Education("Diploma in software Testing", SchoolName.SCHOOL_JENSEN, EducationType.DIPLOMA,eyuel);
-                   Education eductionJafer=new Education("Msc in Software Technology", SchoolName.SCHOOL_LNU, EducationType.MSC,jafer);
+                   Education eductionEyuel1=new Education("Diploma in Java programming", SchoolName.ECUTBILDNING, EducationType.DIPLOMA,eyuel);
+                   Education eductionEyuel2=new Education("Diploma in software Testing", SchoolName.JENSEN, EducationType.DIPLOMA,eyuel);
+                   Education eductionJafer=new Education("Msc in Software Technology", SchoolName.LNU, EducationType.MSC,jafer);
                    studentRepository.save(studentEyuel);
                    studentRepository.save(studentJafer);
 
@@ -69,35 +69,15 @@ public class LoadDataService implements CommandLineRunner {
                if (advertRepository.findAll().isEmpty()) {
                    InternshipVacancy internshipVacancy1 = new com.liserabackend.entity.InternshipVacancy("Junior Java Developer", "Junior Java developer that has a good skill in react and springboot",
                            "5 month duration", InternshipVacancyStatus.OPEN, LocalDate.of(2021, 10, 20), "Jafer", "0745672391", companyMicrosoft);
-                   internshipVacancy1.setRequiredProfession(EnumProfession.PROFESSION_JAVAUTVECKLARE);
+                   internshipVacancy1.setRequiredProfession(EnumProfession.JAVAUTVECKLARE);
                    InternshipVacancy internshipVacancy2 = new com.liserabackend.entity.InternshipVacancy("Junior C# Developer", "Junior C# developer that has a good skill in react and springboot",
                            "5 month duration", InternshipVacancyStatus.CLOSED, LocalDate.of(2021, 10, 21), "Selam", "0345672391",companyMicrosoft);
-                   internshipVacancy2.setRequiredProfession(EnumProfession.PROFESSION_CSHARP);
+                   internshipVacancy2.setRequiredProfession(EnumProfession.CSHARP);
                    advertRepository.save(internshipVacancy1);
                    advertRepository.save(internshipVacancy2);
                }
            }
        }
-    }
-    private void registerEductionForStudent(){
-        //find a userId
-      String userId=userRepository.findAll().stream().filter(u->u.getUsername().equals("eyuel@gmail.com")).map(User::getId).findAny().get();
-
-     //find a student by a userId
-      Student studentEyuel= studentRepository.findByUserId(userId).get();
-      User userEyuel= userRepository.findById(userId).get();
-      //register eduction associated with a given student
-        if (educationRepository.findAll().isEmpty()) {
-            Set<Education> educationSet=new HashSet<>();
-            Education eductionEyuel1=new Education("Diploma in Java programming", SchoolName.SCHOOL_ECUTBILDNING, EducationType.DIPLOMA,userEyuel);
-            Education eductionEyuel2=new Education("Diploma in software Testing", SchoolName.SCHOOL_JENSEN, EducationType.DIPLOMA,userEyuel);
-            educationSet.add(eductionEyuel1);
-            educationSet.add(eductionEyuel2);
-            educationRepository.save(eductionEyuel1);
-            educationRepository.save(eductionEyuel2);
-            studentEyuel.setEducations(educationSet);
-            studentRepository.save(studentEyuel);
-      }
     }
     private void registerSchool(){
         if(userRepository.findAll().stream().anyMatch(user -> !user.getRole().equals(EnumRole.ROLE_SCHOOL))) {
@@ -116,7 +96,5 @@ public class LoadDataService implements CommandLineRunner {
         registerStudent();
         registerAdvert();
         registerSchool();
-        //registerEductionForStudent();
-
-    }
+   }
 }
