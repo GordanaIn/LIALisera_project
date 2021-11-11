@@ -18,24 +18,18 @@ public class Education {
     @Id
     @Column(columnDefinition = "varchar(100)") private String id;
     private String title;
-    @Enumerated(EnumType.STRING)
-    @Column(length = 50)
-    private SchoolName schoolName;
 
-    @Enumerated(EnumType.STRING)
     @Column(length = 50)
-    private EducationType educationType;
-
+    private String schoolName;
 
     @OneToOne
     @JoinColumn(name="user_id", nullable = false)
     private User user;
 
-    public Education(String title, SchoolName schoolName,EducationType educationType, User user){
+    public Education(String title, String schoolName, User user){
         this.id= UUID.randomUUID().toString();
         this.title=title;
         this.schoolName=schoolName;
-        this.educationType=educationType;
         this.user=user;
     }
 }

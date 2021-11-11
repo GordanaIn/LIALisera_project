@@ -38,20 +38,20 @@ public class StudentController {
         return studentService.getStudentByUserId(userId).map(this::toStudentDTO).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND));
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<Student> saveStudent(CreateStudent student){
+    @PostMapping("")
+    public ResponseEntity<?> saveStudent(CreateStudent student) throws UseException {
+        return ResponseEntity.ok(studentService.addStudent(student).map(this::toStudentDTO));
 
-        return  null;
     }
-    @PostMapping("/update/email/{userId}")
+    @PutMapping("/email/{userId}")
     public UserDTO updateEmail(@PathVariable ("userId") String userId, @RequestBody EmailDTO emailDTO) throws UseException {
         return studentService.updateEmail(userId, emailDTO.getEmail()).map(this::toUserDTO).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND));
     }
-    @PostMapping("/update/username/{userId}")
+    @PutMapping("/username/{userId}")
     public UserDTO updateUserName(@PathVariable ("userId") String userId, @RequestBody UsernameDTO usernameDTO) throws UseException {
         return studentService.updateUsername(userId, usernameDTO.getUsername()).map(this::toUserDTO).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND));
     }
-    @PostMapping("/update/user/{userId}")
+    @PutMapping("/user/{userId}")
     public UserDTO updateUser(@PathVariable ("userId") String userId, @RequestBody UserDTO userDTO) throws UseException {
         return null;//studentService.updateUser(userId, userDTO).map(this::toUserDTO).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND));
     }
@@ -59,7 +59,7 @@ public class StudentController {
     public List<Education> getStudentEducations(@PathVariable ("userId") String userId) throws UseException {
         return studentService.getStudentEducations(userId).collect(Collectors.toList());
     }
-    @PutMapping("/update/{userId}")
+    @PutMapping("/{userId}")
     public StudentDTO updateStudentProfile(@PathVariable("userId") String userId, @RequestBody CreateStudent student) throws UseException {
         return studentService.updateProfile(userId, student).map(this::toStudentDTO).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND));
     }
@@ -80,8 +80,7 @@ public class StudentController {
                 student.getLinkedInUrl(),
                 user.getRole().toString(),
                 (education.isPresent())? education.get().getSchoolName().toString() : " ",
-                (education.isPresent())? education.get().getTitle() : " ",
-                (education.isPresent())? education.get().getEducationType().toString() : " "
+                (education.isPresent())? education.get().getTitle() : " "
          );
 
     }

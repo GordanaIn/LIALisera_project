@@ -1,5 +1,6 @@
 package com.liserabackend.services.interfaces;
 
+import com.liserabackend.dto.CreateStudent;
 import com.liserabackend.entity.Student;
 import com.liserabackend.exceptions.UseException;
 

@@ -35,7 +35,7 @@ public class InternshipVacancyController {
                                                  @RequestBody InternshipVacancy internship) throws UseException {
         return internshipVacancyService.updateInternship(Id,internship).map(this::toInternshipVacancyDTO).get();
     }
-    @GetMapping("/getFavorites/{userId}")
+    @GetMapping("/favorites/{userId}")
     public List<InternshipVacancyDTO> getFavoritesList(@PathVariable("userId") String userId){
         return studentServiceImp.getFavoritesList(userId).map(this::toInternshipVacancyDTO).collect(Collectors.toList());
     }

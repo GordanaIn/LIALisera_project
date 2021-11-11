@@ -35,9 +35,9 @@ public class LoadDataService implements CommandLineRunner {
                if (educationRepository.findAll().isEmpty()) {
                    Set<Education> educationsEyuel=new HashSet<>();
                    Set<Education> educationsJafer=new HashSet<>();
-                   Education eductionEyuel1=new Education("Javautvecklare", SchoolName.ECUTBILDNING, EducationType.DIPLOMA,eyuel);
-                   Education eductionEyuel2=new Education("Teknisk testare", SchoolName.JENSEN, EducationType.DIPLOMA,eyuel);
-                   Education eductionJafer=new Education("Msc in Software Technology", SchoolName.LNU, EducationType.MSC,jafer);
+                   Education eductionEyuel1=new Education("Javautvecklare", "EC Utbildning AB",eyuel);
+                   Education eductionEyuel2=new Education("Teknisk testare", "Jensen Academy", eyuel);
+                   Education eductionJafer=new Education("Msc in Software Technology", "Linnaeus University", jafer);
                    studentRepository.save(studentEyuel);
                    studentRepository.save(studentJafer);
 
@@ -50,13 +50,9 @@ public class LoadDataService implements CommandLineRunner {
                    studentEyuel.setEducations(educationsEyuel);
                    educationsJafer.add(eductionJafer);
                    studentJafer.setEducations(educationsJafer);
-
                }
-
            }
-
        }
-
     }
 
     private void registerAdvert() {
@@ -88,7 +84,6 @@ public class LoadDataService implements CommandLineRunner {
                 schoolRepository.save(schoolEC);
             }
         }
-
     }
 
     @Override

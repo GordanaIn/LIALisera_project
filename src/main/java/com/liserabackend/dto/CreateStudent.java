@@ -4,17 +4,12 @@ import lombok.Value;
 
 @Value
 public class CreateStudent {
-    String username;
-    String email;
-    String password;
     String firstName;
     String lastName;
+    String email;
     String phone;
-    String systemStatus;
-    String nameOfProfession;
-    String resume;
-    String video;
-    String personalLetter;
+    String username;
+    String password;
     String linkedInUrl;
     String schoolName;
 }

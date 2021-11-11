@@ -1,6 +1,7 @@
 package com.liserabackend.services;
 
 import com.liserabackend.dto.CreateStudent;
+import com.liserabackend.dto.StudentDTO;
 import com.liserabackend.dto.UserDTO;
 import com.liserabackend.entity.Education;
 import com.liserabackend.entity.InternshipVacancy;
@@ -17,6 +18,7 @@ import com.liserabackend.entity.repository.UserRepository;
 import com.liserabackend.services.interfaces.IStudent;
 import lombok.AllArgsConstructor;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
@@ -60,10 +62,7 @@ public class StudentServiceImp implements IStudent {
         user.setPassword(password);
         return Optional.of(saveUser(user));
     }
-    @Override
-    public Student saveStudent(Student student ) {
-        return studentRepository.save(student);
-    } //StudentDTO
+
 
     @Override
     public Stream<Student> getStudents() {
@@ -120,13 +119,17 @@ public class StudentServiceImp implements IStudent {
     public Stream<InternshipVacancy> getFavoritesList(String userId) {
         return studentRepository.findByUserId(userId).get().getFavourites().stream();
     }
-    public Student addStudent(CreateStudent createStudent) throws UseException {
+   @Override
+    public Student saveStudent(Student student ) {
+        return studentRepository.save(student);
+    }
+    public Optional<Student> addStudent(CreateStudent createStudent) throws UseException {
         // find if the same user is found
         if(userRepository.findByUsername(createStudent.getUsername()).isPresent())
             throw new UseException(UseExceptionType.USER_ALREADY_EXIST);
 
         User user=new User(createStudent.getUsername(), createStudent.getEmail(),createStudent.getPassword(), EnumRole.ROLE_STUDENT);
-        saveUser(user);
+        user=saveUser(user);
 
         //get userId
         String userId=userRepository.findByUsername(createStudent.getUsername()).get().getId();
@@ -141,7 +144,12 @@ public class StudentServiceImp implements IStudent {
                 createStudent.getLinkedInUrl()
         );
         student=saveStudent(student);
-        return student;
+        if(student!=null){
+            Education education=new Education("", createStudent.getSchoolName(),user);
+            educationRepository.save(education);
+            return Optional.of(student);
+        }
+        throw new UseException(UseExceptionType.STUDENT_NOT_SAVED);
     }
 
     private Stream<Student> searchStudent(SearchStudentBy searchStudentBy) {
