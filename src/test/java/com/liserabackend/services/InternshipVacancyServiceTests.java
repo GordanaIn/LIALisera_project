@@ -1,4 +1,4 @@
-package com.liserabackend.services;
+/* package com.liserabackend.services;
 
 import com.liserabackend.entity.Company;
 import com.liserabackend.entity.InternshipVacancy;
@@ -56,4 +56,4 @@ public class InternshipVacancyServiceTests {
         assertEquals(internshipVacancy1.getId(), allInternships.get(0).getId());
         assertEquals(internshipVacancy1.getContactEmployer(), allInternships.get(0).getContactEmployer());
     }
-}
+}*/

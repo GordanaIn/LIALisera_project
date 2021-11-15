@@ -17,19 +17,19 @@ import java.util.stream.Stream;
 public class InternshipVacancyServiceImp implements IVacancyAdvert {
     private InternshipVacancyRepository internshipVacancyRepository;
 
-    public Stream<InternshipVacancy> getAllInternships()  {
+    public Stream<InternshipVacancy> getAllInternships() {
         return internshipVacancyRepository.findAll().stream();
     }
 
     @Override
     public Optional<InternshipVacancy> updateInternship(String Id, InternshipVacancy internship) throws UseException {
-        InternshipVacancy oldInternship= internshipVacancyRepository.findById(Id).orElseThrow( ()-> new UseException(UseExceptionType.INTERNSHIP_NOT_FOUND));
+        InternshipVacancy oldInternship = internshipVacancyRepository.findById(Id).orElseThrow(() -> new UseException(UseExceptionType.INTERNSHIP_NOT_FOUND));
         updateInternship(oldInternship, internship);
 
         return Optional.of(oldInternship);
     }
 
-    private InternshipVacancy updateInternship(InternshipVacancy oldInternship, InternshipVacancy internshipVacancy){
+    private InternshipVacancy updateInternship(InternshipVacancy oldInternship, InternshipVacancy internshipVacancy) {
         oldInternship.setContactEmployer(internshipVacancy.getContactEmployer());
         oldInternship.setTitle(internshipVacancy.getTitle());
         oldInternship.setDescription(internshipVacancy.getDescription());
@@ -45,5 +45,13 @@ public class InternshipVacancyServiceImp implements IVacancyAdvert {
 
     public Optional<InternshipVacancy> getInternshipVacancy(String id) {
         return internshipVacancyRepository.findById(id);
+    }
+
+    public void deleteInternship(String id) throws UseException {
+        if (internshipVacancyRepository.findAll()
+                .stream()
+                .noneMatch(t -> t.getId().equals(id)))
+            throw new UseException(UseExceptionType.INTERNSHIP_NOT_FOUND);
+        internshipVacancyRepository.delete(getInternshipVacancy(id).get());
     }
 }

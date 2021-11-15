@@ -1,3 +1,4 @@
+/*
 package com.liserabackend.controllers;
 
 import org.springframework.boot.test.context.SpringBootTest;
@@ -7,3 +8,4 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("integrationtest")
 public class StudentControllerTests {
 }
+*/

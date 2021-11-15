@@ -11,5 +11,4 @@ public class LiserabackendApplication {
         SpringApplication.run(LiserabackendApplication.class, args);
     }
 
-
 }
