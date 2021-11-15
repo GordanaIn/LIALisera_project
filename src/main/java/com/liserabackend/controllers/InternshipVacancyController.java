@@ -43,6 +43,13 @@ public class InternshipVacancyController {
     public InternshipVacancyDTO InternshipVacancy(@PathVariable("id") String id){
         return internshipVacancyService.getInternshipVacancy(id).map(this::toInternshipVacancyDTO).get();
     }
+
+    @DeleteMapping()
+    public void delete(@PathVariable("id") String id) throws Exception {
+        internshipVacancyService.deleteInternship(id);
+    }
+
+
     public InternshipVacancyDTO toInternshipVacancyDTO(InternshipVacancy internshipVacancy){
         return new InternshipVacancyDTO(
                 internshipVacancy.getId(),
