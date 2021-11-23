@@ -62,11 +62,11 @@ public class StudentController {
     public StudentDTO updateStudentProfile(@PathVariable("userId") String userId, @RequestBody CreateStudent student) throws UseException {
         return studentService.updateProfile(userId, student).map(this::toStudentDTO).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND));
     }
-
-
-
-
-
+    @PatchMapping("/{userId}/{internshipId}")
+    public boolean applyInternship(@PathVariable ("userId") String userId, @PathVariable ("internshipId") String internshipId){
+        System.out.println(userId + " "+internshipId);
+        return  studentService.applyInternship(userId, internshipId);
+    }
 
     @SneakyThrows
     private StudentDTO toStudentDTO(Student student) {

@@ -18,7 +18,10 @@ import com.liserabackend.services.interfaces.IStudent;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -147,12 +150,36 @@ public class StudentServiceImp implements IStudent {
         throw new UseException(UseExceptionType.STUDENT_NOT_SAVED);
     }
 
+    public boolean applyInternship(String userId, String internshipId) {
+        Optional<Student> student = studentRepository.findByUserId(userId);
+        if (student.isEmpty())
+            return false;
+        Optional<InternshipVacancy> internshipVacancy = internshipVacancyRepository.findById(internshipId);
+        if (internshipVacancy.isEmpty())
+            return false;
+
+       if(student.get().getInternshipVacancies()!=null)
+           student.get().getInternshipVacancies().add(internshipVacancy.get());
+
+       student.get().setInternshipVacancies(internshipVacancy.stream().collect(Collectors.toSet()));
+        if(internshipVacancy.get().getStudents()!=null)
+            internshipVacancy.get().getStudents().add(student.get());
+        internshipVacancy.get().setStudents(student.stream().collect(Collectors.toSet()));
+
+        studentRepository.save(student.get());
+        internshipVacancyRepository.save(internshipVacancy.get());
+
+        return true;
+    }
+
     private Stream<Student> searchStudent(SearchStudentBy searchStudentBy) {
         return switch(searchStudentBy){
             case First_NAME-> studentRepository.findAll().stream().filter(s -> Boolean.parseBoolean(s.getFirstName()));
 
         };
     }
+
+
 
     public Stream<Education> getStudentEducations(String userId) throws UseException {
         //get studentId then search eduction by studentId
