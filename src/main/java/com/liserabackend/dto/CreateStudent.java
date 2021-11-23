@@ -10,6 +10,5 @@ public class CreateStudent {
     String phone;
     String username;
     String password;
-    String linkedInUrl;
     String schoolName;
 }

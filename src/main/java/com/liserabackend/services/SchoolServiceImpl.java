@@ -1,7 +1,10 @@
 package com.liserabackend.services;
 
+import com.liserabackend.dto.CreateSchool;
 import com.liserabackend.entity.School;
 import com.liserabackend.entity.repository.SchoolRepository;
+import com.liserabackend.exceptions.UseException;
+import com.liserabackend.exceptions.UseExceptionType;
 import com.liserabackend.services.interfaces.ISchool;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,4 +35,14 @@ public class SchoolServiceImpl implements ISchool {
     public Optional<School> updateSchool(String schoolId, School school) {
         return Optional.empty();
     }
+
+    public Optional<School> getSchoolByUserId(String userId) throws UseException {
+        return Optional.of(schoolRepository.findByUserId(userId).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND)));
+    }
+
+    public Optional<School> addSchool(CreateSchool createSchool) {
+        return null;
+    }
+
+
 }

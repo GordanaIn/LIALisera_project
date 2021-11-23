@@ -30,8 +30,10 @@ public class LoadDataService implements CommandLineRunner {
            userRepository.save(eyuel);
            userRepository.save(jafer);
            if(studentRepository.findAll().isEmpty()){
-               Student studentEyuel=new Student( "Eyuel", "Belay","0712345611", eyuel,"https://www.linkedin.com/in/eyuel-t-belay-633889167/");
-               Student studentJafer=new Student( "Jafer", "Redi","0712345667",jafer,"https://www.linkedin.com/in/adamjafer/");
+               Student studentEyuel=new Student( "Eyuel", "Belay","0712345611", eyuel);
+               studentEyuel.setLinkedInUrl("https://www.linkedin.com/in/eyuel-t-belay-633889167/");
+               Student studentJafer=new Student( "Jafer", "Redi","0712345667",jafer);
+               studentJafer.setLinkedInUrl("https://www.linkedin.com/in/adamjafer/");
                if (educationRepository.findAll().isEmpty()) {
                    Set<Education> educationsEyuel=new HashSet<>();
                    Set<Education> educationsJafer=new HashSet<>();

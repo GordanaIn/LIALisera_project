@@ -63,7 +63,6 @@ public class StudentServiceImp implements IStudent {
         return Optional.of(saveUser(user));
     }
 
-
     @Override
     public Stream<Student> getStudents() {
        return studentRepository.findAll().stream();
@@ -140,9 +139,8 @@ public class StudentServiceImp implements IStudent {
                 createStudent.getFirstName(),
                 createStudent.getLastName(),
                 createStudent.getPhone(),
-                user,
-                createStudent.getLinkedInUrl()
-        );
+                user);
+        student.setLinkedInUrl("");
         student=saveStudent(student);
         if(student!=null){
             Education education=new Education("", createStudent.getSchoolName(),user);

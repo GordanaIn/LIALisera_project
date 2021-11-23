@@ -39,9 +39,8 @@ public class StudentController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> saveStudent(CreateStudent student) throws UseException {
-        return ResponseEntity.ok(studentService.addStudent(student).map(this::toStudentDTO));
-
+    public ResponseEntity<?> saveStudent(@RequestBody CreateStudent createStudent) throws UseException {
+      return ResponseEntity.ok(studentService.addStudent(createStudent).map(this::toStudentDTO));
     }
     @PutMapping("/email/{userId}")
     public UserDTO updateEmail(@PathVariable ("userId") String userId, @RequestBody EmailDTO emailDTO) throws UseException {
@@ -77,12 +76,11 @@ public class StudentController {
                 user.getPassword(),
                 user.getEmail(),
                 student.getPhone(),
-                student.getLinkedInUrl(),
+                (student.getLinkedInUrl()!="")? student.getLinkedInUrl():"",
                 user.getRole().toString(),
-                (education.isPresent())? education.get().getSchoolName().toString() : " ",
+                (education.isPresent())? education.get().getSchoolName() : " ",
                 (education.isPresent())? education.get().getTitle() : " "
          );
-
     }
     private UserDTO toUserDTO(User user){
         return new UserDTO(

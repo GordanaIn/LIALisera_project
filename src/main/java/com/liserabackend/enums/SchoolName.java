@@ -5,7 +5,7 @@ public enum SchoolName {
     NACKADEMIN("Nackademin AB"),
     KTH("KTH University"),
     LNU("Linnaeus University"),
-    JENSEN("Jensen Academy ");
+    JENSEN("Jensen Academy");
     private final String textVal;
 
     SchoolName(String textVal){
