@@ -1,7 +1,7 @@
 package com.liserabackend.controllers;
 
 import com.liserabackend.dto.CompanyDTO;
-import com.liserabackend.dto.CreatCompany;
+import com.liserabackend.dto.CreateCompany;
 import com.liserabackend.dto.UserDTO;
 import com.liserabackend.entity.Company;
 import com.liserabackend.entity.User;
@@ -32,14 +32,21 @@ public class CompanyController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> saveCompany(@RequestBody CreatCompany createCompany) throws UseException {
+    public ResponseEntity<?> saveCompany(@RequestBody CreateCompany createCompany) throws UseException {
           return ResponseEntity.ok(companyService.addCompany(createCompany).map(this::toCompanyDTO));
     }
 
     private CompanyDTO toCompanyDTO(Company company) {
         User user=company.getUser();
         return new CompanyDTO(
-
+                company.getId(),
+                company.getName(),
+                company.getOrgNumber(),
+                company.getEmail(),
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getRole().toString()
         );
     }
 

@@ -3,13 +3,11 @@ package com.liserabackend.dto;
 import lombok.Value;
 
 @Value
-public class CreateSchool {
+public class CreateCompany {
     String name;
     String organizationNumber;
-    String schoolEmail;
-    String phone;
+    String companyEmail;
     String userEmail;
     String username;
     String password;
-
 }
