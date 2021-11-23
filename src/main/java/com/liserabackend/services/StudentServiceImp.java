@@ -1,7 +1,6 @@
 package com.liserabackend.services;
 
 import com.liserabackend.dto.CreateStudent;
-import com.liserabackend.dto.StudentDTO;
 import com.liserabackend.dto.UserDTO;
 import com.liserabackend.entity.Education;
 import com.liserabackend.entity.InternshipVacancy;
@@ -10,18 +9,16 @@ import com.liserabackend.entity.User;
 import com.liserabackend.entity.repository.EducationRepository;
 import com.liserabackend.entity.repository.InternshipVacancyRepository;
 import com.liserabackend.entity.repository.StudentRepository;
+import com.liserabackend.entity.repository.UserRepository;
 import com.liserabackend.enums.EnumRole;
 import com.liserabackend.enums.SearchStudentBy;
 import com.liserabackend.exceptions.UseException;
 import com.liserabackend.exceptions.UseExceptionType;
-import com.liserabackend.entity.repository.UserRepository;
 import com.liserabackend.services.interfaces.IStudent;
 import lombok.AllArgsConstructor;
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
@@ -62,7 +59,6 @@ public class StudentServiceImp implements IStudent {
         user.setPassword(password);
         return Optional.of(saveUser(user));
     }
-
 
     @Override
     public Stream<Student> getStudents() {
@@ -132,17 +128,16 @@ public class StudentServiceImp implements IStudent {
         user=saveUser(user);
 
         //get userId
-        String userId=userRepository.findByUsername(createStudent.getUsername()).get().getId();
+      /*  String userId=userRepository.findByUsername(createStudent.getUsername()).get().getId();
         if(studentRepository.findByUserId(userId).isPresent())
-            throw new UseException(UseExceptionType.USER_ALREADY_EXIST);
+            throw new UseException(UseExceptionType.USER_ALREADY_EXIST);*/
 
         Student student= new Student(
                 createStudent.getFirstName(),
                 createStudent.getLastName(),
                 createStudent.getPhone(),
-                user,
-                createStudent.getLinkedInUrl()
-        );
+                user);
+        student.setLinkedInUrl("");
         student=saveStudent(student);
         if(student!=null){
             Education education=new Education("", createStudent.getSchoolName(),user);

@@ -23,7 +23,7 @@ public class User {
     @Email
     private String email;
     @Size(max = 120)
-    private String password;
+    private String password; // byte[] encryptedPassword;
 
     /**  A user has set of Role but in these scenarios A user has only one role */
     @Enumerated(EnumType.STRING)

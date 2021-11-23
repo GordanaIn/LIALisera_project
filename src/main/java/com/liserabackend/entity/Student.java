@@ -50,15 +50,14 @@ public class Student {
     @JoinColumn(name="advert_id")
     private Set<InternshipVacancy> internshipVacancies =new HashSet<>();
 
-    public Student(String firstName,String lastName,String phone, User user,String linkedInUrl ){
+    public Student(String firstName,String lastName,String phone, User user ){
         assert user!=null; /** A student without user not allowed */
         this.id= UUID.randomUUID().toString();
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
         this.user=user;
-        this.linkedInUrl=linkedInUrl;
-    }
+   }
 
     //find advert
 }

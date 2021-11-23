@@ -1,16 +1,15 @@
 package com.liserabackend.controllers;
 
-import com.liserabackend.dto.SchoolDTO;
-import com.liserabackend.dto.StudentDTO;
+import com.liserabackend.dto.*;
 import com.liserabackend.entity.School;
 import com.liserabackend.entity.Student;
 import com.liserabackend.entity.User;
+import com.liserabackend.exceptions.UseException;
+import com.liserabackend.exceptions.UseExceptionType;
 import com.liserabackend.services.SchoolServiceImpl;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +23,16 @@ public class SchoolController {
     @GetMapping()
     public List<SchoolDTO> getSchools() {
         return schoolService.getSchools().map(this::toSchoolDTO).collect(Collectors.toList());
+    }
+
+    @GetMapping("/{userId}")
+    public SchoolDTO getSchoolByUserId(@PathVariable("userId") String userId) throws UseException {
+        return schoolService.getSchoolByUserId(userId).map(this::toSchoolDTO).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND));
+    }
+
+    @PostMapping("")
+    public ResponseEntity<?> saveCompany(@RequestBody CreateSchool createSchool) throws UseException {
+        return ResponseEntity.ok(schoolService.addSchool(createSchool).map(this::toSchoolDTO));
     }
 
     private SchoolDTO toSchoolDTO(School school) {
