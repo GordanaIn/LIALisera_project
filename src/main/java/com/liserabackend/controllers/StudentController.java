@@ -63,6 +63,12 @@ public class StudentController {
     public StudentDTO updateStudentProfile(@PathVariable("userId") String userId, @RequestBody CreateStudent student) throws UseException {
         return studentService.updateProfile(userId, student).map(this::toStudentDTO).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND));
     }
+
+
+
+
+
+
     @SneakyThrows
     private StudentDTO toStudentDTO(Student student) {
         User user=student.getUser();

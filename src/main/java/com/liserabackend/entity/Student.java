@@ -21,7 +21,7 @@ public class Student {
     /** ManyToOne or OneToOne ?? */
     @OneToOne
     @JoinColumn(name="user_id", nullable = false)
-    private User user;
+    private User user; //A user should have a student not a student having a user.
 
     @NotBlank
     @Size(max = 30)
