@@ -1,16 +1,23 @@
 package com.liserabackend.services;
 
+import com.liserabackend.dto.CreateInternship;
 import com.liserabackend.dto.StudentDTO;
+import com.liserabackend.entity.Company;
 import com.liserabackend.entity.InternshipVacancy;
 import com.liserabackend.entity.Student;
+import com.liserabackend.entity.User;
+import com.liserabackend.entity.repository.CompanyRepository;
 import com.liserabackend.entity.repository.InternshipVacancyRepository;
 import com.liserabackend.entity.repository.StudentRepository;
+import com.liserabackend.entity.repository.UserRepository;
 import com.liserabackend.exceptions.UseException;
 import com.liserabackend.exceptions.UseExceptionType;
 import com.liserabackend.services.interfaces.IVacancyAdvert;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -19,7 +26,8 @@ import java.util.stream.Stream;
 public class InternshipVacancyServiceImp implements IVacancyAdvert {
     private InternshipVacancyRepository internshipVacancyRepository;
     private StudentRepository studentRepository;
-
+    private UserRepository userRepository;
+    private CompanyRepository companyRepository;
     public Stream<InternshipVacancy> getAllInternships() {
         return internshipVacancyRepository.findAll().stream();
     }
@@ -65,5 +73,24 @@ public class InternshipVacancyServiceImp implements IVacancyAdvert {
                 .noneMatch(t -> t.getId().equals(id)))
             throw new UseException(UseExceptionType.INTERNSHIP_NOT_FOUND);
         internshipVacancyRepository.delete(getInternshipVacancy(id).get());
+    }
+
+    public boolean addInternship(CreateInternship createInternship) {
+        //find a userId
+        Optional<User> user = userRepository.findById(createInternship.getUserId());
+        if (user.isEmpty())
+            return false;
+        Optional<Company> company = companyRepository.findByUserId(user.get().getId());
+        if (company.isEmpty())
+            return false;
+        InternshipVacancy internshipVacancy=new InternshipVacancy(createInternship.getTitle(), createInternship.getDescription(), createInternship.getDuration(), createInternship.getDatePosted(), createInternship.getContactPhone(),
+                createInternship.getContactPhone(), company.get());
+
+        if(company.get().getInternshipVacancyList()!=null)
+            company.get().getInternshipVacancyList().add(internshipVacancy);
+        //company.get().setInternshipVacancyList();
+        companyRepository.save(company.get());
+        internshipVacancyRepository.save(internshipVacancy);
+       return true;
     }
 }

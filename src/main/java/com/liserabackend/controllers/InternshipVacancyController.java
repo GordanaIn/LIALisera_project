@@ -9,6 +9,7 @@ import com.liserabackend.services.StudentServiceImp;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.constant.Constable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,10 @@ public class InternshipVacancyController {
     public InternshipVacancyDTO InternshipVacancy(@PathVariable("id") String id){
         return internshipVacancyService.getInternshipVacancy(id).map(this::toInternshipVacancyDTO).get();
     }
-
+    @PostMapping()
+    public void addInternship(@RequestBody CreateInternship createInternship){
+        internshipVacancyService.addInternship(createInternship);
+    }
     @PatchMapping("/editInternship/{id}")
     public InternshipVacancyDTO updateInternship(@PathVariable("id") String Id,
                                                  @RequestBody InternshipVacancy internship) throws UseException {

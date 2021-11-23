@@ -66,10 +66,10 @@ public class LoadDataService implements CommandLineRunner {
                  companyRepository.save(companyMicrosoft);
                if (advertRepository.findAll().isEmpty()) {
                    InternshipVacancy internshipVacancy1 = new com.liserabackend.entity.InternshipVacancy("Junior Java Developer", "Junior Java developer that has a good skill in react and springboot",
-                           "5 month duration", InternshipVacancyStatus.OPEN, LocalDate.of(2021, 10, 20), "Jafer", "0745672391", companyMicrosoft);
+                           "5 month duration", LocalDate.of(2021, 10, 20), "Jafer", "0745672391", companyMicrosoft);
                    internshipVacancy1.setRequiredProfession(EnumProfession.JAVAUTVECKLARE);
                    InternshipVacancy internshipVacancy2 = new com.liserabackend.entity.InternshipVacancy("Junior C# Developer", "Junior C# developer that has a good skill in react and springboot",
-                           "5 month duration", InternshipVacancyStatus.CLOSED, LocalDate.of(2021, 10, 21), "Selam", "0345672391",companyMicrosoft);
+                           "5 month duration", LocalDate.of(2021, 10, 21), "Selam", "0345672391",companyMicrosoft);
                    internshipVacancy2.setRequiredProfession(EnumProfession.CSHARP);
                    advertRepository.save(internshipVacancy1);
                    advertRepository.save(internshipVacancy2);

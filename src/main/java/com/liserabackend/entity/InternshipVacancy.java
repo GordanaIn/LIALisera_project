@@ -46,13 +46,13 @@ public class InternshipVacancy {
 
     private boolean approved;/** why? */
 
-    public InternshipVacancy(String title, String description, String duration, InternshipVacancyStatus status, LocalDate datePosted, String contactPerson,
+    public InternshipVacancy(String title, String description, String duration,  LocalDate datePosted, String contactPerson,
                              String contactPhone, Company company ){
         this.id= UUID.randomUUID().toString();
         this.title = title;
         this.description = description;
         this.duration = duration;
-        this.status=status;
+        this.status=InternshipVacancyStatus.OPEN;
         this.datePosted = datePosted;
         this.contactEmployer=contactPerson;
         this.contactPhone=contactPhone;
