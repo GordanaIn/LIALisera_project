@@ -1,6 +1,7 @@
 package com.liserabackend.services;
 
 import com.liserabackend.dto.CreateStudent;
+import com.liserabackend.dto.ModifyPasswordDTO;
 import com.liserabackend.dto.UserDTO;
 import com.liserabackend.entity.Education;
 import com.liserabackend.entity.InternshipVacancy;
@@ -62,7 +63,14 @@ public class StudentServiceImp implements IStudent {
         user.setPassword(password);
         return Optional.of(saveUser(user));
     }
+    public Optional<User> modifyPassword(ModifyPasswordDTO modifyPasswordDTO) throws UseException {
+        final User user = userRepository.findAll().stream()
+                .filter(u -> u.getUsername().equals(modifyPasswordDTO.getUsername()))
+                .filter(u -> u.getPassword().equals(modifyPasswordDTO.getCurrentPassword())).findAny().orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND));
 
+        user.setPassword(modifyPasswordDTO.getNewPassword());
+        return Optional.of(saveUser(user));
+    }
     @Override
     public Stream<Student> getStudents() {
        return studentRepository.findAll().stream();
@@ -194,4 +202,6 @@ public class StudentServiceImp implements IStudent {
     public Stream<Education> getEducations(String userId) {
         return  educationRepository.findAll().stream().filter(education -> education.getUser().getId().equals(userId));
     }
+
+
 }

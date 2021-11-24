@@ -42,13 +42,21 @@ public class StudentController {
     public ResponseEntity<?> saveStudent(@RequestBody CreateStudent createStudent) throws UseException {
       return ResponseEntity.ok(studentService.addStudent(createStudent).map(this::toStudentDTO));
     }
-    @PutMapping("/email/{userId}")
+    @PatchMapping("/email/{userId}")
     public UserDTO updateEmail(@PathVariable ("userId") String userId, @RequestBody EmailDTO emailDTO) throws UseException {
         return studentService.updateEmail(userId, emailDTO.getEmail()).map(this::toUserDTO).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND));
     }
-    @PutMapping("/username/{userId}")
+    @PatchMapping("/username/{userId}")
     public UserDTO updateUserName(@PathVariable ("userId") String userId, @RequestBody UsernameDTO usernameDTO) throws UseException {
         return studentService.updateUsername(userId, usernameDTO.getUsername()).map(this::toUserDTO).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND));
+    }
+    @PatchMapping("/password/{userId}")
+    public UserDTO updatePassword(@PathVariable ("userId") String userId, @RequestBody PasswordDTO passwordDTO) throws UseException {
+        return studentService.updatePassword(userId, passwordDTO.getPassword()).map(this::toUserDTO).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND));
+    }
+    @PatchMapping("/modifyPassword")
+    public UserDTO modifyPassword(@RequestBody ModifyPasswordDTO modifyPasswordDTO) throws UseException {
+        return studentService.modifyPassword(modifyPasswordDTO).map(this::toUserDTO).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND));
     }
     @PutMapping("/user/{userId}")
     public UserDTO updateUser(@PathVariable ("userId") String userId, @RequestBody UserDTO userDTO) throws UseException {
