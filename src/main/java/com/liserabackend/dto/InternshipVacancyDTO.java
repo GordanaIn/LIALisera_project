@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Value;
 
+import java.time.LocalDate;
+
 @Value
 public class  InternshipVacancyDTO {
     String id;
@@ -11,7 +13,7 @@ public class  InternshipVacancyDTO {
     String title;
     String description;
     String status;
-    String datePosted;
+    LocalDate datePosted;
     String contactPhone;
     String duration; //how long the internship last ex- 3 months
 
@@ -22,7 +24,7 @@ public class  InternshipVacancyDTO {
             @JsonProperty("title")  String title,
             @JsonProperty("description") String description,
             @JsonProperty("status") String status,
-            @JsonProperty("datePosted")String datePosted,
+            @JsonProperty("datePosted") LocalDate datePosted,
             @JsonProperty("contactPhone")  String contactPhone,
             @JsonProperty("duration")  String duration) {
         this.id=id;

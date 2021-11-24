@@ -56,5 +56,8 @@ public class Company {
         this.email=email;
         this.user=user;
     }
+    public void addInternship(InternshipVacancy internshipVacancy){
+        this.internshipVacancyList.add(internshipVacancy);
+    }
 
 }

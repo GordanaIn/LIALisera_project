@@ -1,7 +1,6 @@
 package com.liserabackend.services;
 
 import com.liserabackend.dto.CreateInternship;
-import com.liserabackend.dto.StudentDTO;
 import com.liserabackend.entity.Company;
 import com.liserabackend.entity.InternshipVacancy;
 import com.liserabackend.entity.Student;
@@ -17,9 +16,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import static com.liserabackend.exceptions.UseExceptionType.COMPANY_NOT_FOUND;
+import static com.liserabackend.exceptions.UseExceptionType.USER_NOT_FOUND;
 
 @Service
 @AllArgsConstructor
@@ -75,22 +76,14 @@ public class InternshipVacancyServiceImp implements IVacancyAdvert {
         internshipVacancyRepository.delete(getInternshipVacancy(id).get());
     }
 
-    public boolean addInternship(CreateInternship createInternship) {
-        //find a userId
-        Optional<User> user = userRepository.findById(createInternship.getUserId());
-        if (user.isEmpty())
-            return false;
-        Optional<Company> company = companyRepository.findByUserId(user.get().getId());
-        if (company.isEmpty())
-            return false;
-        InternshipVacancy internshipVacancy=new InternshipVacancy(createInternship.getTitle(), createInternship.getDescription(), createInternship.getDuration(), createInternship.getDatePosted(), createInternship.getContactPhone(),
-                createInternship.getContactPhone(), company.get());
+    public Optional<InternshipVacancy> addInternship(CreateInternship createInternship) throws UseException {
+        final User user = userRepository.findById(createInternship.getUserId()).orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        final Company company = companyRepository.findByUserId(user.getId()).orElseThrow(() -> new UseException(COMPANY_NOT_FOUND));
 
-        if(company.get().getInternshipVacancyList()!=null)
-            company.get().getInternshipVacancyList().add(internshipVacancy);
-        //company.get().setInternshipVacancyList();
-        companyRepository.save(company.get());
-        internshipVacancyRepository.save(internshipVacancy);
-       return true;
+        InternshipVacancy internshipVacancy=new InternshipVacancy(createInternship.getTitle(), createInternship.getDescription(), createInternship.getDuration(), createInternship.getDatePosted(), createInternship.getEmployerName(),
+                createInternship.getContactPhone(), company);
+        return Optional.of(internshipVacancyRepository.save(internshipVacancy));
+
     }
+
 }

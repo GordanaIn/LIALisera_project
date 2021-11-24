@@ -64,4 +64,5 @@ public class InternshipVacancy {
                 .collect(Collectors.toList());
     }
 
+
 }

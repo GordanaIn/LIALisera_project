@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.constant.Constable;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -32,8 +33,8 @@ public class InternshipVacancyController {
         return internshipVacancyService.getInternshipVacancy(id).map(this::toInternshipVacancyDTO).get();
     }
     @PostMapping()
-    public void addInternship(@RequestBody CreateInternship createInternship){
-        internshipVacancyService.addInternship(createInternship);
+    public Optional<InternshipVacancyDTO> addInternship(@RequestBody CreateInternship createInternship) throws UseException {
+        return internshipVacancyService.addInternship(createInternship).map(this::toInternshipVacancyDTO);
     }
     @PatchMapping("/editInternship/{id}")
     public InternshipVacancyDTO updateInternship(@PathVariable("id") String Id,
@@ -65,7 +66,7 @@ public class InternshipVacancyController {
                 internshipVacancy.getTitle(),
                 internshipVacancy.getDescription(),
                 internshipVacancy.getStatus().toString(),
-                internshipVacancy.getDatePosted().toString(),
+                internshipVacancy.getDatePosted(),
                 internshipVacancy.getContactPhone(),
                 internshipVacancy.getDuration()
         );

@@ -7,11 +7,10 @@ import java.time.LocalDate;
 @Value
 public class CreateInternship {
     String userId;
-    String employersName;
+    String employerName;
     String title;
     String description;
     LocalDate datePosted;
     String contactPhone;
     String duration;
-
 }
