@@ -129,6 +129,7 @@ public class StudentServiceImp implements IStudent {
     public Student saveStudent(Student student ) {
         return studentRepository.save(student);
     }
+
     public Optional<Student> addStudent(CreateStudent createStudent) throws UseException {
         // find if the same user is found
         if(userRepository.findByUsername(createStudent.getUsername()).isPresent())

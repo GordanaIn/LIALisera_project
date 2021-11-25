@@ -12,7 +12,8 @@ import java.util.*;
 
 @Data
 @Entity(name="users")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
     @Id @Column(columnDefinition = "varchar(100)") private String id;
     @NotBlank
