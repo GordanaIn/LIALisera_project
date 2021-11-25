@@ -39,7 +39,7 @@ public class StudentServiceImp implements IStudent {
 
     @Override
     public Optional<User> updateEmail(String userId, String email) throws UseException {
-        User user=Optional.ofNullable(userRepository.findById(userId).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND))).get();
+        User user = Optional.ofNullable(userRepository.findById(userId).orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND))).get();
         user.setEmail(email);
 
         System.out.println(user);
@@ -48,20 +48,21 @@ public class StudentServiceImp implements IStudent {
 
     @Override
     public Optional<User> updateUsername(String userId, String username) throws UseException {
-        User user=Optional.ofNullable(userRepository.findById(userId).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND))).get();
+        User user = Optional.ofNullable(userRepository.findById(userId).orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND))).get();
         System.out.println(user);
         user.setUsername(username);
-        user=saveUser(user);
+        user = saveUser(user);
         System.out.println(user.getUsername());
         return Optional.ofNullable(user);
     }
 
     @Override
     public Optional<User> updatePassword(String userId, String password) throws UseException {
-        User user=Optional.ofNullable(userRepository.findById(userId).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND))).get();
+        User user = Optional.ofNullable(userRepository.findById(userId).orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND))).get();
         user.setPassword(password);
         return Optional.of(saveUser(user));
     }
+
     public Optional<User> modifyPassword(ModifyPasswordDTO modifyPasswordDTO) throws UseException {
         final User user = userRepository.findAll().stream()
                 .filter(u -> u.getUsername().equals(modifyPasswordDTO.getUsername()))
@@ -70,9 +71,10 @@ public class StudentServiceImp implements IStudent {
         user.setPassword(modifyPasswordDTO.getNewPassword());
         return Optional.of(saveUser(user));
     }
+
     @Override
     public Stream<Student> getStudents() {
-       return studentRepository.findAll().stream();
+        return studentRepository.findAll().stream();
     }
 
     @Override
@@ -84,31 +86,34 @@ public class StudentServiceImp implements IStudent {
     public Optional<User> getAUserByUserName(String username) throws UseException {
         return Optional.ofNullable(userRepository.findByUsername(username).orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND)));
     }
+
     public Optional<User> getAUserByEmail(String email) throws UseException {
         return Optional.ofNullable(userRepository.findByEmail(email).orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND)));
     }
 
     public Optional<Student> getStudentById(String studentId) throws UseException {
-        return Optional.ofNullable(studentRepository.findById(studentId).orElseThrow(()->new UseException(UseExceptionType.STUDENT_NOT_FOUND)));
+        return Optional.ofNullable(studentRepository.findById(studentId).orElseThrow(() -> new UseException(UseExceptionType.STUDENT_NOT_FOUND)));
     }
 
     @Override
     public Optional<Student> getStudentByUserId(String userId) throws UseException {
-        return Optional.of(studentRepository.findByUserId(userId).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND)));
+        return Optional.of(studentRepository.findByUserId(userId).orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND)));
     }
 
     @Override
-    public Optional<Student> getStudentByUserName(String username)  {
+    public Optional<Student> getStudentByUserName(String username) {
         return Optional.empty();
     }
+
     public Optional<Student> updateProfile(String Id, CreateStudent student) throws UseException {
         //find student by username
-        User user=Optional.ofNullable(userRepository.findByUsername(student.getUsername()).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND))).get();
-        Student oldStudent=Optional.ofNullable(studentRepository.findByUserId(user.getId())).orElseThrow(()->new UseException(UseExceptionType.STUDENT_NOT_FOUND)).get();
+        User user = Optional.ofNullable(userRepository.findByUsername(student.getUsername()).orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND))).get();
+        Student oldStudent = Optional.ofNullable(studentRepository.findByUserId(user.getId())).orElseThrow(() -> new UseException(UseExceptionType.STUDENT_NOT_FOUND)).get();
         oldStudent.setFirstName(student.getFirstName());
         //set other properties too
         return Optional.ofNullable(oldStudent);
     }
+
     public Student addInternshipToFavoritesList(String userId, String internshipId) {
         Student student = studentRepository.findByUserId(userId).get();
         InternshipVacancy internship = internshipVacancyRepository.getById(internshipId);
@@ -125,90 +130,73 @@ public class StudentServiceImp implements IStudent {
     public Stream<InternshipVacancy> getFavoritesList(String userId) {
         return studentRepository.findByUserId(userId).get().getFavourites().stream();
     }
-   @Override
-    public Student saveStudent(Student student ) {
+
+    @Override
+    public Student saveStudent(Student student) {
         return studentRepository.save(student);
     }
 
     public Optional<Student> addStudent(CreateStudent createStudent) throws UseException {
         // find if the same user is found
-        if(userRepository.findByUsername(createStudent.getUsername()).isPresent())
+        if (userRepository.findByUsername(createStudent.getUsername()).isPresent())
             throw new UseException(UseExceptionType.USER_ALREADY_EXIST);
 
-        User user=new User(createStudent.getUsername(), createStudent.getEmail(),createStudent.getPassword(), EnumRole.ROLE_STUDENT);
-        user=saveUser(user);
+        User user = new User(createStudent.getUsername(), createStudent.getEmail(), createStudent.getPassword(), EnumRole.ROLE_STUDENT);
+        user = saveUser(user);
 
         //get userId
       /*  String userId=userRepository.findByUsername(createStudent.getUsername()).get().getId();
         if(studentRepository.findByUserId(userId).isPresent())
             throw new UseException(UseExceptionType.USER_ALREADY_EXIST);*/
 
-        Student student= new Student(
+        Student student = new Student(
                 createStudent.getFirstName(),
                 createStudent.getLastName(),
                 createStudent.getPhone(),
                 user);
         student.setLinkedInUrl("");
-        student=saveStudent(student);
-        if(student!=null){
-            Education education=new Education("", createStudent.getSchoolName(),user);
+        student = saveStudent(student);
+        if (student != null) {
+            Education education = new Education("", createStudent.getSchoolName(), user);
             educationRepository.save(education);
             return Optional.of(student);
         }
         throw new UseException(UseExceptionType.STUDENT_NOT_SAVED);
     }
 
-    public boolean applyInternship(String userId, String internshipId) throws UseException {
-        final Student student = studentRepository.findByUserId(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
-        System.out.println(student.getFirstName() + " "+student.getLastName());
-        final InternshipVacancy internshipVacancy = internshipVacancyRepository.findById(internshipId).orElseThrow(() -> new UseException(INTERNSHIP_NOT_FOUND));
-        System.out.println("Title "+internshipVacancy.getTitle() + " posted date  "+internshipVacancy.getDatePosted());
-        Set<InternshipVacancy> internshipVacancies =new HashSet<>();
-        Set<Student> students=new HashSet<>();
-       if(student.getInternshipVacancies()==null){
-           System.out.println("Hello if stud");
-           internshipVacancies.add(internshipVacancy);
-       }else{
-           System.out.println("Hello else stud");
-           student.getInternshipVacancies().add(internshipVacancy);
-       }
-        student.setInternshipVacancies(internshipVacancies);
-        if(internshipVacancy.getStudents()==null){
-            System.out.println("Hello if internship");
-            students.add(student);
-            internshipVacancy.setStudents(students);
-        }else{
-            System.out.println("Hello else internship");
-            internshipVacancy.getStudents().add(student);
-        }
-        System.out.println("Hello Outside ");
+    public void applyInternship(String userId, String internshipId) throws UseException {
+        final Student student = studentRepository.findByUserId(userId)
+                .orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        final InternshipVacancy internshipVacancy = internshipVacancyRepository.findById(internshipId)
+                .orElseThrow(() -> new UseException(INTERNSHIP_NOT_FOUND));
+
+        student.getInternshipVacancies().add(internshipVacancy);
+        internshipVacancy.getStudents().add(student);
+
         studentRepository.save(student);
         internshipVacancyRepository.save(internshipVacancy);
-
-        return true;
     }
 
     private Stream<Student> searchStudent(SearchStudentBy searchStudentBy) {
-        return switch(searchStudentBy){
-            case First_NAME-> studentRepository.findAll().stream().filter(s -> Boolean.parseBoolean(s.getFirstName()));
+        return switch (searchStudentBy) {
+            case First_NAME -> studentRepository.findAll().stream().filter(s -> Boolean.parseBoolean(s.getFirstName()));
 
         };
     }
 
 
-
     public Stream<Education> getStudentEducations(String userId) throws UseException {
         //get studentId then search eduction by studentId
-        return  studentRepository.findByUserId(userId).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND)).getEducations().stream();
+        return studentRepository.findByUserId(userId).orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND)).getEducations().stream();
 
     }
 
-    public  Stream<User> updateUser(String userId, UserDTO userDTO) {
-            return null;
+    public Stream<User> updateUser(String userId, UserDTO userDTO) {
+        return null;
     }
 
     public Stream<Education> getEducations(String userId) {
-        return  educationRepository.findAll().stream().filter(education -> education.getUser().getId().equals(userId));
+        return educationRepository.findAll().stream().filter(education -> education.getUser().getId().equals(userId));
     }
 
 

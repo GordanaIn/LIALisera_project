@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 
 @RestController
 @AllArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders ="*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/student")
 public class StudentController {
     private final StudentServiceImp studentService;
@@ -35,51 +35,64 @@ public class StudentController {
 
     @GetMapping("/{userId}")
     public StudentDTO getStudentByUserId(@PathVariable("userId") String userId) throws UseException {
-        return studentService.getStudentByUserId(userId).map(this::toStudentDTO).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND));
+        return studentService.getStudentByUserId(userId).map(this::toStudentDTO).orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND));
     }
 
     @PostMapping("")
     public ResponseEntity<?> saveStudent(@RequestBody CreateStudent createStudent) throws UseException {
-      return ResponseEntity.ok(studentService.addStudent(createStudent).map(this::toStudentDTO));
+        return ResponseEntity.ok(studentService.addStudent(createStudent).map(this::toStudentDTO));
     }
+
     @PatchMapping("/email/{userId}")
-    public UserDTO updateEmail(@PathVariable ("userId") String userId, @RequestBody EmailDTO emailDTO) throws UseException {
-        return studentService.updateEmail(userId, emailDTO.getEmail()).map(this::toUserDTO).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND));
+    public UserDTO updateEmail(@PathVariable("userId") String userId, @RequestBody EmailDTO emailDTO) throws UseException {
+        return studentService.updateEmail(userId, emailDTO.getEmail()).map(this::toUserDTO).orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND));
     }
+
     @PatchMapping("/username/{userId}")
-    public UserDTO updateUserName(@PathVariable ("userId") String userId, @RequestBody UsernameDTO usernameDTO) throws UseException {
-        return studentService.updateUsername(userId, usernameDTO.getUsername()).map(this::toUserDTO).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND));
+    public UserDTO updateUserName(@PathVariable("userId") String userId, @RequestBody UsernameDTO usernameDTO) throws UseException {
+        return studentService.updateUsername(userId, usernameDTO.getUsername()).map(this::toUserDTO).orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND));
     }
+
     @PatchMapping("/password/{userId}")
-    public UserDTO updatePassword(@PathVariable ("userId") String userId, @RequestBody PasswordDTO passwordDTO) throws UseException {
-        return studentService.updatePassword(userId, passwordDTO.getPassword()).map(this::toUserDTO).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND));
+    public UserDTO updatePassword(@PathVariable("userId") String userId, @RequestBody PasswordDTO passwordDTO) throws UseException {
+        return studentService.updatePassword(userId, passwordDTO.getPassword()).map(this::toUserDTO).orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND));
     }
+
     @PatchMapping("/modifyPassword")
     public UserDTO modifyPassword(@RequestBody ModifyPasswordDTO modifyPasswordDTO) throws UseException {
-        return studentService.modifyPassword(modifyPasswordDTO).map(this::toUserDTO).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND));
+        return studentService.modifyPassword(modifyPasswordDTO).map(this::toUserDTO).orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND));
     }
+
     @PutMapping("/user/{userId}")
-    public UserDTO updateUser(@PathVariable ("userId") String userId, @RequestBody UserDTO userDTO) throws UseException {
+    public UserDTO updateUser(@PathVariable("userId") String userId, @RequestBody UserDTO userDTO) throws UseException {
         return null;//studentService.updateUser(userId, userDTO).map(this::toUserDTO).orElseThrow(()->new UseException(UseExceptionType.User_NOT_FOUND));
     }
+
     @GetMapping("/eduction/{userId}")
-    public List<Education> getStudentEducations(@PathVariable ("userId") String userId) throws UseException {
+    public List<Education> getStudentEducations(@PathVariable("userId") String userId) throws UseException {
         return studentService.getStudentEducations(userId).collect(Collectors.toList());
     }
+
     @PutMapping("/{userId}")
     public StudentDTO updateStudentProfile(@PathVariable("userId") String userId, @RequestBody CreateStudent student) throws UseException {
-        return studentService.updateProfile(userId, student).map(this::toStudentDTO).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND));
+        return studentService.updateProfile(userId, student).map(this::toStudentDTO).orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND));
     }
+
     //check again
     @PatchMapping("/{userId}/{internshipId}")
-    public boolean applyInternship(@PathVariable ("userId") String userId, @PathVariable ("internshipId") String internshipId) throws UseException {
-        System.out.println(userId + " "+internshipId);
-        return  studentService.applyInternship(userId, internshipId);
+    public boolean applyInternship(@PathVariable("userId") String userId, @PathVariable("internshipId") String internshipId) throws UseException {
+        System.out.println(userId + " " + internshipId);
+        try {
+            studentService.applyInternship(userId, internshipId);
+            return true;
+        } catch (UseException e) {
+            return false;
+        }
     }
 
     @SneakyThrows
     private StudentDTO toStudentDTO(Student student) {
-        User user=student.getUser();
+        User user = student.getUser();
         Optional<Education> education = studentService.getEducations(user.getId()).findFirst();
 
         return new StudentDTO(
@@ -91,13 +104,14 @@ public class StudentController {
                 user.getPassword(),
                 user.getEmail(),
                 student.getPhone(),
-                (student.getLinkedInUrl()!="")? student.getLinkedInUrl():"",
+                (student.getLinkedInUrl() != "") ? student.getLinkedInUrl() : "",
                 user.getRole().toString(),
-                (education.isPresent())? education.get().getSchoolName() : " ",
-                (education.isPresent())? education.get().getTitle() : " "
-         );
+                (education.isPresent()) ? education.get().getSchoolName() : " ",
+                (education.isPresent()) ? education.get().getTitle() : " "
+        );
     }
-    private UserDTO toUserDTO(User user){
+
+    private UserDTO toUserDTO(User user) {
         return new UserDTO(
                 user.getId(),
                 user.getUsername(),

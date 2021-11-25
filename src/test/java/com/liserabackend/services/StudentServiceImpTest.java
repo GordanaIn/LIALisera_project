@@ -1,9 +1,12 @@
-/*
+
 package com.liserabackend.services;
 
 import com.liserabackend.dto.CreateStudent;
+import com.liserabackend.entity.InternshipVacancy;
 import com.liserabackend.entity.Student;
 import com.liserabackend.entity.User;
+import com.liserabackend.entity.repository.EducationRepository;
+import com.liserabackend.entity.repository.InternshipVacancyRepository;
 import com.liserabackend.entity.repository.StudentRepository;
 import com.liserabackend.entity.repository.UserRepository;
 import com.liserabackend.exceptions.UseException;
@@ -31,6 +34,10 @@ class StudentServiceImpTest {
     StudentRepository studentRepository;
     @Mock
     UserRepository userRepository;
+    @Mock
+    EducationRepository educationRepository;
+    @Mock
+    InternshipVacancyRepository internshipVacancyRepository;
 
     @InjectMocks
     StudentServiceImp studentServiceImp;
@@ -50,10 +57,12 @@ class StudentServiceImpTest {
     }
 
     @Test
-    void test_addStudent() throws UseException {
+    void test_addStudent_success() throws UseException {
         //Given
         CreateStudent createStudent = new CreateStudent("Mia", null, null, null, null, null, null);
         when(studentRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(userRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(educationRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         //When
         Optional<Student> student1 = studentServiceImp.addStudent(createStudent);
@@ -65,7 +74,21 @@ class StudentServiceImpTest {
     }
 
     @Test
-    void updateUsername() {
+    void test_applyInternship() throws UseException {
+       //Given
+        InternshipVacancy internshipVacancy = new InternshipVacancy();
+        Student student = new Student();
+        when(studentRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(internshipVacancyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+
+
+        //When
+      //  assert Student student1 = studentServiceImp.applyInternship("111", "222");
+
+
+        //Then
+
+
     }
 
     @Test
@@ -98,4 +121,4 @@ class StudentServiceImpTest {
     @Test
     void getStudentById() {
     }
-}*/
+}

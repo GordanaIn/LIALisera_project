@@ -58,6 +58,7 @@ public class InternshipVacancy {
         this.contactPhone=contactPhone;
         this.company=company;
     }
+
     public List<String> getStudentsListAppliedForAdvert(){
         return students.stream()
                 .map(Student::getPhone)
