@@ -3,10 +3,7 @@ package com.liserabackend.services;
 import com.liserabackend.dto.CreateStudent;
 import com.liserabackend.dto.ModifyPasswordDTO;
 import com.liserabackend.dto.UserDTO;
-import com.liserabackend.entity.Education;
-import com.liserabackend.entity.InternshipVacancy;
-import com.liserabackend.entity.Student;
-import com.liserabackend.entity.User;
+import com.liserabackend.entity.*;
 import com.liserabackend.entity.repository.EducationRepository;
 import com.liserabackend.entity.repository.InternshipVacancyRepository;
 import com.liserabackend.entity.repository.StudentRepository;
@@ -24,6 +21,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.liserabackend.exceptions.UseExceptionType.*;
 
 @Service
 @AllArgsConstructor
@@ -158,24 +157,32 @@ public class StudentServiceImp implements IStudent {
         throw new UseException(UseExceptionType.STUDENT_NOT_SAVED);
     }
 
-    public boolean applyInternship(String userId, String internshipId) {
-        Optional<Student> student = studentRepository.findByUserId(userId);
-        if (student.isEmpty())
-            return false;
-        Optional<InternshipVacancy> internshipVacancy = internshipVacancyRepository.findById(internshipId);
-        if (internshipVacancy.isEmpty())
-            return false;
-
-       if(student.get().getInternshipVacancies()!=null)
-           student.get().getInternshipVacancies().add(internshipVacancy.get());
-
-       student.get().setInternshipVacancies(internshipVacancy.stream().collect(Collectors.toSet()));
-        if(internshipVacancy.get().getStudents()!=null)
-            internshipVacancy.get().getStudents().add(student.get());
-        internshipVacancy.get().setStudents(student.stream().collect(Collectors.toSet()));
-
-        studentRepository.save(student.get());
-        internshipVacancyRepository.save(internshipVacancy.get());
+    public boolean applyInternship(String userId, String internshipId) throws UseException {
+        final Student student = studentRepository.findByUserId(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        System.out.println(student.getFirstName() + " "+student.getLastName());
+        final InternshipVacancy internshipVacancy = internshipVacancyRepository.findById(internshipId).orElseThrow(() -> new UseException(INTERNSHIP_NOT_FOUND));
+        System.out.println("Title "+internshipVacancy.getTitle() + " posted date  "+internshipVacancy.getDatePosted());
+        Set<InternshipVacancy> internshipVacancies =new HashSet<>();
+        Set<Student> students=new HashSet<>();
+       if(student.getInternshipVacancies()==null){
+           System.out.println("Hello if stud");
+           internshipVacancies.add(internshipVacancy);
+       }else{
+           System.out.println("Hello else stud");
+           student.getInternshipVacancies().add(internshipVacancy);
+       }
+        student.setInternshipVacancies(internshipVacancies);
+        if(internshipVacancy.getStudents()==null){
+            System.out.println("Hello if internship");
+            students.add(student);
+            internshipVacancy.setStudents(students);
+        }else{
+            System.out.println("Hello else internship");
+            internshipVacancy.getStudents().add(student);
+        }
+        System.out.println("Hello Outside ");
+        studentRepository.save(student);
+        internshipVacancyRepository.save(internshipVacancy);
 
         return true;
     }
