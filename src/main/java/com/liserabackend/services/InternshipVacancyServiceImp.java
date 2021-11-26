@@ -15,20 +15,21 @@ import com.liserabackend.services.interfaces.IVacancyAdvert;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
-import static com.liserabackend.exceptions.UseExceptionType.COMPANY_NOT_FOUND;
-import static com.liserabackend.exceptions.UseExceptionType.USER_NOT_FOUND;
+import static com.liserabackend.exceptions.UseExceptionType.*;
 
 @Service
 @AllArgsConstructor
 public class InternshipVacancyServiceImp implements IVacancyAdvert {
-    private InternshipVacancyRepository internshipVacancyRepository;
-    private StudentRepository studentRepository;
-    private UserRepository userRepository;
-    private CompanyRepository companyRepository;
+    private final InternshipVacancyRepository internshipVacancyRepository;
+    private final StudentRepository studentRepository;
+    private final UserRepository userRepository;
+    private final CompanyRepository companyRepository;
+
     public Stream<InternshipVacancy> getAllInternships() {
         return internshipVacancyRepository.findAll().stream();
     }
@@ -41,39 +42,8 @@ public class InternshipVacancyServiceImp implements IVacancyAdvert {
         return Optional.of(oldInternship);
     }
 
-    private InternshipVacancy updateInternship(InternshipVacancy oldInternship, InternshipVacancy internshipVacancy) {
-        oldInternship.setContactEmployer(internshipVacancy.getContactEmployer());
-        oldInternship.setTitle(internshipVacancy.getTitle());
-        oldInternship.setDescription(internshipVacancy.getDescription());
-        oldInternship.setStatus(internshipVacancy.getStatus());
-
-        oldInternship.setTitle(internshipVacancy.getTitle());
-        return oldInternship;
-    }
-
-    public boolean addToList(String id, String internshipId) {
-        Optional<Student> student = studentRepository.findByUserId(id);
-        if (student.isEmpty())
-            return false;
-
-        Optional<InternshipVacancy> internshipVacancy = internshipVacancyRepository.findById(internshipId);
-        if (internshipVacancy.isEmpty())
-            return false;
-        student.get().getFavourites().add(internshipVacancy.get());
-        studentRepository.save(student.get());
-        return true;
-    }
-
     public Optional<InternshipVacancy> getInternshipVacancy(String id) {
         return internshipVacancyRepository.findById(id);
-    }
-
-    public void deleteInternship(String id) throws UseException {
-        if (internshipVacancyRepository.findAll()
-                .stream()
-                .noneMatch(t -> t.getId().equals(id)))
-            throw new UseException(UseExceptionType.INTERNSHIP_NOT_FOUND);
-        internshipVacancyRepository.delete(getInternshipVacancy(id).get());
     }
 
     public Optional<InternshipVacancy> addInternship(CreateInternship createInternship) throws UseException {
@@ -83,7 +53,35 @@ public class InternshipVacancyServiceImp implements IVacancyAdvert {
         InternshipVacancy internshipVacancy=new InternshipVacancy(createInternship.getTitle(), createInternship.getDescription(), createInternship.getDuration(), createInternship.getDatePosted(), createInternship.getEmployerName(),
                 createInternship.getContactPhone(), company);
         return Optional.of(internshipVacancyRepository.save(internshipVacancy));
-
     }
 
+    public void deleteInternship(String id) throws UseException {
+        if (internshipVacancyRepository.findAll() .stream()
+                .noneMatch(t -> t.getId().equals(id)))
+            throw new UseException(UseExceptionType.INTERNSHIP_NOT_FOUND);
+
+        internshipVacancyRepository.delete(getInternshipVacancy(id).get());
+    }
+
+    public boolean addFavorite(String userId, String internshipId) throws UseException {
+        System.out.println("Hello");
+        final Student student = studentRepository.findByUserId(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        final InternshipVacancy internshipVacancy = internshipVacancyRepository.findById(internshipId).orElseThrow(() -> new UseException(INTERNSHIP_NOT_FOUND));
+        student.getFavourites().add(internshipVacancy);
+        System.out.println("Hello");
+        internshipVacancy.getStudents().add(student);
+        studentRepository.save(student);
+        internshipVacancyRepository.save(internshipVacancy);
+        return false;
+    }
+
+    private InternshipVacancy updateInternship(InternshipVacancy oldInternship, InternshipVacancy internshipVacancy) {
+        oldInternship.setContactEmployer(internshipVacancy.getContactEmployer());
+        oldInternship.setTitle(internshipVacancy.getTitle());
+        oldInternship.setDescription(internshipVacancy.getDescription());
+        oldInternship.setStatus(internshipVacancy.getStatus());
+
+        oldInternship.setTitle(internshipVacancy.getTitle());
+        return oldInternship;
+    }
 }

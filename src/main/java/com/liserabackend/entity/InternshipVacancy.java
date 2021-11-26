@@ -22,13 +22,12 @@ public class InternshipVacancy {
     private String title;
     private String description;
     private String duration; /** how long the internship lasts */
-
     private InternshipVacancyStatus status;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate datePosted;
     private String contactEmployer;
     private String contactPhone;
-
+    /** Do we need to store how many vacant needed (4 students) */
 
     /** required profession for the advert */
     @Column(length = 100)
@@ -59,7 +58,7 @@ public class InternshipVacancy {
         this.company=company;
     }
 
-    public List<String> getStudentsListAppliedForAdvert(){
+    public List<String> getStudentsListContactAppliedForAdvert(){
         return students.stream()
                 .map(Student::getPhone)
                 .collect(Collectors.toList());

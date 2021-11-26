@@ -11,6 +11,6 @@ public interface IUser {
     Optional<User> updateEmail(String userId, String email) throws UseException;
     Optional<User> updateUsername(String userId, String username) throws UseException;
     Optional<User> updatePassword(String userId, String password) throws UseException;
-    Optional<User> getAUserByUserName(String username) throws UseException;
-    Optional<User> getAUserByEmail(String email) throws UseException;
+    Optional<User> getUserByUserName(String username) throws UseException;
+    Optional<User> getUserByEmail(String email) throws UseException;
 }

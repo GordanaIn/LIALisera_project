@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static com.liserabackend.enums.EnumRole.ROLE_SCHOOL;
+
 @Service
 @AllArgsConstructor
 public class SchoolServiceImpl implements ISchool {
@@ -27,7 +29,7 @@ public class SchoolServiceImpl implements ISchool {
 
     @Override
     public Stream<School> getSchools() {
-        return schoolRepository.findAll().stream();
+        return schoolRepository.findAll().stream().filter(s->s.getUser().getRole().equals(ROLE_SCHOOL));
     }
 
     @Override
@@ -48,7 +50,7 @@ public class SchoolServiceImpl implements ISchool {
         //check if user found on user, then on company
         if(userRepository.findByUsername(createSchool.getUsername()).isPresent())
             throw new UseException(UseExceptionType.USER_ALREADY_EXIST);
-        User user=new User(createSchool.getUsername(), createSchool.getUserEmail(),createSchool.getPassword(), EnumRole.ROLE_SCHOOL);
+        User user=new User(createSchool.getUsername(), createSchool.getUserEmail(),createSchool.getPassword(), ROLE_SCHOOL);
         user=userRepository.save(user);
         School school=new School(createSchool.getName(),createSchool.getPhone(),createSchool.getOrganizationNumber(), createSchool.getSchoolEmail(), user);
         school=schoolRepository.save(school);

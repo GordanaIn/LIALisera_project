@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
-@Component
+//@Component
 public class LoadDataService implements CommandLineRunner {
     @Autowired UserRepository userRepository;
     @Autowired StudentRepository studentRepository;

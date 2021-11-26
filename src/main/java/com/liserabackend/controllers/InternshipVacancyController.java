@@ -46,10 +46,10 @@ public class InternshipVacancyController {
         internshipVacancyService.deleteInternship(id);
     }
 
-    @PutMapping("/addFavorite/{id}/{internshipId}")
-    public boolean addInternshipToList(@PathVariable("id") String id,
-                                                    @PathVariable("internshipId") String internshipId) {
-        return internshipVacancyService.addToList(id, internshipId);
+    @PatchMapping("/addFavorite/{userId}/{internshipId}")
+    public boolean addFavorite(@PathVariable("userId") String userId,
+                                                    @PathVariable("internshipId") String internshipId) throws UseException {
+      return internshipVacancyService.addFavorite(userId, internshipId);
     }
 
     @GetMapping("/favorites/{userId}")
