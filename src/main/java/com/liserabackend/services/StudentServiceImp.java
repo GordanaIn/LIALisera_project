@@ -107,9 +107,26 @@ public class StudentServiceImp implements IStudent {
     public Optional<Student> updateProfile(String userId, CreateStudent student) throws UseException {
         final User user = userRepository.findById(userId).filter(u->u.getRole().equals(ROLE_STUDENT)).orElseThrow(() -> new UseException(USER_NOT_FOUND));
         final Student oldStudent = studentRepository.findByUserId(user.getId()).orElseThrow(() -> new UseException(STUDENT_NOT_FOUND));
-        updateProfile(student, user, oldStudent);
+        final Education education=educationRepository.findByUser(user.getId()).orElseThrow(() -> new UseException(USER_NOT_ASSOCIATED_WITH_EDUCATION));
+        updateProfile(student, user, oldStudent, education);
+        userRepository.save(user);
+        educationRepository.save(education);
+        studentRepository.save(oldStudent);
         return Optional.ofNullable(oldStudent);
     }
+
+    private void updateProfile(CreateStudent student, User user, Student oldStudent, Education education) {
+        user.setUsername(student.getUsername());
+        user.setPassword(student.getPassword());
+        user.setEmail(student.getEmail());
+        education.setSchoolName(student.getSchoolName());
+        oldStudent.setFirstName(student.getFirstName());
+        oldStudent.setLastName(student.getLastName());
+        oldStudent.setPhone(student.getPhone());
+        oldStudent.setUser(user);
+        oldStudent.getEducations().add(education);
+    }
+
 
     public Student addInternshipToFavoritesList(String userId, String internshipId) throws UseException {
         final Student student = studentRepository.findByUserId(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
@@ -154,66 +171,26 @@ public class StudentServiceImp implements IStudent {
             throw new UseException(UseExceptionType.USER_ALREADY_EXIST);
 
         User user=new User(createStudent.getUsername(), createStudent.getEmail(),createStudent.getPassword(), ROLE_STUDENT);
-        user=saveUser(user);
-
-        //get userId
-      /*  String userId=userRepository.findByUsername(createStudent.getUsername()).get().getId();
-        if(studentRepository.findByUserId(userId).isPresent())
-            throw new UseException(UseExceptionType.USER_ALREADY_EXIST);*/
-
+        user=userRepository.save(user);
+        Education education=new Education( " ", createStudent.getSchoolName(), user);
+        education=educationRepository.save(education);
         Student student= new Student(
                 createStudent.getFirstName(),
                 createStudent.getLastName(),
                 createStudent.getPhone(),
                 user);
-        student.setLinkedInUrl("");
-        student=saveStudent(student);
-        if(student!=null){
-            Education education=new Education("", createStudent.getSchoolName(),user);
-            educationRepository.save(education);
-            return Optional.of(student);
-        }
-        throw new UseException(UseExceptionType.STUDENT_NOT_SAVED);
+        student.getEducations().add(education);
+        student=studentRepository.save(student);
+        return Optional.of(student);
     }
 
     public boolean applyInternship(String userId, String internshipId) throws UseException {
         final Student student = studentRepository.findByUserId(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
-        System.out.println(student.getFirstName() + " "+student.getLastName());
         final InternshipVacancy internshipVacancy = internshipVacancyRepository.findById(internshipId).orElseThrow(() -> new UseException(INTERNSHIP_NOT_FOUND));
-        System.out.println("Title "+internshipVacancy.getTitle() + " posted date  "+internshipVacancy.getDatePosted());
-        Set<InternshipVacancy> internshipVacancies =new HashSet<>();
-        Set<Student> students=new HashSet<>();
-       /*if(student.getInternshipVacancies()==null){
-           System.out.println("Hello if stud");
-           internshipVacancies.add(internshipVacancy);
-       }else{
-           System.out.println("Hello else stud");
-           student.getInternshipVacancies().add(internshipVacancy);
-       }
-        student.setInternshipVacancies(internshipVacancies);*/
-        if(internshipVacancy.getStudents()==null){
-            System.out.println("Hello if internship");
-            students.add(student);
-            internshipVacancy.setStudents(students);
-        }else{
-            System.out.println("Hello else internship");
-            internshipVacancy.getStudents().add(student);
-        }
-        System.out.println("Hello Outside ");
-        /*student.getInternshipVacancies().add(internshipVacancy);
-        internshipVacancy.getStudents().add(student);*/
-        studentRepository.save(student);
+        internshipVacancy.getStudents().add(student);
         internshipVacancyRepository.save(internshipVacancy);
-
-        return true;
+       return true;
     }
 
-    private void updateProfile(CreateStudent student, User user, Student oldStudent) {
-        oldStudent.setFirstName(student.getFirstName());
-        oldStudent.setLastName(student.getLastName());
-        oldStudent.setPhone(student.getPhone());
-
-        oldStudent.setUser(user);
-    }
 
 }

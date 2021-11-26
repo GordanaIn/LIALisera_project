@@ -13,4 +13,5 @@ public class CreateInternship {
     LocalDate datePosted;
     String contactPhone;
     String duration;
+    int requiredNumber;
 }

@@ -1,6 +1,5 @@
 package com.liserabackend.entity;
 
-import com.liserabackend.enums.EnumProfession;
 import com.liserabackend.enums.InternshipVacancyStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,11 +26,8 @@ public class InternshipVacancy {
     private LocalDate datePosted;
     private String contactEmployer;
     private String contactPhone;
-    /** Do we need to store how many vacant needed (4 students) */
+    private int requiredNumber;
 
-    /** required profession for the advert */
-    @Column(length = 100)
-    private EnumProfession requiredProfession;
     /** A single advert associated with one company only but a company can post several advert */
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,10 +39,10 @@ public class InternshipVacancy {
     @JoinColumn(name="student_id")
     private Set<Student> students=new HashSet<>();
 
-    private boolean approved;/** why? */
+    private boolean approved;/** To be proved by the School Admin */
 
     public InternshipVacancy(String title, String description, String duration,  LocalDate datePosted, String contactPerson,
-                             String contactPhone, Company company ){
+                             String contactPhone, int requiredNumber,Company company ){
         this.id= UUID.randomUUID().toString();
         this.title = title;
         this.description = description;
@@ -55,6 +51,7 @@ public class InternshipVacancy {
         this.datePosted = datePosted;
         this.contactEmployer=contactPerson;
         this.contactPhone=contactPhone;
+        this.requiredNumber=requiredNumber;
         this.company=company;
     }
 

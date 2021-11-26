@@ -45,11 +45,6 @@ public class Student {
     @JoinColumn(name="advert_id")
     private Set<InternshipVacancy> favourites=new HashSet<>();
 
-    /** Do we really need to track list of internship that a student applies */
-/*    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name="advert_id")
-    private Set<InternshipVacancy> internshipVacancies =new HashSet<>();*/
-
     public Student(String firstName,String lastName,String phone, User user ){
         assert user!=null; /** A student without user not allowed */
         this.id= UUID.randomUUID().toString();

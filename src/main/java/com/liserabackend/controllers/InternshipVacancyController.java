@@ -68,7 +68,8 @@ public class InternshipVacancyController {
                 internshipVacancy.getStatus().toString(),
                 internshipVacancy.getDatePosted(),
                 internshipVacancy.getContactPhone(),
-                internshipVacancy.getDuration()
+                internshipVacancy.getDuration(),
+                internshipVacancy.getRequiredNumber()
         );
 
     }

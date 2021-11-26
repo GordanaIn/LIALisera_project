@@ -51,7 +51,7 @@ public class InternshipVacancyServiceImp implements IVacancyAdvert {
         final Company company = companyRepository.findByUserId(user.getId()).orElseThrow(() -> new UseException(COMPANY_NOT_FOUND));
 
         InternshipVacancy internshipVacancy=new InternshipVacancy(createInternship.getTitle(), createInternship.getDescription(), createInternship.getDuration(), createInternship.getDatePosted(), createInternship.getEmployerName(),
-                createInternship.getContactPhone(), company);
+                createInternship.getContactPhone(), createInternship.getRequiredNumber(), company);
         return Optional.of(internshipVacancyRepository.save(internshipVacancy));
     }
 
