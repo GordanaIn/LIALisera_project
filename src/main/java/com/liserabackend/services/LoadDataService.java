@@ -29,29 +29,33 @@ public class LoadDataService implements CommandLineRunner {
            User jafer=new User("jafer@gmail.com", "jafer@gmail.com","jafer21", EnumRole.ROLE_STUDENT);
            userRepository.save(eyuel);
            userRepository.save(jafer);
+
            if(studentRepository.findAll().isEmpty()){
                Student studentEyuel=new Student( "Eyuel", "Belay","0712345611", eyuel);
                studentEyuel.setLinkedInUrl("https://www.linkedin.com/in/eyuel-t-belay-633889167/");
+
                Student studentJafer=new Student( "Jafer", "Redi","0712345667",jafer);
                studentJafer.setLinkedInUrl("https://www.linkedin.com/in/adamjafer/");
+
                if (educationRepository.findAll().isEmpty()) {
-                   Set<Education> educationsEyuel=new HashSet<>();
-                   Set<Education> educationsJafer=new HashSet<>();
+
                    Education eductionEyuel1=new Education("Javautvecklare", "EC Utbildning AB",eyuel);
                    Education eductionEyuel2=new Education("Teknisk testare", "Jensen Academy", eyuel);
                    Education eductionJafer=new Education("Msc in Software Technology", "Linnaeus University", jafer);
-                   studentRepository.save(studentEyuel);
-                   studentRepository.save(studentJafer);
 
                    educationRepository.save(eductionEyuel1);
                    educationRepository.save(eductionEyuel2);
                    educationRepository.save(eductionJafer);
 
-                   educationsEyuel.add(eductionEyuel1);
-                   educationsEyuel.add(eductionEyuel2);
-                   studentEyuel.setEducations(educationsEyuel);
-                   educationsJafer.add(eductionJafer);
-                   studentJafer.setEducations(educationsJafer);
+                   studentRepository.save(studentEyuel);
+                   studentRepository.save(studentJafer);
+
+
+                   studentJafer.getEducations().add(eductionJafer);
+                   studentEyuel.getEducations().add(eductionEyuel1);
+                   studentEyuel.getEducations().add(eductionEyuel2);
+                   studentRepository.save(studentEyuel);
+                   studentRepository.save(studentJafer);
                }
            }
        }
@@ -63,14 +67,15 @@ public class LoadDataService implements CommandLineRunner {
            userRepository.save(microsoftUser);
            if (companyRepository.findAll().isEmpty()) {
                Company companyMicrosoft = new Company("Microsoft", "microsoft101", "microsoft@microsoft.com",microsoftUser);
-                 companyRepository.save(companyMicrosoft);
+               Company companyGoogle = new Company("Google", "google101", "google@google.com",microsoftUser);
+               companyRepository.save(companyMicrosoft);
+               companyRepository.save(companyGoogle);
                if (advertRepository.findAll().isEmpty()) {
                    InternshipVacancy internshipVacancy1 = new com.liserabackend.entity.InternshipVacancy("Junior Java Developer", "Junior Java developer that has a good skill in react and springboot",
-                           "5 month duration", LocalDate.of(2021, 10, 20), "Jafer", "0745672391", companyMicrosoft);
-                   internshipVacancy1.setRequiredProfession(EnumProfession.JAVAUTVECKLARE);
-                   InternshipVacancy internshipVacancy2 = new com.liserabackend.entity.InternshipVacancy("Junior C# Developer", "Junior C# developer that has a good skill in react and springboot",
-                           "5 month duration", LocalDate.of(2021, 10, 21), "Selam", "0345672391",companyMicrosoft);
-                   internshipVacancy2.setRequiredProfession(EnumProfession.CSHARP);
+                           "5 month duration", LocalDate.of(2021, 10, 20), "Mr Google Expert", "+745672391", 2, companyGoogle);
+
+                   InternshipVacancy internshipVacancy2 = new com.liserabackend.entity.InternshipVacancy("Junior C# Developer", "Junior C# developer that has a good skill in react and typescript",
+                           "5 month duration", LocalDate.of(2021, 10, 21), "Mr Microsoft Expert", " 08-7525600",1, companyMicrosoft);
                    advertRepository.save(internshipVacancy1);
                    advertRepository.save(internshipVacancy2);
                }

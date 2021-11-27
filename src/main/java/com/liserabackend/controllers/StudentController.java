@@ -67,7 +67,7 @@ public class StudentController {
         return studentService.getStudentEducations(userId).collect(Collectors.toList());
     }
 
-    @PatchMapping("/{userId}")
+    @PatchMapping("update/{userId}")
     public StudentDTO updateStudentProfile(@PathVariable("userId") String userId, @RequestBody CreateStudent student) throws UseException {
         return studentService.updateProfile(userId, student).map(this::toStudentDTO).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND));
     }
