@@ -159,7 +159,7 @@ public class StudentServiceImp implements IStudent {
         final InternshipVacancy internshipVacancy = internshipVacancyRepository.findById(internshipId).orElseThrow(() -> new UseException(INTERNSHIP_NOT_FOUND));
         internshipVacancy.getStudents().add(student);
         internshipVacancyRepository.save(internshipVacancy);
-       return true;
+        return true;
     }
 
 

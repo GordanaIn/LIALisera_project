@@ -27,9 +27,6 @@ public class Company {
     @Id
     @Column(columnDefinition = "varchar(100)") private String id;
 
-   /* @OneToMany()
-    @JoinColumn(name="user_id")//, nullable = false
-    private Set<User> users=new HashSet<>();*//** Just to be able to login to the school admin */
     @OneToOne
     @JoinColumn(name="user_id", nullable = false)
     private User user;
@@ -38,10 +35,6 @@ public class Company {
     private String orgNumber;
     private String email; /** company email */
     private EnumStatus status=EnumStatus.NOT_APPROVED; /** To handle if a company is potential and valid candidate for Advert Internship */
-
-/*    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name="student_id")
-    private Set<Student> favourites=new HashSet<>();*/
 
     /** A company can post many Advert */
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)//, mappedBy = "internshipVacancy"
@@ -55,9 +48,6 @@ public class Company {
         this.orgNumber = orgNumber;
         this.email=email;
         this.user=user;
-    }
-    public void addInternship(InternshipVacancy internshipVacancy){
-        this.internshipVacancyList.add(internshipVacancy);
     }
 
 }
