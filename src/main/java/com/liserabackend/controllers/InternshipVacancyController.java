@@ -41,9 +41,10 @@ public class InternshipVacancyController {
                                                  @RequestBody InternshipVacancy internship) throws UseException {
         return internshipVacancyService.updateInternship(Id,internship).map(this::toInternshipVacancyDTO).get();
     }
-    @DeleteMapping("/deleteInternship/{id}")
-    public void delete(@PathVariable("id") String id) throws Exception {
-        internshipVacancyService.deleteInternship(id);
+    @DeleteMapping("/deleteInternship/{employerId}/{internshipId}")
+    public void delete(@PathVariable("employerId") String employerId,
+                       @PathVariable("internshipId") String internshipId) throws Exception {
+        internshipVacancyService.deleteInternship(employerId, internshipId);
     }
 
     @PatchMapping("/addFavorite/{userId}/{internshipId}")

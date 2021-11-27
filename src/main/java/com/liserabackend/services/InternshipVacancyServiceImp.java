@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.liserabackend.exceptions.UseExceptionType.*;
@@ -50,17 +51,33 @@ public class InternshipVacancyServiceImp implements IVacancyAdvert {
         final User user = userRepository.findById(createInternship.getUserId()).orElseThrow(() -> new UseException(USER_NOT_FOUND));
         final Company company = companyRepository.findByUserId(user.getId()).orElseThrow(() -> new UseException(COMPANY_NOT_FOUND));
 
-        InternshipVacancy internshipVacancy=new InternshipVacancy(createInternship.getTitle(), createInternship.getDescription(), createInternship.getDuration(), createInternship.getDatePosted(), createInternship.getEmployerName(),
+        InternshipVacancy internshipVacancy = new InternshipVacancy(createInternship.getTitle(), createInternship.getDescription(), createInternship.getDuration(), createInternship.getDatePosted(), createInternship.getEmployerName(),
                 createInternship.getContactPhone(), company);
         return Optional.of(internshipVacancyRepository.save(internshipVacancy));
     }
 
-    public void deleteInternship(String id) throws UseException {
-        if (internshipVacancyRepository.findAll() .stream()
-                .noneMatch(t -> t.getId().equals(id)))
-            throw new UseException(UseExceptionType.INTERNSHIP_NOT_FOUND);
+    public void deleteInternship(String userId, String internshipId) throws UseException {
+        if (internshipVacancyRepository.findAll().stream()
+                .noneMatch(t -> t.getId().equals(internshipId)))
+            throw new UseException(INTERNSHIP_NOT_FOUND);
+        if (companyRepository.findAll().stream()
+                .noneMatch(t -> t.getId().equals(userId)))
+            throw new UseException(COMPANY_NOT_FOUND);
 
-        internshipVacancyRepository.delete(getInternshipVacancy(id).get());
+        internshipVacancyRepository.delete(getInternshipVacancy(internshipId).get());
+
+
+        //find comapny by userID
+        Company company = companyRepository.findByUserId(userId).get();
+
+        Set<InternshipVacancy> updatedInternshipList = company.getInternshipVacancyList()
+                .stream()
+                .filter(find -> !find.getId().equals(internshipId))
+                .collect(Collectors.toSet());
+
+        company.setInternshipVacancyList(updatedInternshipList);
+        companyRepository.save(company);
+
     }
 
     public boolean addFavorite(String userId, String internshipId) throws UseException {
