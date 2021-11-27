@@ -61,7 +61,7 @@ public class InternshipVacancyServiceImp implements IVacancyAdvert {
                 .noneMatch(t -> t.getId().equals(internshipId)))
             throw new UseException(INTERNSHIP_NOT_FOUND);
         if (companyRepository.findAll().stream()
-                .noneMatch(t -> t.getId().equals(userId)))
+                .noneMatch(t -> t.getUser().getId().equals(userId)))
             throw new UseException(COMPANY_NOT_FOUND);
 
         internshipVacancyRepository.delete(getInternshipVacancy(internshipId).get());
