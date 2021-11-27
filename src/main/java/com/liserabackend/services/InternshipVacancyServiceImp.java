@@ -64,15 +64,13 @@ public class InternshipVacancyServiceImp implements IVacancyAdvert {
     }
 
     public boolean addFavorite(String userId, String internshipId) throws UseException {
-        System.out.println("Hello");
         final Student student = studentRepository.findByUserId(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
         final InternshipVacancy internshipVacancy = internshipVacancyRepository.findById(internshipId).orElseThrow(() -> new UseException(INTERNSHIP_NOT_FOUND));
-        student.getFavourites().add(internshipVacancy);
-        System.out.println("Hello");
         internshipVacancy.getStudents().add(student);
-        studentRepository.save(student);
         internshipVacancyRepository.save(internshipVacancy);
-        return false;
+        student.getFavourites().add(internshipVacancy); //Why this generates error = null
+        studentRepository.save(student);
+        return true;
     }
 
     private InternshipVacancy updateInternship(InternshipVacancy oldInternship, InternshipVacancy internshipVacancy) {

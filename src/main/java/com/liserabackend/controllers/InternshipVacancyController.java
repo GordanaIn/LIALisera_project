@@ -1,8 +1,12 @@
 package com.liserabackend.controllers;
 
+import com.liserabackend.dto.CompanyDTO;
 import com.liserabackend.dto.CreateInternship;
 import com.liserabackend.dto.InternshipVacancyDTO;
+import com.liserabackend.dto.UserDTO;
+import com.liserabackend.entity.Company;
 import com.liserabackend.entity.InternshipVacancy;
+import com.liserabackend.entity.User;
 import com.liserabackend.exceptions.UseException;
 import com.liserabackend.services.InternshipVacancyServiceImp;
 import com.liserabackend.services.StudentServiceImp;
@@ -57,9 +61,8 @@ public class InternshipVacancyController {
         return studentServiceImp.getFavoritesList(userId).map(this::toInternshipVacancyDTO).collect(Collectors.toList());
     }
 
-
-
     public InternshipVacancyDTO toInternshipVacancyDTO(InternshipVacancy internshipVacancy){
+        Company company=internshipVacancy.getCompany();
         return new InternshipVacancyDTO(
                 internshipVacancy.getId(),
                 internshipVacancy.getContactEmployer(),
@@ -69,8 +72,10 @@ public class InternshipVacancyController {
                 internshipVacancy.getDatePosted(),
                 internshipVacancy.getContactPhone(),
                 internshipVacancy.getDuration(),
-                internshipVacancy.getRequiredNumber()
+                internshipVacancy.getRequiredNumber(),
+                company.getName(),
+                company.getOrgNumber()
         );
-
     }
+
 }

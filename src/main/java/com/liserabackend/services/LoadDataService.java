@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
-@Component
+//@Component
 public class LoadDataService implements CommandLineRunner {
     @Autowired UserRepository userRepository;
     @Autowired StudentRepository studentRepository;
@@ -67,13 +67,15 @@ public class LoadDataService implements CommandLineRunner {
            userRepository.save(microsoftUser);
            if (companyRepository.findAll().isEmpty()) {
                Company companyMicrosoft = new Company("Microsoft", "microsoft101", "microsoft@microsoft.com",microsoftUser);
-                 companyRepository.save(companyMicrosoft);
+               Company companyGoogle = new Company("Google", "google101", "google@google.com",microsoftUser);
+               companyRepository.save(companyMicrosoft);
+               companyRepository.save(companyGoogle);
                if (advertRepository.findAll().isEmpty()) {
                    InternshipVacancy internshipVacancy1 = new com.liserabackend.entity.InternshipVacancy("Junior Java Developer", "Junior Java developer that has a good skill in react and springboot",
-                           "5 month duration", LocalDate.of(2021, 10, 20), "Jafer", "0745672391", 2, companyMicrosoft);
+                           "5 month duration", LocalDate.of(2021, 10, 20), "Mr Google Expert", "+745672391", 2, companyGoogle);
 
-                   InternshipVacancy internshipVacancy2 = new com.liserabackend.entity.InternshipVacancy("Junior C# Developer", "Junior C# developer that has a good skill in react and springboot",
-                           "5 month duration", LocalDate.of(2021, 10, 21), "Selam", "0345672391",1, companyMicrosoft);
+                   InternshipVacancy internshipVacancy2 = new com.liserabackend.entity.InternshipVacancy("Junior C# Developer", "Junior C# developer that has a good skill in react and typescript",
+                           "5 month duration", LocalDate.of(2021, 10, 21), "Mr Microsoft Expert", " 08-7525600",1, companyMicrosoft);
                    advertRepository.save(internshipVacancy1);
                    advertRepository.save(internshipVacancy2);
                }
