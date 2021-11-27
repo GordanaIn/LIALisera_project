@@ -2,11 +2,9 @@ package com.liserabackend.services;
 
 import com.liserabackend.dto.CreateStudent;
 import com.liserabackend.dto.ModifyPasswordDTO;
-import com.liserabackend.entity.Education;
 import com.liserabackend.entity.InternshipVacancy;
 import com.liserabackend.entity.Student;
 import com.liserabackend.entity.User;
-import com.liserabackend.entity.repository.EducationRepository;
 import com.liserabackend.entity.repository.InternshipVacancyRepository;
 import com.liserabackend.entity.repository.StudentRepository;
 import com.liserabackend.entity.repository.UserRepository;
@@ -16,9 +14,7 @@ import com.liserabackend.services.interfaces.IStudent;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import static com.liserabackend.enums.EnumRole.ROLE_STUDENT;
@@ -30,7 +26,6 @@ public class StudentServiceImp implements IStudent {
     private final UserRepository userRepository;
     private final StudentRepository studentRepository;
     private final InternshipVacancyRepository internshipVacancyRepository;
-    private final EducationRepository educationRepository;
 
     @Override
     public User saveUser(User user) {
@@ -107,24 +102,20 @@ public class StudentServiceImp implements IStudent {
     public Optional<Student> updateProfile(String userId, CreateStudent student) throws UseException {
         final User user = userRepository.findById(userId).filter(u->u.getRole().equals(ROLE_STUDENT)).orElseThrow(() -> new UseException(USER_NOT_FOUND));
         final Student oldStudent = studentRepository.findByUserId(user.getId()).orElseThrow(() -> new UseException(STUDENT_NOT_FOUND));
-        final Education education=educationRepository.findByUser(user.getId()).orElseThrow(() -> new UseException(USER_NOT_ASSOCIATED_WITH_EDUCATION));
-        updateProfile(student, user, oldStudent, education);
+        updateProfile(student, user, oldStudent);
         userRepository.save(user);
-        educationRepository.save(education);
         studentRepository.save(oldStudent);
         return Optional.ofNullable(oldStudent);
     }
 
-    private void updateProfile(CreateStudent student, User user, Student oldStudent, Education education) {
+    private void updateProfile(CreateStudent student, User user, Student oldStudent) {
         user.setUsername(student.getUsername());
         user.setPassword(student.getPassword());
         user.setEmail(student.getEmail());
-        education.setSchoolName(student.getSchoolName());
         oldStudent.setFirstName(student.getFirstName());
         oldStudent.setLastName(student.getLastName());
         oldStudent.setPhone(student.getPhone());
         oldStudent.setUser(user);
-        oldStudent.getEducations().add(education);
     }
 
 
@@ -143,24 +134,6 @@ public class StudentServiceImp implements IStudent {
         return studentRepository.findByUserId(userId).get().getFavourites().stream();
     }
 
-    public Stream<Education> getStudentEducations(String userId) throws UseException {
-
-        final Student student = studentRepository.findByUserId(userId)
-                .filter(s -> s.getUser().getRole().equals(ROLE_STUDENT))
-                .orElseThrow(() -> new UseException(USER_NOT_FOUND));
-        if(student.getEducations().isEmpty())
-            throw new UseException(STUDENT_EDUCTION_NOT_FOUND);
-
-        return  student.getEducations().stream();
-
-    }
-
-    public Stream<Education> getEducations(String userId) {
-        return  educationRepository.findAll().stream()
-                .filter(education -> education.getUser().getId().equals(userId))
-                .filter(education -> education.getUser().getRole().equals(ROLE_STUDENT));
-    }
-
    @Override
     public Student saveStudent(Student student ) {
         return studentRepository.save(student);
@@ -172,14 +145,11 @@ public class StudentServiceImp implements IStudent {
 
         User user=new User(createStudent.getUsername(), createStudent.getEmail(),createStudent.getPassword(), ROLE_STUDENT);
         user=userRepository.save(user);
-        Education education=new Education( " ", createStudent.getSchoolName(), user);
-        education=educationRepository.save(education);
         Student student= new Student(
                 createStudent.getFirstName(),
                 createStudent.getLastName(),
                 createStudent.getPhone(),
                 user);
-        student.getEducations().add(education);
         student=studentRepository.save(student);
         return Optional.of(student);
     }

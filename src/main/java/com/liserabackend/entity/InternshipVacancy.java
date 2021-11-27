@@ -26,7 +26,7 @@ public class InternshipVacancy {
     private LocalDate datePosted;
     private String contactEmployer;
     private String contactPhone;
-    private int requiredNumber;
+    private int numberAvailablePositions;
 
     /** A single advert associated with one company only but a company can post several advert */
 
@@ -41,8 +41,8 @@ public class InternshipVacancy {
 
     private boolean approved;/** To be proved by the School Admin */
 
-    public InternshipVacancy(String title, String description, String duration,  LocalDate datePosted, String contactPerson,
-                             String contactPhone, int requiredNumber,Company company ){
+    public InternshipVacancy(String title, String description, String duration, LocalDate datePosted, String contactPerson,
+                             String contactPhone, int numberAvailablePositions, Company company ){
         this.id= UUID.randomUUID().toString();
         this.title = title;
         this.description = description;
@@ -51,7 +51,7 @@ public class InternshipVacancy {
         this.datePosted = datePosted;
         this.contactEmployer=contactPerson;
         this.contactPhone=contactPhone;
-        this.requiredNumber=requiredNumber;
+        this.numberAvailablePositions = numberAvailablePositions;
         this.company=company;
     }
 

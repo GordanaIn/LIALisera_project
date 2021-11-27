@@ -1,19 +1,15 @@
 package com.liserabackend.controllers;
 
-import com.liserabackend.dto.CompanyDTO;
 import com.liserabackend.dto.CreateInternship;
 import com.liserabackend.dto.InternshipVacancyDTO;
-import com.liserabackend.dto.UserDTO;
 import com.liserabackend.entity.Company;
 import com.liserabackend.entity.InternshipVacancy;
-import com.liserabackend.entity.User;
 import com.liserabackend.exceptions.UseException;
 import com.liserabackend.services.InternshipVacancyServiceImp;
 import com.liserabackend.services.StudentServiceImp;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.constant.Constable;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -73,7 +69,7 @@ public class InternshipVacancyController {
                 internshipVacancy.getDatePosted(),
                 internshipVacancy.getContactPhone(),
                 internshipVacancy.getDuration(),
-                internshipVacancy.getRequiredNumber(),
+                internshipVacancy.getNumberAvailablePositions(),
                 company.getName(),
                 company.getOrgNumber()
         );

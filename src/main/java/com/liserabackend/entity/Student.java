@@ -32,14 +32,13 @@ public class Student {
     private String lastName;
     private String phone;
     private String linkedInUrl;
+    private String schoolName;
 
     @OneToOne()
     @JoinColumn(name="files_id")
     FilesUpload document;
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private Set<Education> educations=new HashSet<>();
-    private EnumStatus status=EnumStatus.NOT_APPROVED; /** to handle if a student is potential candidate for internship */
+    private EnumStatus status=EnumStatus.NOT_APPROVED; /** to handle if a student is a student and approved by the school */
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name="advert_id")
@@ -53,5 +52,4 @@ public class Student {
         this.phone = phone;
         this.user=user;
    }
-    //find advert
 }

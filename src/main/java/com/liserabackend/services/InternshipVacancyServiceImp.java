@@ -85,7 +85,7 @@ public class InternshipVacancyServiceImp implements IVacancyAdvert {
         final InternshipVacancy internshipVacancy = internshipVacancyRepository.findById(internshipId).orElseThrow(() -> new UseException(INTERNSHIP_NOT_FOUND));
         internshipVacancy.getStudents().add(student);
         internshipVacancyRepository.save(internshipVacancy);
-        //student.getFavourites().add(internshipVacancy); //Why this generates error = null
+        student.getFavourites().add(internshipVacancy); //Why this generates error = null
         studentRepository.save(student);
         return true;
     }

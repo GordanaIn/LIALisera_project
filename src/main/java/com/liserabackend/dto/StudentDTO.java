@@ -17,15 +17,7 @@ public class StudentDTO {
     String phone;
     String linkedIn;
     String role;
-    String educationTitle;
     String schoolName;
-
-    //List<Education> educationList;
-   /* String resume;
-    String personalLetter;
-    String linkedInUrl;*/
-    //String systemStatus;
-    //List<Long> professions;
 
     @JsonCreator
     public StudentDTO(
@@ -39,8 +31,7 @@ public class StudentDTO {
             @JsonProperty("phone") String phone,
             @JsonProperty("linkedIn") String linkedIn,
             @JsonProperty("role") String role,
-            @JsonProperty("schoolName") String schoolName,
-            @JsonProperty("eductionTitle") String educationTitle){
+            @JsonProperty("schoolName") String schoolName){
         this.studentId=studentId;
         this.firstName=firstName;
         this.lastName=lastName;
@@ -51,8 +42,6 @@ public class StudentDTO {
         this.phone=phone;
         this.linkedIn=linkedIn;
         this.role=role;
-        this.schoolName = schoolName;
-        this.educationTitle = educationTitle;
-    
+        this.schoolName=schoolName;
      }
 }

@@ -8,11 +8,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Stream;
 
 //@Component
 public class LoadDataService implements CommandLineRunner {
@@ -21,7 +16,6 @@ public class LoadDataService implements CommandLineRunner {
     @Autowired InternshipVacancyRepository advertRepository;
     @Autowired CompanyRepository companyRepository;
     @Autowired SchoolRepository schoolRepository;
-    @Autowired EducationRepository educationRepository;
 
     private void registerStudent() {
         if (userRepository.findAll().isEmpty()) {
@@ -36,28 +30,10 @@ public class LoadDataService implements CommandLineRunner {
 
                Student studentJafer=new Student( "Jafer", "Redi","0712345667",jafer);
                studentJafer.setLinkedInUrl("https://www.linkedin.com/in/adamjafer/");
-
-               if (educationRepository.findAll().isEmpty()) {
-
-                   Education eductionEyuel1=new Education("Javautvecklare", "EC Utbildning AB",eyuel);
-                   Education eductionEyuel2=new Education("Teknisk testare", "Jensen Academy", eyuel);
-                   Education eductionJafer=new Education("Msc in Software Technology", "Linnaeus University", jafer);
-
-                   educationRepository.save(eductionEyuel1);
-                   educationRepository.save(eductionEyuel2);
-                   educationRepository.save(eductionJafer);
-
-                   studentRepository.save(studentEyuel);
-                   studentRepository.save(studentJafer);
-
-
-                   studentJafer.getEducations().add(eductionJafer);
-                   studentEyuel.getEducations().add(eductionEyuel1);
-                   studentEyuel.getEducations().add(eductionEyuel2);
-                   studentRepository.save(studentEyuel);
-                   studentRepository.save(studentJafer);
-               }
+            studentRepository.save(studentEyuel);
+            studentRepository.save(studentJafer);
            }
+
        }
     }
 
@@ -82,21 +58,10 @@ public class LoadDataService implements CommandLineRunner {
            }
        }
     }
-    private void registerSchool(){
-        if(userRepository.findAll().stream().anyMatch(user -> !user.getRole().equals(EnumRole.ROLE_SCHOOL))) {
-            User ecUser= new User("ecUser@ec.com", "ecUser@ec.com","ecUser21",EnumRole.ROLE_SCHOOL);
-            userRepository.save(ecUser);
-            if (schoolRepository.findAll().isEmpty()) {
-                School schoolEC = new School("EC Utbildning","040-6416300", "671285-5677"," info@ecutbildning.se", ecUser);
-                schoolRepository.save(schoolEC);
-            }
-        }
-    }
 
     @Override
     public void run(String... args) {
         registerStudent();
         registerAdvert();
-        registerSchool();
    }
 }

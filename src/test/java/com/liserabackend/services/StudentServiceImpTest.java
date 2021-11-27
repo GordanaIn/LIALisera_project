@@ -4,8 +4,6 @@ package com.liserabackend.services;
 import com.liserabackend.dto.CreateStudent;
 import com.liserabackend.entity.InternshipVacancy;
 import com.liserabackend.entity.Student;
-import com.liserabackend.entity.User;
-import com.liserabackend.entity.repository.EducationRepository;
 import com.liserabackend.entity.repository.InternshipVacancyRepository;
 import com.liserabackend.entity.repository.StudentRepository;
 import com.liserabackend.entity.repository.UserRepository;
@@ -15,9 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Optional;
 
@@ -34,8 +30,6 @@ class StudentServiceImpTest {
     StudentRepository studentRepository;
     @Mock
     UserRepository userRepository;
-    @Mock
-    EducationRepository educationRepository;
     @Mock
     InternshipVacancyRepository internshipVacancyRepository;
 
@@ -62,7 +56,6 @@ class StudentServiceImpTest {
         CreateStudent createStudent = new CreateStudent("Mia", null, null, null, null, null, null);
         when(studentRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(userRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
-        when(educationRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         //When
         Optional<Student> student1 = studentServiceImp.addStudent(createStudent);
@@ -109,9 +102,6 @@ class StudentServiceImpTest {
 
     @Test
     void getAUserByUserName() {
-
-        //When
-
     }
 
     @Test
