@@ -10,7 +10,7 @@ import java.util.*;
 
 @Data
 @Entity(name="schools")
-@NoArgsConstructor()
+@NoArgsConstructor
 @AllArgsConstructor
 public class School {
     @Id

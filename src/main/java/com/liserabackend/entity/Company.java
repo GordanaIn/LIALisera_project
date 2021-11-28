@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -33,8 +32,8 @@ public class Company {
 
     private String name;
     private String orgNumber;
-    private String email; /** company email */
-    private EnumStatus status=EnumStatus.NOT_APPROVED; /** To handle if a company is potential and valid candidate for Advert Internship */
+    private String email; /** Company email */
+    private EnumStatus status; /** To handle if a company is potential and valid candidate for Advert Internship */
 
     /** A company can post many Advert */
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)//, mappedBy = "internshipVacancy"
@@ -48,6 +47,7 @@ public class Company {
         this.orgNumber = orgNumber;
         this.email=email;
         this.user=user;
+        this.status=EnumStatus.NOT_APPROVED;
     }
 
 }

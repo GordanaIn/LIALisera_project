@@ -10,5 +10,4 @@ public class LiserabackendApplication {
     public static void main(String[] args) {
         SpringApplication.run(LiserabackendApplication.class, args);
     }
-
 }

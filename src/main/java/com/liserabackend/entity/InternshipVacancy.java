@@ -1,5 +1,6 @@
 package com.liserabackend.entity;
 
+import com.liserabackend.enums.EnumStatus;
 import com.liserabackend.enums.InternshipVacancyStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class InternshipVacancy {
     @Id
     @Column(columnDefinition = "varchar(100)") private String id;
+
     private String title;
     private String description;
     private String duration; /** how long the internship lasts */
@@ -39,7 +41,7 @@ public class InternshipVacancy {
     @JoinColumn(name="student_id")
     private Set<Student> students=new HashSet<>();
 
-    private boolean approved;/** To be proved by the School Admin */
+    private EnumStatus isApproved;/** To be proved by the School Admin */
 
     public InternshipVacancy(String title, String description, String duration, LocalDate datePosted, String contactPerson,
                              String contactPhone, int numberAvailablePositions, Company company ){
@@ -53,6 +55,7 @@ public class InternshipVacancy {
         this.contactPhone=contactPhone;
         this.numberAvailablePositions = numberAvailablePositions;
         this.company=company;
+        isApproved=EnumStatus.NOT_APPROVED;
     }
 
     public List<String> getStudentsListContactAppliedForAdvert(){

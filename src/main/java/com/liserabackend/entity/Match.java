@@ -18,20 +18,23 @@ public class Match {
     @OneToOne()
     @JoinColumn(name="company_id")
     private Company company;
-    @ManyToMany()
+   /* @ManyToMany()
     @JoinColumn(name="student_id")
-    private Set<Student> students=new HashSet<>();/** What if a company have many candidate student offer */
+    private Set<Student> students=new HashSet<>();*//** What if a company have many candidate student offer */
+    @OneToOne
+    @JoinColumn(name="student_id")
+    private Student student;
     @OneToOne()
     @JoinColumn(name="advert_id")//, nullable = false
     private InternshipVacancy internshipVacancy;
 
-    public Match(String name,Company company,Set<Student> students,InternshipVacancy internshipVacancy  ){
+    public Match(String name,Company company,Student student,InternshipVacancy internshipVacancy  ){
         assert company!=null; /** A match without company, student, and internshipVacancy is not allowed */
-        assert  students!=null;
+        assert  student!=null;
         assert  internshipVacancy!=null;
         this.id= UUID.randomUUID().toString();
         this.company = company;
-        this.students.addAll(students);
+        this.student=student;
         this.internshipVacancy= internshipVacancy;
     }
 }

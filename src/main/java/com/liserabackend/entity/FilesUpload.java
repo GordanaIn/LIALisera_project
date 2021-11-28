@@ -22,7 +22,7 @@ public class FilesUpload {
     private String persLetter;
 
     @JsonCreator
-    public void getOriginalFileName(
+    public void FilesUpload(
             @JsonProperty("resume") String resume,
             @JsonProperty("video") String video,
             @JsonProperty("persLetter") String persLetter){

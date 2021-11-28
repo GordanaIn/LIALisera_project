@@ -18,10 +18,9 @@ public class Student {
     @Id
     @Column(columnDefinition = "varchar(100)") private String id;
 
-    /** ManyToOne or OneToOne ?? */
     @OneToOne
     @JoinColumn(name="user_id", nullable = false)
-    private User user; //A user should have a student not a student having a user.
+    private User user;
 
     @NotBlank
     @Size(max = 30)
@@ -38,7 +37,7 @@ public class Student {
     @JoinColumn(name="files_id")
     FilesUpload document;
 
-    private EnumStatus status=EnumStatus.NOT_APPROVED; /** to handle if a student is a student and approved by the school */
+    private EnumStatus status; /** to handle if a student is a student and approved by the school */
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name="advert_id")
@@ -51,5 +50,6 @@ public class Student {
         this.lastName = lastName;
         this.phone = phone;
         this.user=user;
-   }
+        status=EnumStatus.NOT_APPROVED;
+    }
 }
