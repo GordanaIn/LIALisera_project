@@ -1,0 +1,21 @@
+version: '3.1'
+services:
+  API:
+    image: 'registry.gitlab.com/lialisera/liserabackend'
+    ports:
+      - "8083:8081"
+    depends_on:
+      - "lia_db"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://lia_db:5432/lia
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+  lia_db:
+    image: postgres
+      # ports:
+    # - "5433:5432"
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=lia
