@@ -52,6 +52,7 @@ public class InternshipVacancyController {
         return studentServiceImp.getFavoritesList(userId).map(this::toInternshipVacancyDTO).collect(Collectors.toList());
     }
 
+
     @PatchMapping("/addFavorite/{userId}/{internshipId}")
     public boolean addFavorite(@PathVariable("userId") String userId,
                                                     @PathVariable("internshipId") String internshipId) throws UseException {
@@ -64,6 +65,11 @@ public class InternshipVacancyController {
         internshipVacancyService.removeFavorite(userId, internshipId);
     }
 
+
+    @GetMapping("/vacancyLists/{userId}")
+    public List<InternshipVacancyDTO> getVacancyLists(@PathVariable("userId") String userId){
+        return internshipVacancyService.getVacancyLists(userId).map(this::toInternshipVacancyDTO).collect(Collectors.toList());
+    }
     public InternshipVacancyDTO toInternshipVacancyDTO(InternshipVacancy internshipVacancy){
         Company company=internshipVacancy.getCompany();
         return new InternshipVacancyDTO(

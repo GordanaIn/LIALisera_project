@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
 import static com.liserabackend.exceptions.UseExceptionType.*;
@@ -116,5 +117,11 @@ public class InternshipVacancyServiceImp implements IVacancyAdvert {
 
         student.setFavourites(updatedInternshipList);
         studentRepository.save(student);
+    }
+
+    public Stream<InternshipVacancy> getVacancyLists(String userId) {
+        Student student = studentRepository.findByUserId(userId).get();
+        final Stream<InternshipVacancy> internshipList = internshipVacancyRepository.findAll().stream().filter(i -> i.getStudents().contains(student));
+        return internshipList;
     }
 }

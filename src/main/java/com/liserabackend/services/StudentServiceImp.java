@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
 import static com.liserabackend.enums.EnumRole.ROLE_STUDENT;
