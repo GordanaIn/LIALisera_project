@@ -34,7 +34,7 @@ public class CompanyController {
           return ResponseEntity.ok(companyService.addCompany(createCompany).map(this::toCompanyDTO));
     }
     @PatchMapping("update/{userId}")
-    public CompanyDTO updateStudentProfile(@PathVariable("userId") String userId,
+    public CompanyDTO updateCompanyProfile(@PathVariable("userId") String userId,
                                            @RequestBody CreateCompany company) throws UseException {
         return companyService.updateProfile(userId, company)
                 .map(this::toCompanyDTO)

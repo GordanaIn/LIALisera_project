@@ -9,5 +9,4 @@ import java.util.stream.Stream;
 public interface ICompany {
     Company saveCompany(Company company);
     Stream<Company> getCompanies();
-    Optional<Company> updateCompany(String companyId, Company company) throws UseException;
 }

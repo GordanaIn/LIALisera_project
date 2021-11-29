@@ -47,15 +47,21 @@ public class InternshipVacancyController {
         internshipVacancyService.deleteInternship(employerId, internshipId);
     }
 
+    @GetMapping("/favorites/{userId}")
+    public List<InternshipVacancyDTO> getFavoritesList(@PathVariable("userId") String userId){
+        return studentServiceImp.getFavoritesList(userId).map(this::toInternshipVacancyDTO).collect(Collectors.toList());
+    }
+
     @PatchMapping("/addFavorite/{userId}/{internshipId}")
     public boolean addFavorite(@PathVariable("userId") String userId,
                                                     @PathVariable("internshipId") String internshipId) throws UseException {
       return internshipVacancyService.addFavorite(userId, internshipId);
     }
 
-    @GetMapping("/favorites/{userId}")
-    public List<InternshipVacancyDTO> getFavoritesList(@PathVariable("userId") String userId){
-        return studentServiceImp.getFavoritesList(userId).map(this::toInternshipVacancyDTO).collect(Collectors.toList());
+    @DeleteMapping("/removeFavorite/{userId}/{internshipId}")
+    public void removeFavorite(@PathVariable("userId") String userId,
+                       @PathVariable("internshipId") String internshipId) throws Exception {
+        internshipVacancyService.removeFavorite(userId, internshipId);
     }
 
     public InternshipVacancyDTO toInternshipVacancyDTO(InternshipVacancy internshipVacancy){

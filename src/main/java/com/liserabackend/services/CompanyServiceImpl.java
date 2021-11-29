@@ -37,13 +37,10 @@ public class CompanyServiceImpl implements ICompany {
         return companyRepository.findAll().stream();
     }
 
-    @Override
-    public Optional<Company> updateCompany(String companyId, Company company)  {
-        return Optional.empty();
-    }
-
     public Optional<Company> getCompanyByUserId(String userId) throws UseException {
-        return Optional.of(companyRepository.findByUserId(userId).orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND)));
+        return Optional.of(companyRepository.findByUserId(userId)
+                        .filter(user -> user.getUser().getRole().equals(ROLE_EMPLOYER))
+                .orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND)));
     }
 
     public Optional<Company> addCompany(CreateCompany createCompany) throws UseException {
@@ -52,27 +49,29 @@ public class CompanyServiceImpl implements ICompany {
             throw new UseException(UseExceptionType.USER_ALREADY_EXIST);
         User user=new User(createCompany.getUsername(), createCompany.getUserEmail(),createCompany.getPassword(), EnumRole.ROLE_EMPLOYER);
         user=userRepository.save(user);
-        Company company=new Company(createCompany.getName(),createCompany.getOrganizationNumber(), createCompany.getCompanyEmail(), user);
+        Company company=new Company(createCompany.getName(),createCompany.getOrgNumber(), createCompany.getCompanyEmail(), user);
         company=companyRepository.save(company);
         return  Optional.of(company);
     }
     public Optional<Company> updateProfile(String userId, CreateCompany company) throws UseException {
-        final User user = userRepository.findById(userId).filter(u->u.getRole().equals(ROLE_EMPLOYER)).orElseThrow(() -> new UseException(USER_NOT_FOUND));
-        final Company oldCompany = companyRepository.findByUserId(user.getId()).orElseThrow(() -> new UseException(COMPANY_NOT_FOUND));
+        final User oldUser = userRepository.findById(userId).filter(u->u.getRole().equals(ROLE_EMPLOYER)).orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        final Company oldCompany = companyRepository.findByUserId(oldUser.getId()).orElseThrow(() -> new UseException(COMPANY_NOT_FOUND));
 
-        updateProfile(company, user, oldCompany);
-        userRepository.save(user);
+        updateProfile(company, oldUser, oldCompany);
+        userRepository.save(oldUser);
         companyRepository.save(oldCompany);
         return Optional.ofNullable(oldCompany);
     }
-    private void updateProfile(CreateCompany company, User user, Company oldCompany) {
-        user.setUsername(company.getUsername());
-        user.setPassword(company.getPassword());
-        user.setEmail(company.getUserEmail());
-        oldCompany.setName(company.getName());
-        oldCompany.setOrgNumber(company.getOrganizationNumber());
-        oldCompany.setEmail(company.getCompanyEmail());
-        oldCompany.setUser(user);
+    private void updateProfile(CreateCompany company, User oldUser, Company oldCompany) {
+
+
+        oldUser.setUsername((company.getUsername() == null) ? oldUser.getUsername() : company.getUsername());
+        oldUser.setPassword((company.getPassword() == null) ? oldUser.getPassword() : company.getPassword());
+        oldUser.setEmail((company.getUserEmail()== null) ? oldUser.getEmail() : company.getUserEmail());
+        oldCompany.setName((company.getName()== null) ? oldCompany.getName() : company.getName());
+        oldCompany.setOrgNumber((company.getOrgNumber()== null) ? oldCompany.getOrgNumber() : company.getOrgNumber());
+        oldCompany.setEmail((company.getCompanyEmail()== null) ? oldCompany.getEmail() : company.getCompanyEmail());
+        oldCompany.setUser(oldUser);
     }
 
 }

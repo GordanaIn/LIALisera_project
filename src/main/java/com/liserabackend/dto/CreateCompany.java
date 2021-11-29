@@ -5,7 +5,7 @@ import lombok.Value;
 @Value
 public class CreateCompany {
     String name;
-    String organizationNumber;
+    String orgNumber;
     String companyEmail;
     String userEmail;
     String username;

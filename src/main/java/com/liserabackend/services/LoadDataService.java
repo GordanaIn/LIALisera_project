@@ -42,9 +42,11 @@ public class LoadDataService implements CommandLineRunner {
        if(userRepository.findAll().stream().anyMatch(user -> !user.getRole().equals(EnumRole.ROLE_EMPLOYER))) {
            User microsoftUser= new User("helen@microsoft.com", "helen@microsoft.com","helen21",EnumRole.ROLE_EMPLOYER);
            userRepository.save(microsoftUser);
+           User googleUser= new User("josefin@google.com", "josefin@google.com","jojo21",EnumRole.ROLE_EMPLOYER);
+           userRepository.save(googleUser);
            if (companyRepository.findAll().isEmpty()) {
                Company companyMicrosoft = new Company("Microsoft", "microsoft101", "microsoft@microsoft.com",microsoftUser);
-               Company companyGoogle = new Company("Google", "google101", "google@google.com",microsoftUser);
+               Company companyGoogle = new Company("Google", "google101", "google@google.com",googleUser);
                companyRepository.save(companyMicrosoft);
                companyRepository.save(companyGoogle);
                if (advertRepository.findAll().isEmpty()) {
