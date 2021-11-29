@@ -1,8 +1,6 @@
 package com.liserabackend.controllers;
 
-import com.liserabackend.dto.CompanyDTO;
-import com.liserabackend.dto.CreateCompany;
-import com.liserabackend.dto.UserDTO;
+import com.liserabackend.dto.*;
 import com.liserabackend.entity.Company;
 import com.liserabackend.entity.User;
 import com.liserabackend.exceptions.UseException;
@@ -35,7 +33,13 @@ public class CompanyController {
     public ResponseEntity<?> saveCompany(@RequestBody CreateCompany createCompany) throws UseException {
           return ResponseEntity.ok(companyService.addCompany(createCompany).map(this::toCompanyDTO));
     }
-
+    @PatchMapping("update/{userId}")
+    public CompanyDTO updateStudentProfile(@PathVariable("userId") String userId,
+                                           @RequestBody CreateCompany company) throws UseException {
+        return companyService.updateProfile(userId, company)
+                .map(this::toCompanyDTO)
+                .orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND));
+    }
     private CompanyDTO toCompanyDTO(Company company) {
         User user=company.getUser();
         return new CompanyDTO(

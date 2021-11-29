@@ -1,7 +1,9 @@
 package com.liserabackend.services;
 
 import com.liserabackend.dto.CreateCompany;
+import com.liserabackend.dto.CreateStudent;
 import com.liserabackend.entity.Company;
+import com.liserabackend.entity.Student;
 import com.liserabackend.entity.User;
 import com.liserabackend.entity.repository.CompanyRepository;
 import com.liserabackend.entity.repository.UserRepository;
@@ -13,7 +15,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
+
+import static com.liserabackend.enums.EnumRole.ROLE_EMPLOYER;
+import static com.liserabackend.enums.EnumRole.ROLE_STUDENT;
+import static com.liserabackend.exceptions.UseExceptionType.*;
+
 @Service
 @AllArgsConstructor
 public class CompanyServiceImpl implements ICompany {
@@ -48,4 +56,23 @@ public class CompanyServiceImpl implements ICompany {
         company=companyRepository.save(company);
         return  Optional.of(company);
     }
+    public Optional<Company> updateProfile(String userId, CreateCompany company) throws UseException {
+        final User user = userRepository.findById(userId).filter(u->u.getRole().equals(ROLE_EMPLOYER)).orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        final Company oldCompany = companyRepository.findByUserId(user.getId()).orElseThrow(() -> new UseException(COMPANY_NOT_FOUND));
+
+        updateProfile(company, user, oldCompany);
+        userRepository.save(user);
+        companyRepository.save(oldCompany);
+        return Optional.ofNullable(oldCompany);
+    }
+    private void updateProfile(CreateCompany company, User user, Company oldCompany) {
+        user.setUsername(company.getUsername());
+        user.setPassword(company.getPassword());
+        user.setEmail(company.getUserEmail());
+        oldCompany.setName(company.getName());
+        oldCompany.setOrgNumber(company.getOrganizationNumber());
+        oldCompany.setEmail(company.getCompanyEmail());
+        oldCompany.setUser(user);
+    }
+
 }

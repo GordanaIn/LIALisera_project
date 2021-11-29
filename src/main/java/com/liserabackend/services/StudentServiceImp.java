@@ -150,6 +150,8 @@ public class StudentServiceImp implements IStudent {
                 createStudent.getLastName(),
                 createStudent.getPhone(),
                 user);
+        student.setSchoolName(createStudent.getSchoolName());
+        student.setLinkedInUrl("");
         student=studentRepository.save(student);
         return Optional.of(student);
     }
