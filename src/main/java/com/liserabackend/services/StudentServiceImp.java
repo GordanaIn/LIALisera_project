@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
 import static com.liserabackend.enums.EnumRole.ROLE_STUDENT;
@@ -125,7 +124,7 @@ public class StudentServiceImp implements IStudent {
         InternshipVacancy internship = internshipVacancyRepository.getById(internshipId);
         student.getFavourites().add(internship);
         studentRepository.save(student);
-        internship.getStudents().add(student);
+        //internship.getStudents().add(student);
         internshipVacancyRepository.save(internship);
 
         return student;
@@ -160,8 +159,11 @@ public class StudentServiceImp implements IStudent {
     public boolean applyInternship(String userId, String internshipId) throws UseException {
         final Student student = studentRepository.findByUserId(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
         final InternshipVacancy internshipVacancy = internshipVacancyRepository.findById(internshipId).orElseThrow(() -> new UseException(INTERNSHIP_NOT_FOUND));
-        internshipVacancy.getStudents().add(student);
-        internshipVacancyRepository.save(internshipVacancy);
+        if(student.getAppliedVacancies().contains(internshipVacancy))
+            return false;
+
+        student.getAppliedVacancies().add(internshipVacancy);
+        studentRepository.save(student);
         return true;
     }
 

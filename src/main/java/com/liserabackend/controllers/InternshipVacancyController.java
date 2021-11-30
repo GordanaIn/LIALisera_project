@@ -67,7 +67,7 @@ public class InternshipVacancyController {
 
 
     @GetMapping("/vacancyLists/{userId}")
-    public List<InternshipVacancyDTO> getVacancyLists(@PathVariable("userId") String userId){
+    public List<InternshipVacancyDTO> getVacancyLists(@PathVariable("userId") String userId) throws UseException {
         return internshipVacancyService.getVacancyLists(userId).map(this::toInternshipVacancyDTO).collect(Collectors.toList());
     }
     public InternshipVacancyDTO toInternshipVacancyDTO(InternshipVacancy internshipVacancy){

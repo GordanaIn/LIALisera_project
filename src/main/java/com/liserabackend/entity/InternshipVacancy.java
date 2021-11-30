@@ -36,11 +36,6 @@ public class InternshipVacancy {
     @JoinColumn(name="company_id")
     private Company company;
 
-    /** List of students applied for an advert- Many student can be applied to a single advert */
-    @ManyToMany()
-    @JoinColumn(name="student_id")
-    private Set<Student> students=new HashSet<>();
-
     private EnumStatus isApproved;/** To be proved by the School Admin */
 
     public InternshipVacancy(String title, String description, String duration, LocalDate datePosted, String contactPerson,
@@ -57,12 +52,5 @@ public class InternshipVacancy {
         this.company=company;
         isApproved=EnumStatus.NOT_APPROVED;
     }
-
-    public List<String> getStudentsListContactAppliedForAdvert(){
-        return students.stream()
-                .map(Student::getPhone)
-                .collect(Collectors.toList());
-    }
-
 
 }

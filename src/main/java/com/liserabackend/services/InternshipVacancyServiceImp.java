@@ -52,32 +52,19 @@ public class InternshipVacancyServiceImp implements IVacancyAdvert {
         final User user = userRepository.findById(createInternship.getUserId()).orElseThrow(() -> new UseException(USER_NOT_FOUND));
         final Company company = companyRepository.findByUserId(user.getId()).orElseThrow(() -> new UseException(COMPANY_NOT_FOUND));
 
-        InternshipVacancy internshipVacancy = new InternshipVacancy(createInternship.getTitle(), createInternship.getDescription(), createInternship.getDuration(), createInternship.getDatePosted(), createInternship.getEmployerName(),
-                createInternship.getContactPhone(), createInternship.getRequiredNumber(), company);
-        return Optional.of(internshipVacancyRepository.save(internshipVacancy));
+        return Optional.of(internshipVacancyRepository.save(new InternshipVacancy(createInternship.getTitle(), createInternship.getDescription(), createInternship.getDuration(), createInternship.getDatePosted(), createInternship.getEmployerName(),
+                createInternship.getContactPhone(), createInternship.getRequiredNumber(), company)));
     }
 
     public void deleteInternship(String userId, String internshipId) throws UseException {
-        if (internshipVacancyRepository.findAll().stream()
-                .noneMatch(t -> t.getId().equals(internshipId)))
-            throw new UseException(INTERNSHIP_NOT_FOUND);
-        if (companyRepository.findAll().stream()
-                .noneMatch(t -> t.getUser().getId().equals(userId)))
-            throw new UseException(COMPANY_NOT_FOUND);
-
-        internshipVacancyRepository.delete(getInternshipVacancy(internshipId).get());
-
-        //find comapny by userID
-        Company company = companyRepository.findByUserId(userId).get();
-
-        Set<InternshipVacancy> updatedInternshipList = company.getInternshipVacancyList()
+        final InternshipVacancy internshipVacancy = internshipVacancyRepository.findById(internshipId).orElseThrow(() -> new UseException(INTERNSHIP_NOT_FOUND));
+        final Company company = companyRepository.findByUserId(userId).orElseThrow(() -> new UseException(COMPANY_NOT_FOUND));
+        internshipVacancyRepository.delete(internshipVacancy);
+        company.setInternshipVacancyList(company.getInternshipVacancyList()
                 .stream()
                 .filter(find -> !find.getId().equals(internshipId))
-                .collect(Collectors.toSet());
-
-        company.setInternshipVacancyList(updatedInternshipList);
+                .collect(Collectors.toSet()));
         companyRepository.save(company);
-
     }
 
     private InternshipVacancy updateInternship(InternshipVacancy oldInternship, InternshipVacancy internshipVacancy) {
@@ -92,36 +79,26 @@ public class InternshipVacancyServiceImp implements IVacancyAdvert {
 
 
     public boolean addFavorite(String userId, String internshipId) throws UseException {
-        final Student student = studentRepository.findByUserId(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
-        final InternshipVacancy internshipVacancy = internshipVacancyRepository.findById(internshipId).orElseThrow(() -> new UseException(INTERNSHIP_NOT_FOUND));
-        student.getFavourites().add(internshipVacancy); //Why this generates error = null
+        var student = studentRepository.findByUserId(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        var internshipVacancy = internshipVacancyRepository.findById(internshipId).orElseThrow(() -> new UseException(INTERNSHIP_NOT_FOUND));
+        student.getFavourites().add(internshipVacancy);
         studentRepository.save(student);
         return true;
     }
 
     public void removeFavorite(String userId, String internshipId) throws UseException {
-        if (internshipVacancyRepository.findAll().stream()
-                .noneMatch(t -> t.getId().equals(internshipId)))
-            throw new UseException(INTERNSHIP_NOT_FOUND);
-        if (studentRepository.findAll().stream()
-                .noneMatch(t -> t.getUser().getId().equals(userId)))
-            throw new UseException(COMPANY_NOT_FOUND);
-
-        //find student by userID
-        Student student = studentRepository.findByUserId(userId).get();
-
-        Set<InternshipVacancy> updatedInternshipList = student.getFavourites()
+        internshipVacancyRepository.findById(internshipId).orElseThrow(() -> new UseException(INTERNSHIP_NOT_FOUND));
+        var student = studentRepository.findByUserId(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        student.setFavourites(student.getFavourites()
                 .stream()
                 .filter(find -> !find.getId().equals(internshipId))
-                .collect(Collectors.toSet());
-
-        student.setFavourites(updatedInternshipList);
+                .collect(Collectors.toSet()));
         studentRepository.save(student);
     }
 
-    public Stream<InternshipVacancy> getVacancyLists(String userId) {
-        Student student = studentRepository.findByUserId(userId).get();
-        final Stream<InternshipVacancy> internshipList = internshipVacancyRepository.findAll().stream().filter(i -> i.getStudents().contains(student));
-        return internshipList;
+    public Stream<InternshipVacancy> getVacancyLists(String userId) throws UseException {
+        var student = studentRepository.findByUserId(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
+       // return internshipVacancyRepository.findAll().stream().filter(i -> i.getStudents().contains(student));
+        return student.getAppliedVacancies().stream();
     }
 }
