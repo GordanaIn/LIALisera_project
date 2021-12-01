@@ -26,26 +26,12 @@ public class StudentServiceImp implements IStudent {
     private final UserRepository userRepository;
     private final StudentRepository studentRepository;
     private final InternshipVacancyRepository internshipVacancyRepository;
-
     @Override
+
     public User saveUser(User user) {
         return userRepository.save(user);
     }
 
-    @Override
-    public Optional<User> updateEmail(String userId, String email) throws UseException {
-        final User user = userRepository.findById(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
-        user.setEmail(email);
-        return Optional.ofNullable(saveUser(user));
-    }
-
-    @Override
-    public Optional<User> updateUsername(String userId, String username) throws UseException {
-        final User user = userRepository.findById(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
-        user.setUsername(username);
-        userRepository.save(user);
-        return Optional.ofNullable(user);
-    }
 
     @Override
     public Optional<User> updatePassword(String userId, String password) throws UseException {
@@ -67,7 +53,7 @@ public class StudentServiceImp implements IStudent {
     @Override
     public Stream<Student> getStudents() {
         //Remark-No need to filter by role since only student role is saved when object is created
-       return studentRepository.findAll().stream().filter(s -> s.getUser().getRole().equals(ROLE_STUDENT));
+        return studentRepository.findAll().stream().filter(s -> s.getUser().getRole().equals(ROLE_STUDENT));
     }
 
     @Override
@@ -86,21 +72,16 @@ public class StudentServiceImp implements IStudent {
         return Optional.ofNullable(student);
     }
 
-    @Override
-    public Optional<Student> getStudentByUserId(String userId) throws UseException {
-        final Student student = studentRepository.findByUserId(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
-        return Optional.of(student);
-    }
 
     @Override
     public Optional<Student> getStudentByUserName(String username) throws UseException {
-        final User user = userRepository.findByUsername(username).filter(u->u.getRole().equals(ROLE_STUDENT)).orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        final User user = userRepository.findByUsername(username).filter(u -> u.getRole().equals(ROLE_STUDENT)).orElseThrow(() -> new UseException(USER_NOT_FOUND));
         final Student student = studentRepository.findByUserId(user.getId()).orElseThrow(() -> new UseException(STUDENT_NOT_FOUND));
         return Optional.of(student);
     }
 
     public Optional<Student> updateProfile(String userId, CreateStudent student) throws UseException {
-        final User user = userRepository.findById(userId).filter(u->u.getRole().equals(ROLE_STUDENT)).orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        final User user = userRepository.findById(userId).filter(u -> u.getRole().equals(ROLE_STUDENT)).orElseThrow(() -> new UseException(USER_NOT_FOUND));
         final Student oldStudent = studentRepository.findByUserId(user.getId()).orElseThrow(() -> new UseException(STUDENT_NOT_FOUND));
         updateProfile(student, user, oldStudent);
         userRepository.save(user);
@@ -134,30 +115,32 @@ public class StudentServiceImp implements IStudent {
         return studentRepository.findByUserId(userId).get().getFavourites().stream();
     }
 
-   @Override
-    public Student saveStudent(Student student ) {
+    @Override
+    public Student saveStudent(Student student) {
         return studentRepository.save(student);
     }
+
     public Optional<Student> addStudent(CreateStudent createStudent) throws UseException {
         // find if the same user is found
-        if(userRepository.findByUsername(createStudent.getUsername()).isPresent())
+
+        if (userRepository.findByUsername(createStudent.getUsername()).isPresent())
             throw new UseException(UseExceptionType.USER_ALREADY_EXIST);
 
-        User user=new User(createStudent.getUsername(), createStudent.getEmail(),createStudent.getPassword(), ROLE_STUDENT);
-        user=userRepository.save(user);
-        Student student= new Student(
+        User user = new User(createStudent.getUsername(), createStudent.getEmail(), createStudent.getPassword(), ROLE_STUDENT);
+        user = userRepository.save(user);
+        Student student = new Student(
                 createStudent.getFirstName(),
                 createStudent.getLastName(),
                 createStudent.getPhone(),
                 user);
         student.setSchoolName(createStudent.getSchoolName());
         student.setLinkedInUrl("");
-        student=studentRepository.save(student);
+        student = studentRepository.save(student);
         return Optional.of(student);
     }
 
     public boolean applyInternship(String userId, String internshipId) throws UseException {
-        final Student student = studentRepository.findByUserId(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        Student student = getStudentByUserId(userId).get();
         final InternshipVacancy internshipVacancy = internshipVacancyRepository.findById(internshipId).orElseThrow(() -> new UseException(INTERNSHIP_NOT_FOUND));
         if(student.getAppliedVacancies().contains(internshipVacancy))
             return false;
@@ -167,5 +150,26 @@ public class StudentServiceImp implements IStudent {
         return true;
     }
 
+
+    @Override
+    public Optional<User> updateEmail(String userId, String email) throws UseException {
+        final User user = userRepository.findById(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        user.setEmail(email);
+        return Optional.ofNullable(saveUser(user));
+    }
+
+    @Override
+    public Optional<User> updateUsername(String userId, String username) throws UseException {
+        final User user = userRepository.findById(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        user.setUsername(username);
+        userRepository.save(user);
+        return Optional.ofNullable(user);
+    }
+
+    @Override
+    public Optional<Student> getStudentByUserId(String userId) throws UseException {
+        final Student student = studentRepository.findByUserId(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        return Optional.of(student);
+    }
 
 }

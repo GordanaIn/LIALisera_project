@@ -19,8 +19,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/company")
 public class CompanyController {
     private final CompanyServiceImpl companyService;
+
     @GetMapping()
-    public List<CompanyDTO> getStudents() {
+    public List<CompanyDTO> getCompanies() {
         return companyService.getCompanies().map(this::toCompanyDTO).collect(Collectors.toList());
     }
 
@@ -36,7 +37,7 @@ public class CompanyController {
     @PatchMapping("update/{userId}")
     public CompanyDTO updateCompanyProfile(@PathVariable("userId") String userId,
                                            @RequestBody CreateCompany company) throws UseException {
-        return companyService.updateProfile(userId, company)
+        return companyService.updateCompanyProfile(userId, company)
                 .map(this::toCompanyDTO)
                 .orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND));
     }
