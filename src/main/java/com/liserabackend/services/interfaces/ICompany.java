@@ -1,3 +1,4 @@
+/*
 package com.liserabackend.services.interfaces;
 
 import com.liserabackend.entity.Company;
@@ -10,3 +11,4 @@ public interface ICompany {
     Company saveCompany(Company company);
     Stream<Company> getCompanies();
 }
+*/

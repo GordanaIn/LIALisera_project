@@ -1,3 +1,4 @@
+/*
 package com.liserabackend.services.interfaces;
 
 
@@ -14,3 +15,4 @@ public interface IUser {
     Optional<User> getUserByUserName(String username) throws UseException;
     Optional<User> getUserByEmail(String email) throws UseException;
 }
+*/

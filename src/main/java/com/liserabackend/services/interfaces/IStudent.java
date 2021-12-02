@@ -1,3 +1,4 @@
+/*
 package com.liserabackend.services.interfaces;
 
 import com.liserabackend.dto.CreateStudent;
@@ -16,3 +17,4 @@ public interface IStudent extends IUser {
     Optional<Student> getStudentByUserName(String username) throws UseException;
 
 }
+*/

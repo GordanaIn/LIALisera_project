@@ -7,7 +7,7 @@ public class CreateCompany {
     String name;
     String orgNumber;
     String companyEmail;
-    String userEmail;
-    String username;
-    String password;
+  //  String userEmail;
+    String userId;
+ //   String password;
 }
