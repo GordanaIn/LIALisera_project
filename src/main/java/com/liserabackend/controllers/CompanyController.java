@@ -39,7 +39,7 @@ public class CompanyController {
           return ResponseEntity.ok(companyService.addCompany(createCompany)
                   .map(this::toCompanyDTO));
     }
-    @PatchMapping("updateCompanyInfo")
+    @PatchMapping("/updateCompanyInfo")
     public CompanyDTO updateCompanyInfo(@RequestBody CreateCompany company) throws UseException {
         return companyService.updateCompanyInformation(company)
                 .map(this::toCompanyDTO)

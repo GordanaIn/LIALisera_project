@@ -7,6 +7,7 @@ import com.liserabackend.entity.User;
 import com.liserabackend.exceptions.UseException;
 import com.liserabackend.exceptions.UseExceptionType;
 import com.liserabackend.services.StudentServiceImp;
+import com.liserabackend.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/student")
 public class StudentController {
     private final StudentServiceImp studentService;
+    private final UserService userService;
 
     @GetMapping()
     public List<StudentDTO> getStudents() {
@@ -37,14 +39,14 @@ public class StudentController {
 
     @PostMapping("")
     public ResponseEntity<?> saveStudent(@RequestBody CreateStudent createStudent) throws UseException {
-        return ResponseEntity.ok(studentService.addStudent(createStudent)
+        return ResponseEntity.ok(userService.addStudent(createStudent)
                 .map(this::toStudentDTO));
     }
 
     @PatchMapping("/email/{userId}")
     public UserDTO updateEmail(@PathVariable("userId") String userId,
                                @RequestBody EmailDTO emailDTO) throws UseException {
-        return studentService.updateEmail(userId, emailDTO.getEmail())
+        return userService.updateEmail(userId, emailDTO.getEmail())
                 .map(this::toUserDTO)
                 .orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND));
     }
@@ -52,7 +54,7 @@ public class StudentController {
     @PatchMapping("/username/{userId}")
     public UserDTO updateUserName(@PathVariable("userId") String userId,
                                   @RequestBody UsernameDTO usernameDTO) throws UseException {
-        return studentService.updateUsername(userId, usernameDTO.getUsername())
+        return userService.updateUsername(userId, usernameDTO.getUsername())
                 .map(this::toUserDTO)
                 .orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND));
     }
@@ -60,14 +62,14 @@ public class StudentController {
     @PatchMapping("/password/{userId}")
     public UserDTO updatePassword(@PathVariable("userId") String userId,
                                   @RequestBody PasswordDTO passwordDTO) throws UseException {
-        return studentService.updatePassword(userId, passwordDTO.getPassword())
+        return userService.updatePassword(userId, passwordDTO.getPassword())
                 .map(this::toUserDTO)
                 .orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND));
     }
 
     @PatchMapping("/modifyPassword")
     public UserDTO modifyPassword(@RequestBody ModifyPasswordDTO modifyPasswordDTO) throws UseException {
-        return studentService.modifyPassword(modifyPasswordDTO)
+        return userService.modifyPassword(modifyPasswordDTO)
                 .map(this::toUserDTO)
                 .orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND));
     }

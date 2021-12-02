@@ -1,11 +1,27 @@
 package com.liserabackend.services;
 
+import com.liserabackend.dto.CreateStudent;
+import com.liserabackend.dto.ModifyPasswordDTO;
+import com.liserabackend.entity.Student;
+import com.liserabackend.entity.User;
+import com.liserabackend.entity.repository.StudentRepository;
+import com.liserabackend.entity.repository.UserRepository;
+import com.liserabackend.exceptions.UseException;
+import com.liserabackend.exceptions.UseExceptionType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+import static com.liserabackend.enums.EnumRole.ROLE_STUDENT;
+import static com.liserabackend.exceptions.UseExceptionType.USER_NOT_FOUND;
 
 @Service
 @AllArgsConstructor
 public class UserService {
+
+    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
 
     /*
        User service for all the methods that have to do with creating the different users
@@ -13,5 +29,94 @@ public class UserService {
        adding role (creat student, create employee etc)
        changing password
      */
+
+
+    //Users
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+    public Optional<User> updatePassword(String userId, String password) throws UseException {
+        final User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        user.setPassword(password);
+        return Optional.of(saveUser(user));
+    }
+    public Optional<User> modifyPassword(ModifyPasswordDTO modifyPasswordDTO) throws UseException {
+        final User user = userRepository.findAll().stream()
+                .filter(u -> u.getUsername().equals(modifyPasswordDTO.getUsername()))
+                .filter(u -> u.getPassword().equals(modifyPasswordDTO.getCurrentPassword()))
+                .findAny().orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        user.setPassword(modifyPasswordDTO.getNewPassword());
+        userRepository.save(user);
+        return Optional.of(saveUser(user));
+    }
+    // check if below methods should be used in the filter above?
+
+    public Optional<User> getUserByUserName(String username) throws UseException {
+        final User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        return Optional.ofNullable(user);
+    }
+
+    public Optional<User> getUserByEmail(String email) throws UseException {
+        final User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        return Optional.ofNullable(user);
+    }
+
+    public Optional<User> updateEmail(String userId, String email) throws UseException {
+        final User user = userRepository.findById(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        user.setEmail(email);
+        return Optional.ofNullable(saveUser(user));
+    }
+
+    public Optional<User> updateUsername(String userId, String username) throws UseException {
+        final User user = userRepository.findById(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        user.setUsername(username);
+        userRepository.save(user);
+        return Optional.ofNullable(user);
+    }
+
+
+
+
+
+    // Students
+    public Student saveStudent(Student student) {
+        return studentRepository.save(student);
+    }
+
+    public Optional<Student> addStudent(CreateStudent createStudent) throws UseException {
+        // find if the same user is found
+
+        if (userRepository.findByUsername(createStudent.getUsername()).isPresent())
+            throw new UseException(UseExceptionType.USER_ALREADY_EXIST);
+
+        final var role = ROLE_STUDENT;
+
+        // assigne role in method create User instead.
+
+        User user = new User(createStudent.getUsername(),
+                createStudent.getEmail(),
+                createStudent.getPassword(),
+                role);
+        user = userRepository.save(user);
+
+
+        Student student = new Student(
+                createStudent.getFirstName(),
+                createStudent.getLastName(),
+                createStudent.getPhone(),
+                user);
+        student.setSchoolName(createStudent.getSchoolName());
+        student.setLinkedInUrl("");
+        student = studentRepository.save(student);
+        return Optional.of(student);
+    }
+
+
+    //Employees
+
+
 
 }
