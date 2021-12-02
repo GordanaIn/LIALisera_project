@@ -41,12 +41,12 @@ public class Student {
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name="advert_id")
-    private Set<InternshipVacancy> favourites=new HashSet<>();
+    private Set<InternshipAdvert> favourites=new HashSet<>();
 
     /** List of students applied for an advert- Many student can be applied to a single advert */
     @ManyToMany()
     @JoinColumn(name="advert_id")
-    private Set<InternshipVacancy> appliedVacancies=new HashSet<>();
+    private Set<InternshipAdvert> appliedVacancies=new HashSet<>();
 
     public Student(String firstName,String lastName,String phone, User user ){
         assert user!=null; /** A student without user not allowed */

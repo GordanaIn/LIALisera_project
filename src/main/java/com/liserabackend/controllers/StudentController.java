@@ -6,7 +6,7 @@ import com.liserabackend.entity.Student;
 import com.liserabackend.entity.User;
 import com.liserabackend.exceptions.UseException;
 import com.liserabackend.exceptions.UseExceptionType;
-import com.liserabackend.services.StudentServiceImp;
+import com.liserabackend.services.StudentService;
 import com.liserabackend.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/student")
 public class StudentController {
-    private final StudentServiceImp studentService;
+    private final StudentService studentService;
     private final UserService userService;
 
     @GetMapping()
@@ -39,22 +39,15 @@ public class StudentController {
 
     @PostMapping("")
     public ResponseEntity<?> saveStudent(@RequestBody CreateStudent createStudent) throws UseException {
-        return ResponseEntity.ok(userService.addStudent(createStudent)
-                .map(this::toStudentDTO));
+        return null;
+       /* return ResponseEntity.ok(userService.createUser(createStudent)
+                .map(this::toStudentDTO));*/
     }
 
     @PatchMapping("/email/{userId}")
     public UserDTO updateEmail(@PathVariable("userId") String userId,
                                @RequestBody EmailDTO emailDTO) throws UseException {
         return userService.updateEmail(userId, emailDTO.getEmail())
-                .map(this::toUserDTO)
-                .orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND));
-    }
-
-    @PatchMapping("/username/{userId}")
-    public UserDTO updateUserName(@PathVariable("userId") String userId,
-                                  @RequestBody UsernameDTO usernameDTO) throws UseException {
-        return userService.updateUsername(userId, usernameDTO.getUsername())
                 .map(this::toUserDTO)
                 .orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND));
     }
@@ -89,6 +82,28 @@ public class StudentController {
         return studentService.applyInternship(userId, internshipId);
     }
 
+    @PatchMapping("/addFavorite/{userId}/{internshipId}")
+    public boolean addFavorite(@PathVariable("userId") String userId,
+                               @PathVariable("internshipId") String internshipId) throws UseException {
+        return studentService.addFavorite(userId, internshipId);
+    }
+
+    @DeleteMapping("/removeFavorite/{userId}/{internshipId}")
+    public void removeFavorite(@PathVariable("userId") String userId,
+                               @PathVariable("internshipId") String internshipId) throws Exception {
+        studentService.removeFavorite(userId, internshipId);
+    }
+
+
+    @GetMapping("/vacancyLists/{userId}")
+    public List<InternshipAdvertDTO> getVacancyLists(@PathVariable("userId") String userId) throws UseException {
+        return studentService.getVacancyLists(userId).map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO).collect(Collectors.toList());
+    }
+    @GetMapping("/favorites/{userId}")
+    public List<InternshipAdvertDTO> getFavoritesList(@PathVariable("userId") String userId){
+        return studentService.getFavoritesList(userId).map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO).collect(Collectors.toList());
+    }
+
     private StudentDTO toStudentDTO(Student student) {
         User user = student.getUser();
 
@@ -97,7 +112,6 @@ public class StudentController {
                 student.getFirstName(),
                 student.getLastName(),
                 user.getId(),
-                user.getUsername(),
                 user.getPassword(),
                 user.getEmail(),
                 student.getPhone(),
@@ -110,10 +124,10 @@ public class StudentController {
     private UserDTO toUserDTO(User user) {
         return new UserDTO(
                 user.getId(),
-                user.getUsername(),
-                user.getEmail(),
+                 user.getEmail(),
                 user.getRole().toString()
         );
     }
+
 
 }

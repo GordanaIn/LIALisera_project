@@ -40,8 +40,8 @@ public class Company {
 
     /** A company can post many Advert */
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)//, mappedBy = "internshipVacancy"
-    @JoinColumn(name = "internshipvacancy_id")
-    private Set<InternshipVacancy> internshipVacancyList = new HashSet<>();
+    @JoinColumn(name = "internshipAdvert_id")
+    private Set<InternshipAdvert> internshipVacancyList = new HashSet<>();
 
     public Company(String name, String orgNumber, String email, User user) {
         assert user != null; /** A company without user not allowed */

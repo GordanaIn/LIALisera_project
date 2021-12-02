@@ -4,7 +4,7 @@ import lombok.Value;
 
 @Value
 public class ModifyPasswordDTO {
-    String username;
+    String email;
     String currentPassword;
     String newPassword;
 

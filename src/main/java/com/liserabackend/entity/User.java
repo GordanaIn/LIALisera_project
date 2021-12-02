@@ -17,9 +17,7 @@ import java.util.*;
 @AllArgsConstructor
 public class User {
     @Id @Column(columnDefinition = "varchar(100)") private String id;
-    @NotBlank
-    @Size(max = 20)
-    private String username;
+
     @NotBlank
     @Size(max = 50)
     @Email
@@ -32,9 +30,8 @@ public class User {
     @Column(length = 25)
     private EnumRole role;
 
-    public User(String username, String email, String password, EnumRole role){
+    public User(String email, String password, EnumRole role){
         this.id= UUID.randomUUID().toString();
-        this.username = username;
         this.email = email;
         this.password = password;
         this.role=role;

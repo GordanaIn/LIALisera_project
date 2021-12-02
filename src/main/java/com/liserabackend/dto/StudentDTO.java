@@ -11,7 +11,6 @@ public class StudentDTO {
     String firstName;
     String lastName;
     String userId;
-    String username;
     String password;
     String email;
     String phone;
@@ -25,7 +24,6 @@ public class StudentDTO {
             @JsonProperty("firstName") String firstName,
             @JsonProperty("lastName") String lastName,
             @JsonProperty("userId") String userId,
-            @JsonProperty("username") String username,
             @JsonProperty("password") String password,
             @JsonProperty("email") String email,
             @JsonProperty("phone") String phone,
@@ -36,7 +34,6 @@ public class StudentDTO {
         this.firstName=firstName;
         this.lastName=lastName;
         this.userId=userId;
-        this.username=username;
         this.password=password;
         this.email=email;
         this.phone=phone;

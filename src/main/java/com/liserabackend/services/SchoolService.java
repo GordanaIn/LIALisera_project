@@ -5,10 +5,8 @@ import com.liserabackend.entity.School;
 import com.liserabackend.entity.User;
 import com.liserabackend.entity.repository.SchoolRepository;
 import com.liserabackend.entity.repository.UserRepository;
-import com.liserabackend.enums.EnumRole;
 import com.liserabackend.exceptions.UseException;
 import com.liserabackend.exceptions.UseExceptionType;
-import com.liserabackend.services.interfaces.ISchool;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,25 +17,25 @@ import static com.liserabackend.enums.EnumRole.ROLE_SCHOOL;
 
 @Service
 @AllArgsConstructor
-public class SchoolServiceImpl implements ISchool {
+public class SchoolService {
     private final SchoolRepository schoolRepository;
     private final UserRepository userRepository;
-    @Override
+
     public School saveStudent(School school) {
         return schoolRepository.save(school);
     }
 
-    @Override
+
     public Stream<School> getSchools() {
         return schoolRepository.findAll().stream().filter(s->s.getUser().getRole().equals(ROLE_SCHOOL));
     }
 
-    @Override
+
     public Stream<School> getByOrgNumber(String orgNo) {
         return schoolRepository.findAll().stream().filter(s->s.getOrgNumber().equals(orgNo));
     }
 
-    @Override
+
     public Optional<School> updateSchool(String schoolId, School school) {
         return Optional.empty();
     }

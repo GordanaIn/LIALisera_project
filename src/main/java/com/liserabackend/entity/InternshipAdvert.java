@@ -13,10 +13,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
-@Entity(name="internshipVacancies")
+@Entity(name="internshipAdverts")
 @AllArgsConstructor
 @NoArgsConstructor
-public class InternshipVacancy {
+public class InternshipAdvert {
     @Id
     @Column(columnDefinition = "varchar(100)") private String id;
 
@@ -38,7 +38,7 @@ public class InternshipVacancy {
 
     private EnumStatus isApproved;/** To be proved by the School Admin */
 
-    public InternshipVacancy(String title, String description, String duration, LocalDate datePosted, String contactPerson,
+    public InternshipAdvert(String title, String description, String duration, LocalDate datePosted, String contactPerson,
                              String contactPhone, int numberAvailablePositions, Company company ){
         this.id= UUID.randomUUID().toString();
         this.title = title;
@@ -52,5 +52,4 @@ public class InternshipVacancy {
         this.company=company;
         isApproved=EnumStatus.NOT_APPROVED;
     }
-
 }

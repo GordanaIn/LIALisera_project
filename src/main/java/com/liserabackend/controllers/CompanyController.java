@@ -2,6 +2,7 @@ package com.liserabackend.controllers;
 
 import com.liserabackend.dto.*;
 import com.liserabackend.entity.Company;
+import com.liserabackend.entity.InternshipAdvert;
 import com.liserabackend.entity.User;
 import com.liserabackend.exceptions.UseException;
 import com.liserabackend.exceptions.UseExceptionType;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -46,6 +48,20 @@ public class CompanyController {
                 .orElseThrow(() -> new UseException(UseExceptionType.COMPANY_NOT_FOUND));
     }
 
+    @PostMapping()
+    public Optional<InternshipAdvertDTO> addInternship(@RequestBody CreateInternship createInternship) throws UseException {
+        return companyService.addInternship(createInternship).map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO);
+    }
+    @PatchMapping("/editInternship/{id}")
+    public InternshipAdvertDTO updateInternship(@PathVariable("id") String Id,
+                                                @RequestBody InternshipAdvert internship) throws UseException {
+        return companyService.updateInternship(Id,internship).map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO).get();
+    }
+    @DeleteMapping("/deleteInternship/{employerId}/{internshipId}")
+    public void delete(@PathVariable("employerId") String employerId,
+                       @PathVariable("internshipId") String internshipId) throws Exception {
+        companyService.deleteInternship(employerId, internshipId);
+    }
 
     private CompanyDTO toCompanyDTO(Company company) {
         User user=company.getUser();
@@ -55,8 +71,6 @@ public class CompanyController {
                 company.getOrgNumber(),
                 company.getEmail(),
                 user.getId(),
-                user.getUsername(),
-                user.getEmail(),
                 user.getRole().toString()
         );
     }
@@ -65,9 +79,9 @@ public class CompanyController {
     private UserDTO toUserDTO(User user){
         return new UserDTO(
                 user.getId(),
-                user.getUsername(),
-                user.getEmail(),
+               user.getEmail(),
                 user.getRole().toString()
         );
     }
+
 }

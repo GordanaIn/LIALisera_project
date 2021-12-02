@@ -7,7 +7,7 @@ import lombok.Value;
 import java.time.LocalDate;
 
 @Value
-public class  InternshipVacancyDTO {
+public class InternshipAdvertDTO {
     String id;
     String contactEmployer;
     String title;
@@ -20,7 +20,7 @@ public class  InternshipVacancyDTO {
     String companyName;
     String orgNumber;
     @JsonCreator
-    public InternshipVacancyDTO(
+    public InternshipAdvertDTO(
             @JsonProperty("id") String id,
             @JsonProperty("employersName") String contactEmployer,
             @JsonProperty("title")  String title,

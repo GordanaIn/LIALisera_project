@@ -8,7 +8,6 @@ public class CreateStudent {
     String lastName;
     String email;
     String phone;
-    String username;
     String password;
     String schoolName;
 }

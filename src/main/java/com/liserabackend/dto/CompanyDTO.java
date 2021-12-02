@@ -11,8 +11,6 @@ public class CompanyDTO {
     String orgNumber;
     String companyEmail;
     String userId;
-    String username;
-    String email;
     String role;
 
     @JsonCreator
@@ -22,16 +20,12 @@ public class CompanyDTO {
             @JsonProperty("orgNumber")String orgNumber,
             @JsonProperty("companyEmail")String companyEmail,
             @JsonProperty("userId")String userId,
-            @JsonProperty("username")String username,
-            @JsonProperty("email")String email,
             @JsonProperty("role")String role){
         this.id=id;
         this.name=name;
         this.orgNumber=orgNumber;
         this.companyEmail=companyEmail;
         this.userId=userId;
-        this.username=username;
-        this.email=email;
         this.role=role;
     }
 }

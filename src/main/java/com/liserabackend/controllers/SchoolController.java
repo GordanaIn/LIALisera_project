@@ -2,11 +2,10 @@ package com.liserabackend.controllers;
 
 import com.liserabackend.dto.*;
 import com.liserabackend.entity.School;
-import com.liserabackend.entity.Student;
 import com.liserabackend.entity.User;
 import com.liserabackend.exceptions.UseException;
 import com.liserabackend.exceptions.UseExceptionType;
-import com.liserabackend.services.SchoolServiceImpl;
+import com.liserabackend.services.SchoolService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +18,7 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*", allowedHeaders ="*")
 @RequestMapping("/api/school")
 public class SchoolController {
-    private final SchoolServiceImpl schoolService;
+    private final SchoolService schoolService;
     @GetMapping()
     public List<SchoolDTO> getSchools() {
         return schoolService.getSchools().map(this::toSchoolDTO).collect(Collectors.toList());
