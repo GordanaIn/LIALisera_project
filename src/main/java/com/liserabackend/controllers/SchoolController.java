@@ -42,7 +42,6 @@ public class SchoolController {
                 school.getPhone(),
                 school.getOrgNumber(),
                 user.getId(),
-                user.getUsername(),
                 user.getEmail(),
                 user.getRole().toString()
         );

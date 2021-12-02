@@ -75,13 +75,5 @@ public class CompanyController {
         );
     }
 
-    /* Do we create a user(employee) profile page? */
-    private UserDTO toUserDTO(User user){
-        return new UserDTO(
-                user.getId(),
-               user.getEmail(),
-                user.getRole().toString()
-        );
-    }
 
 }

@@ -38,8 +38,8 @@ public class StudentService {
         return Optional.of(student);
     }
 
-    public Optional<Student> getStudentByUserName(String username) throws UseException {
-        final User user = userRepository.findByUsername(username)
+    public Optional<Student> getStudentByEmail(String email) throws UseException {
+        final User user = userRepository.findByEmail(email)
                 .filter(u -> u.getRole().equals(ROLE_STUDENT))
                 .orElseThrow(() -> new UseException(USER_NOT_FOUND));
         final Student student = studentRepository.findByUserId(user.getId())

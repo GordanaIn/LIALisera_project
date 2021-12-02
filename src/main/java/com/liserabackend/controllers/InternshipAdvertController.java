@@ -18,14 +18,14 @@ public class InternshipAdvertController {
 
     @GetMapping()
     public List<InternshipAdvertDTO> getAllInternship(){
-       // return internshipVacancyService.getAllInternships().map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO).collect(Collectors.toList());
-       return null;
+       return internshipVacancyService.getAllInternships().map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO).collect(Collectors.toList());
+       //return null;
     }
 
     @GetMapping("/{id}")
     public InternshipAdvertDTO InternshipVacancy(@PathVariable("id") String id){
-        //return internshipVacancyService.getInternshipVacancy(id).map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO).get();
-        return null;
+        return internshipVacancyService.getInternshipVacancy(id).map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO).get();
+        //return null;
     }
 
 

@@ -3,9 +3,8 @@ package com.liserabackend.controllers;
 import com.liserabackend.dto.InternshipAdvertDTO;
 import com.liserabackend.entity.Company;
 import com.liserabackend.entity.InternshipAdvert;
-import org.springframework.stereotype.Component;
 
-@Component
+
 public class InternshipAdvertEntityToDTO {
 
     public static InternshipAdvertDTO getInternshipAdvertDTO(InternshipAdvert internshipAdvert){

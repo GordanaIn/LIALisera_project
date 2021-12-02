@@ -12,7 +12,6 @@ public class SchoolDTO {
     String phone;
     String orgNumber;
     String userId;
-    String username;
     String email;
     String role;
 
@@ -23,7 +22,6 @@ public class SchoolDTO {
             @JsonProperty("phone") String phone,
             @JsonProperty("orgNumber")String orgNumber,
             @JsonProperty("userId")String userId,
-            @JsonProperty("username")String username,
             @JsonProperty("email")String email,
             @JsonProperty("role")String role){
         this.id=id;
@@ -31,7 +29,6 @@ public class SchoolDTO {
         this.phone=phone;
         this.orgNumber=orgNumber;
         this.userId=userId;
-        this.username=username;
         this.email=email;
         this.role=role;
     }
