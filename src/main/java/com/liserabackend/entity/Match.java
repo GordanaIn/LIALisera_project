@@ -26,15 +26,15 @@ public class Match {
     private Student student;
     @OneToOne()
     @JoinColumn(name="advert_id")//, nullable = false
-    private InternshipVacancy internshipVacancy;
+    private InternshipAdvert internshipAdvert;
 
-    public Match(String name,Company company,Student student,InternshipVacancy internshipVacancy  ){
+    public Match(String name,Company company,Student student,InternshipAdvert internshipAdvert  ){
         assert company!=null; /** A match without company, student, and internshipVacancy is not allowed */
         assert  student!=null;
-        assert  internshipVacancy!=null;
+        assert  internshipAdvert!=null;
         this.id= UUID.randomUUID().toString();
         this.company = company;
         this.student=student;
-        this.internshipVacancy= internshipVacancy;
+        this.internshipAdvert= internshipAdvert;
     }
 }

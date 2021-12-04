@@ -2,7 +2,7 @@
 package com.liserabackend.services;
 
 import com.liserabackend.dto.CreateStudent;
-import com.liserabackend.entity.InternshipVacancy;
+import com.liserabackend.entity.InternshipAdvert;
 import com.liserabackend.entity.Student;
 import com.liserabackend.entity.repository.InternshipVacancyRepository;
 import com.liserabackend.entity.repository.StudentRepository;
@@ -69,7 +69,7 @@ class StudentServiceImpTest {
     @Test
     void test_applyInternship() throws UseException {
        //Given
-        InternshipVacancy internshipVacancy = new InternshipVacancy();
+        InternshipAdvert internshipVacancy = new InternshipAdvert();
         Student student = new Student();
         when(studentRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(internshipVacancyRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));

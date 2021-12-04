@@ -46,8 +46,7 @@ public class SchoolService {
 
     public Optional<School> addSchool(CreateSchool createSchool) throws UseException {
         //check if user found on user, then on company
-        if(userRepository.findByUsername(createSchool.getUsername()).isPresent())
-            throw new UseException(UseExceptionType.USER_ALREADY_EXIST);
+
         User user=new User(createSchool.getUsername(), createSchool.getUserEmail(),createSchool.getPassword(), ROLE_SCHOOL);
         user=userRepository.save(user);
         School school=new School(createSchool.getName(),createSchool.getPhone(),createSchool.getOrganizationNumber(), createSchool.getSchoolEmail(), user);

@@ -9,6 +9,7 @@ import com.liserabackend.entity.repository.StudentRepository;
 import com.liserabackend.entity.repository.UserRepository;
 import com.liserabackend.exceptions.UseException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -26,10 +27,12 @@ public class StudentService {
     private final InternshipAdvertRepository internshipAdvertRepository;
 
     public Stream<Student> getStudents() {
+       return studentRepository.findAll(Pageable.ofSize(1))
+               .stream();
         //Remark-No need to filter by role since only student role is saved when object is created
-        return studentRepository.findAll()
-                .stream()
-                .filter(s -> s.getUser().getRole().equals(ROLE_STUDENT));
+       // return studentRepository.findAll()
+         //       .stream()
+           //     .filter(s -> s.getUser().getRole().equals(ROLE_STUDENT));
     }
 
     public Optional<Student> getStudentByUserId(String userId) throws UseException {

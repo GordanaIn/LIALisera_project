@@ -1,7 +1,7 @@
 /* package com.liserabackend.services;
 
 import com.liserabackend.entity.Company;
-import com.liserabackend.entity.InternshipVacancy;
+import com.liserabackend.entity.InternshipAdvert;
 import com.liserabackend.entity.User;
 import com.liserabackend.entity.repository.InternshipVacancyRepository;
 import com.liserabackend.enums.EnumRole;
@@ -28,9 +28,9 @@ public class InternshipVacancyServiceTests {
     @MockBean
     InternshipVacancyRepository internshipVacancyRepository;
     @Autowired
-    InternshipVacancyServiceImp internshipVacancyService;
-    InternshipVacancy internshipVacancy1;
-    InternshipVacancy internshipVacancy2;
+    InternshipVacancyServiceImp internshipAdvertService;
+    InternshipAdvert internshipVacancy1;
+    InternshipAdvert internshipVacancy2;
     @BeforeEach
     @Transactional
     void setUp() {
@@ -38,8 +38,8 @@ public class InternshipVacancyServiceTests {
         Company microsoft=new Company("Microsoft","Microsoft-12345", "microsoft@microsoft.com",jafer);
         microsoft.setStatus(EnumStatus.APPROVED);
 
-        internshipVacancy1 = new InternshipVacancy("Java Full-stack", "Javakunnig person med intresse för frontend","4 months" , InternshipVacancyStatus.OPEN, LocalDate.of(2021,11,20),"Ms.Tsion","0718123456",microsoft);
-        internshipVacancy2 = new InternshipVacancy("C# Full-stack", "C# FULL-STACK med intresse för frontend","3 months", InternshipVacancyStatus.OPEN,LocalDate.of(2021,11,20),"Ms.Tsion","0718123123",microsoft);
+        internshipVacancy1 = new InternshipAdvert("Java Full-stack", "Javakunnig person med intresse för frontend","4 months" , InternshipVacancyStatus.OPEN, LocalDate.of(2021,11,20),"Ms.Tsion","0718123456",microsoft);
+        internshipVacancy2 = new InternshipAdvert("C# Full-stack", "C# FULL-STACK med intresse för frontend","3 months", InternshipVacancyStatus.OPEN,LocalDate.of(2021,11,20),"Ms.Tsion","0718123123",microsoft);
         internshipVacancyRepository.save(internshipVacancy1);
         internshipVacancyRepository.save(internshipVacancy1);
     }
@@ -49,7 +49,7 @@ public class InternshipVacancyServiceTests {
         when(internshipVacancyRepository.findAll()).thenReturn(List.of(internshipVacancy1));
 
         //When
-        List<InternshipVacancy> allInternships = internshipVacancyService.getAllInternships().collect(Collectors.toList());
+        List<InternshipAdvert> allInternships = internshipAdvertService.getAllInternships().collect(Collectors.toList());
 
         //Then
         assertEquals(1, allInternships.size());

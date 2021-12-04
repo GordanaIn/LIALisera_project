@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class LoadDataService implements CommandLineRunner {
     @Autowired UserRepository userRepository;
     @Autowired StudentRepository studentRepository;
-    @Autowired InternshipVacancyRepository advertRepository;
+    @Autowired InternshipAdvertRepository internshipAdvertRepository;
     @Autowired CompanyRepository companyRepository;
     @Autowired SchoolRepository schoolRepository;
 
@@ -49,18 +49,18 @@ public class LoadDataService implements CommandLineRunner {
                Company companyGoogle = new Company("Google", "google101", "google@google.com",googleUser);
                companyRepository.save(companyMicrosoft);
                companyRepository.save(companyGoogle);
-               if (advertRepository.findAll().isEmpty()) {
-                   InternshipVacancy internshipVacancyGoogle = new InternshipVacancy("Junior Java Developer", "Junior Java developer that has a good skill in react and springboot",
+               if (internshipAdvertRepository.findAll().isEmpty()) {
+                   InternshipAdvert internshipVacancyGoogle = new InternshipAdvert("Junior Java Developer", "Junior Java developer that has a good skill in react and springboot",
                            "5 month duration", LocalDate.of(2021, 10, 20), "Mr Google Expert", "+745672391", 2, companyGoogle);
 
-                   InternshipVacancy internshipVacancyMicrosoft = new InternshipVacancy("Junior C# Developer", "Junior C# developer that has a good skill in react and typescript",
+                   InternshipAdvert internshipVacancyMicrosoft = new InternshipAdvert("Junior C# Developer", "Junior C# developer that has a good skill in react and typescript",
                            "5 month duration", LocalDate.of(2021, 10, 21), "Mr Microsoft Expert", " 08-7525600",1, companyMicrosoft);
 
                    companyGoogle.getInternshipVacancyList().add(internshipVacancyGoogle);
                    companyMicrosoft.getInternshipVacancyList().add(internshipVacancyMicrosoft);
 
-                   advertRepository.save(internshipVacancyGoogle);
-                   advertRepository.save(internshipVacancyMicrosoft);
+                   internshipAdvertRepository.save(internshipVacancyGoogle);
+                   internshipAdvertRepository.save(internshipVacancyMicrosoft);
                }
            }
        }

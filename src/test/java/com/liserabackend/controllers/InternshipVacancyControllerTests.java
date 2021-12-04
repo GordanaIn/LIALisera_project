@@ -3,7 +3,7 @@ package com.liserabackend.controllers;
 
 import com.liserabackend.dto.InternshipVacancyDTO;
 import com.liserabackend.entity.Company;
-import com.liserabackend.entity.InternshipVacancy;
+import com.liserabackend.entity.InternshipAdvert;
 import com.liserabackend.entity.User;
 import com.liserabackend.entity.repository.CompanyRepository;
 import com.liserabackend.entity.repository.InternshipVacancyRepository;
@@ -34,15 +34,15 @@ import static org.mockito.Mockito.when;
 @ActiveProfiles("integrationtest")
 public class InternshipVacancyControllerTests {
     @MockBean
-    InternshipVacancyServiceImp internshipVacancyService;
+    InternshipVacancyServiceImp internshipAdvertService;
     @LocalServerPort
     int port;
     @Autowired
     InternshipVacancyRepository internshipVacancyRepository;
     InternshipVacancyDTO internshipVacancyDTO1;
     InternshipVacancyDTO internshipVacancyDTO2;
-    InternshipVacancy internshipVacancy1;
-    InternshipVacancy internshipVacancy2;
+    InternshipAdvert internshipVacancy1;
+    InternshipAdvert internshipVacancy2;
     @Autowired InternshipVacancyController internshipVacancyController;
     @Autowired CompanyRepository companyRepository;
     @Autowired UserRepository userRepository;
@@ -54,9 +54,9 @@ public class InternshipVacancyControllerTests {
         Company microsoft=new Company("Microsoft","Microsoft-12345", "microsoft@microsoft.com",jafer);
         companyRepository.save(microsoft);
 
-        internshipVacancy1 = new InternshipVacancy("Java Full-stack", "Javakunnig person med intresse för frontend","4 months" ,InternshipVacancyStatus.OPEN,LocalDate.of(2021,11,20),"Ms.Tsion","0718123456",microsoft);
+        internshipVacancy1 = new InternshipAdvert("Java Full-stack", "Javakunnig person med intresse för frontend","4 months" ,InternshipVacancyStatus.OPEN,LocalDate.of(2021,11,20),"Ms.Tsion","0718123456",microsoft);
         internshipVacancyRepository.save(internshipVacancy1);
-        internshipVacancy2 = new InternshipVacancy("C# Full-stack", "C# FULL-STACK med intresse för frontend","3 months", InternshipVacancyStatus.OPEN,LocalDate.of(2021,11,20),"Ms.Tsion","0718123123",microsoft);
+        internshipVacancy2 = new InternshipAdvert("C# Full-stack", "C# FULL-STACK med intresse för frontend","3 months", InternshipVacancyStatus.OPEN,LocalDate.of(2021,11,20),"Ms.Tsion","0718123123",microsoft);
         internshipVacancyRepository.save(internshipVacancy2);
 
         internshipVacancyDTO1 = internshipVacancyController.toInternshipVacancyDTO(internshipVacancy1);
@@ -69,7 +69,7 @@ public class InternshipVacancyControllerTests {
 
     @Test
     void test_getInternships_success() {
-        when(internshipVacancyService.getAllInternships()).thenReturn(Stream.of(internshipVacancy1, internshipVacancy2));
+        when(internshipAdvertService.getAllInternships()).thenReturn(Stream.of(internshipVacancy1, internshipVacancy2));
         List<InternshipVacancyDTO> internships = getInternship("");
         //Then
         assertEquals(List.of(internshipVacancyDTO1,internshipVacancyDTO2),internships);
@@ -79,7 +79,7 @@ public class InternshipVacancyControllerTests {
     @Test
     void test_getAllInternship_success() {
         //Given
-        when(internshipVacancyService.getAllInternships()).thenReturn(Stream.of(internshipVacancy1));
+        when(internshipAdvertService.getAllInternships()).thenReturn(Stream.of(internshipVacancy1));
         List<InternshipVacancyDTO> internships = getInternship("");
         //Then
         assertEquals(1, internships.size());

@@ -14,17 +14,17 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/internship")
 
 public class InternshipAdvertController {
-    private InternshipAdvertService internshipVacancyService;
+    private InternshipAdvertService internshipAdvertService;
 
     @GetMapping()
     public List<InternshipAdvertDTO> getAllInternship(){
-       return internshipVacancyService.getAllInternships().map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO).collect(Collectors.toList());
+       return internshipAdvertService.getAllInternships().map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO).collect(Collectors.toList());
        //return null;
     }
 
     @GetMapping("/{id}")
-    public InternshipAdvertDTO InternshipVacancy(@PathVariable("id") String id){
-        return internshipVacancyService.getInternshipVacancy(id).map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO).get();
+    public InternshipAdvertDTO InternshipAdvert(@PathVariable("id") String id){
+        return internshipAdvertService.getInternshipVacancy(id).map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO).get();
         //return null;
     }
 
