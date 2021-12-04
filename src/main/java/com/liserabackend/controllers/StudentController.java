@@ -113,7 +113,7 @@ public class StudentController {
                 student.getLastName(),
                 user.getId(),
                 user.getPassword(),
-                user.getEmail(),
+                user.getUsername(),
                 student.getPhone(),
                 (student.getLinkedInUrl() != "") ? student.getLinkedInUrl() : "",
                 user.getRole().toString(),
@@ -124,7 +124,7 @@ public class StudentController {
     private UserDTO toUserDTO(User user) {
         return new UserDTO(
                 user.getId(),
-                 user.getEmail(),
+                 user.getUsername(),
                 user.getRole().toString()
         );
     }

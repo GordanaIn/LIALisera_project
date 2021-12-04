@@ -6,8 +6,5 @@ import lombok.Value;
 public class CreateCompany {
     String name;
     String orgNumber;
-    String companyEmail;
-  //  String userEmail;
     String userId;
- //   String password;
 }

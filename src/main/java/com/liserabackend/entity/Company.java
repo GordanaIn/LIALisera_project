@@ -28,28 +28,25 @@ public class Company {
     @Column(columnDefinition = "varchar(100)")
     private String id;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   @JoinColumn(name = "employee_id")
+   private Set<Employee> employees = new HashSet<>();
 
     private String name;
     private String orgNumber;
-    private String email;
+
     /** Company email */
     private EnumStatus status; /** To handle if a company is potential and valid candidate for Advert Internship */
 
     /** A company can post many Advert */
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)//, mappedBy = "internshipVacancy"
     @JoinColumn(name = "internshipAdvert_id")
-    private Set<InternshipAdvert> internshipVacancyList = new HashSet<>();
+    private Set<InternshipAdvert> internshipAdvertList = new HashSet<>();
 
-    public Company(String name, String orgNumber, String email, User user) {
-        assert user != null; /** A company without user not allowed */
+    public Company(String name, String orgNumber) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.orgNumber = orgNumber;
-        this.email = email;
-        this.user = user;
         this.status = EnumStatus.NOT_APPROVED;
     }
 

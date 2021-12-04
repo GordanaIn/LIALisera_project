@@ -15,7 +15,7 @@ public enum EnumRole {
     ROLE_ADMIN,
     ROLE_SCHOOL,
     ROLE_STUDENT,
-    ROLE_EMPLOYER;
+    ROLE_EMPLOYEE;
 
     public static Stream<EnumRole> getRoles() {
         return Stream.of(EnumRole.values());

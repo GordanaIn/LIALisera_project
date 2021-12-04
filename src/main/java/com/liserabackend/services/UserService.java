@@ -1,20 +1,15 @@
 package com.liserabackend.services;
 
-import com.liserabackend.dto.CreateStudent;
 import com.liserabackend.dto.CreateUser;
 import com.liserabackend.dto.ModifyPasswordDTO;
-import com.liserabackend.entity.Student;
 import com.liserabackend.entity.User;
-import com.liserabackend.entity.repository.StudentRepository;
 import com.liserabackend.entity.repository.UserRepository;
 import com.liserabackend.exceptions.UseException;
-import com.liserabackend.exceptions.UseExceptionType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static com.liserabackend.enums.EnumRole.ROLE_STUDENT;
 import static com.liserabackend.exceptions.UseExceptionType.USER_ALREADY_EXIST;
 import static com.liserabackend.exceptions.UseExceptionType.USER_NOT_FOUND;
 
@@ -52,7 +47,7 @@ public class UserService {
     // check if below methods should be used in the filter above?
 
     public Optional<User> getUserByEmail(String email) throws UseException {
-        final var user = userRepository.findByEmail(email)
+        final var user = userRepository.findByUsername(email)
                 .orElseThrow(() -> new UseException(USER_NOT_FOUND));
         return Optional.ofNullable(user);
     }
@@ -60,12 +55,12 @@ public class UserService {
     public Optional<User> updateEmail(String userId, String email) throws UseException {
         final User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UseException(USER_NOT_FOUND));
-        user.setEmail(email);
+        user.setUsername(email);
         return Optional.ofNullable(saveUser(user));
     }
 
     public Optional<User> createUser(CreateUser createUser) throws UseException {
-        userRepository.findByEmail(createUser.getEmail()).orElseThrow( ()->new UseException(USER_ALREADY_EXIST));
+        userRepository.findByUsername(createUser.getEmail()).orElseThrow( ()->new UseException(USER_ALREADY_EXIST));
         return  Optional.of(userRepository.save(new User(createUser.getEmail(), createUser.getPassword(), createUser.getRole())));
     }
 

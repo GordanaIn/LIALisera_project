@@ -2,6 +2,7 @@ package com.liserabackend.controllers;
 
 import com.liserabackend.dto.*;
 import com.liserabackend.entity.Company;
+import com.liserabackend.entity.Employee;
 import com.liserabackend.entity.InternshipAdvert;
 import com.liserabackend.entity.User;
 import com.liserabackend.exceptions.UseException;
@@ -30,10 +31,8 @@ public class CompanyController {
     }
 
     @GetMapping("/{userId}")
-    public CompanyDTO getCompanyByUserId(@PathVariable("userId") String userId) throws UseException {
-        return companyService.getCompanyByUserId(userId)
-                .map(this::toCompanyDTO)
-                .orElseThrow(()->new UseException(UseExceptionType.USER_NOT_FOUND));
+    public CompanyDTO getCompanyByEmployeeUserId(@PathVariable("userId") String userId) throws UseException {
+        return toCompanyDTO(companyService.getCompanyByEmployeeUserId(userId));
     }
 
     @PostMapping("/addCompany")
@@ -64,14 +63,13 @@ public class CompanyController {
     }
 
     private CompanyDTO toCompanyDTO(Company company) {
-        User user=company.getUser();
+
         return new CompanyDTO(
                 company.getId(),
                 company.getName(),
                 company.getOrgNumber(),
-                company.getEmail(),
-                user.getId(),
-                user.getRole().toString()
+                (List<Employee>) company.getEmployees()
+
         );
     }
 

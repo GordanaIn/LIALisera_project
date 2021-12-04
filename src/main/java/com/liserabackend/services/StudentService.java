@@ -42,7 +42,7 @@ public class StudentService {
     }
 
     public Optional<Student> getStudentByEmail(String email) throws UseException {
-        final User user = userRepository.findByEmail(email)
+        final User user = userRepository.findByUsername(email)
                 .filter(u -> u.getRole().equals(ROLE_STUDENT))
                 .orElseThrow(() -> new UseException(USER_NOT_FOUND));
         final Student student = studentRepository.findByUserId(user.getId())
@@ -66,7 +66,7 @@ public class StudentService {
 
     private void updateProfile(CreateStudent student, User user, Student oldStudent) {
         user.setPassword(student.getPassword());
-        user.setEmail(student.getEmail()); /** Email should not be modified */
+        user.setUsername(student.getEmail()); /** Email should not be modified */
         oldStudent.setFirstName(student.getFirstName());
         oldStudent.setLastName(student.getLastName());
         oldStudent.setPhone(student.getPhone());

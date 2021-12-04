@@ -1,7 +1,6 @@
 package com.liserabackend.entity;
 
 import com.liserabackend.enums.EnumRole;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +20,7 @@ public class User {
     @NotBlank
     @Size(max = 50)
     @Email
-    private String email;
+    private String username;
     @Size(max = 120)
     private String password; /** byte[] encryptedPassword; */
 
@@ -30,9 +29,9 @@ public class User {
     @Column(length = 25)
     private EnumRole role;
 
-    public User(String email, String password, EnumRole role){
+    public User(String username, String password, EnumRole role){
         this.id= UUID.randomUUID().toString();
-        this.email = email;
+        this.username = username;
         this.password = password;
         this.role=role;
     }
