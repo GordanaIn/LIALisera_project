@@ -1,5 +1,6 @@
 package com.liserabackend.services;
 
+import com.liserabackend.entity.repository.RoleRepositories;
 import com.liserabackend.dto.CreateStudent;
 import com.liserabackend.entity.InternshipAdvert;
 import com.liserabackend.entity.Student;
@@ -16,7 +17,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.liserabackend.enums.EnumRole.ROLE_STUDENT;
 import static com.liserabackend.exceptions.UseExceptionType.*;
 
 @Service
@@ -25,7 +25,7 @@ public class StudentService {
     private final UserRepository userRepository;
     private final StudentRepository studentRepository;
     private final InternshipAdvertRepository internshipAdvertRepository;
-
+    private final RoleRepositories roleRepositories;
     public Stream<Student> getStudents() {
        return studentRepository.findAll(Pageable.ofSize(1))
                .stream();
@@ -41,10 +41,10 @@ public class StudentService {
         return Optional.of(student);
     }
 
-    public Optional<Student> getStudentByEmail(String email) throws UseException {
-        final User user = userRepository.findByUsername(email)
-                .filter(u -> u.getRole().equals(ROLE_STUDENT))
-                .orElseThrow(() -> new UseException(USER_NOT_FOUND));
+    public Optional<Student> getStudentByEmail(String username) throws UseException {
+        final var role_student = roleRepositories.findAll().stream().filter(role -> role.getName().equals("ROLE_STUDENT")).findAny().get();
+        final User user = userRepository.findByUsername(username).filter(u->u.getRoles().equals(role_student)).orElseThrow(() -> new UseException(USER_NOT_FOUND));
+
         final Student student = studentRepository.findByUserId(user.getId())
                 .orElseThrow(() -> new UseException(STUDENT_NOT_FOUND));
 
@@ -52,9 +52,8 @@ public class StudentService {
     }
 
     public Optional<Student> updateProfile(String userId, CreateStudent student) throws UseException {
-        final var user = userRepository.findById(userId)
-                .filter(u -> u.getRole().equals(ROLE_STUDENT))
-                .orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        final var role_student = roleRepositories.findAll().stream().filter(role -> role.getName().equals("ROLE_STUDENT")).findAny().get();
+        final var user = userRepository.findById(userId).filter(u->u.getRoles().equals(role_student)).orElseThrow(() -> new UseException(USER_NOT_FOUND));
         final Student oldStudent = studentRepository.findByUserId(user.getId())
                 .orElseThrow(() -> new UseException(STUDENT_NOT_FOUND));
 

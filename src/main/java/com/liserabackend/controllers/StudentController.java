@@ -10,6 +10,7 @@ import com.liserabackend.services.StudentService;
 import com.liserabackend.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class StudentController {
     private final StudentService studentService;
     private final UserService userService;
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping()
     public List<StudentDTO> getStudents() {
         return studentService.getStudents()
@@ -116,7 +118,7 @@ public class StudentController {
                 user.getUsername(),
                 student.getPhone(),
                 (student.getLinkedInUrl() != "") ? student.getLinkedInUrl() : "",
-                user.getRole().toString(),
+                user.getRoles().stream().toList(),
                 student.getSchoolName()
         );
     }
@@ -124,8 +126,8 @@ public class StudentController {
     private UserDTO toUserDTO(User user) {
         return new UserDTO(
                 user.getId(),
-                 user.getUsername(),
-                user.getRole().toString()
+                user.getUsername(),
+                user.getRoles().stream().toList()
         );
     }
 

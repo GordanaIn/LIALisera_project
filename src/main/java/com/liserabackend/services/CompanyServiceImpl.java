@@ -1,5 +1,6 @@
 package com.liserabackend.services;
 
+import com.liserabackend.entity.repository.RoleRepositories;
 import com.liserabackend.dto.CreateCompany;
 import com.liserabackend.dto.CreateInternship;
 import com.liserabackend.entity.Company;
@@ -17,7 +18,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.liserabackend.enums.EnumRole.ROLE_EMPLOYEE;
 import static com.liserabackend.exceptions.UseExceptionType.*;
 
 @Service
@@ -27,6 +27,7 @@ public class CompanyServiceImpl {
     private final CompanyRepository companyRepository;
     private final UserRepository userRepository;
     private final InternshipAdvertRepository internshipAdvertRepository;
+    private final RoleRepositories roleRepositories;
     public Company saveCompany(Company company) {
         return companyRepository.save(company);
     }
@@ -36,7 +37,9 @@ public class CompanyServiceImpl {
     }
 
     public Company getCompanyByEmployeeUserId(String userId) throws UseException {
-        final var employee = employeeRepository.findByUserId(userId).filter(user -> user.getUser().getRole().equals(ROLE_EMPLOYEE)).orElseThrow(() -> new UseException(EMPLOYEE_NOT_FOUND));
+
+        final var role_employee = roleRepositories.findAll().stream().filter(role -> role.getName().equals("ROLE_EMPLOYEE")).findAny().get();
+        final var employee = employeeRepository.findByUserId(userId).filter(user -> user.getUser().getRoles().equals(role_employee)).orElseThrow(() -> new UseException(EMPLOYEE_NOT_FOUND));
         return companyRepository.findAll().stream().filter(company -> company.getEmployees().contains(employee)).findAny().get();
     }
 

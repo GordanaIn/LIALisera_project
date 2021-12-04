@@ -1,13 +1,17 @@
 package com.liserabackend.services;
 
+import com.liserabackend.entity.repository.RoleRepositories;
 import com.liserabackend.entity.*;
 import com.liserabackend.entity.repository.*;
-import com.liserabackend.enums.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class LoadDataService implements CommandLineRunner {
@@ -17,14 +21,36 @@ public class LoadDataService implements CommandLineRunner {
     @Autowired CompanyRepository companyRepository;
     @Autowired SchoolRepository schoolRepository;
     @Autowired EmployeeRepository employeeRepository;
-
-    private void registerUser(){
+    @Autowired RoleRepositories roleRepositories;
+    private void registerRole(){
+        if(roleRepositories.findAll().isEmpty()){
+            Role roleStudent = new Role("ROLE_STUDENT");
+            Role roleEmployee = new Role("ROLE_EMPLOYEE");
+            Role roleAdmin = new Role("ROLE_ADMIN");
+            roleRepositories.save(roleStudent);
+            roleRepositories.save(roleEmployee);
+            roleRepositories.save(roleAdmin);
+            registerUser(roleStudent, roleEmployee);
+         }
+    }
+    private void registerUser(Role roleStudent,Role roleEmployee ){
         if (userRepository.findAll().isEmpty()) {
-            User eyuel= new User("eyuel@gmail.com", "eyuel@gmail.com","eyuel21",EnumRole.ROLE_STUDENT);
-            User jafer=new User("jafer@gmail.com", "jafer@gmail.com","jafer21", EnumRole.ROLE_STUDENT);
-
+            //create user
+            User eyuel= new User("eyuel@gmail.com","eyuel21");
+            User jafer=new User("jafer@gmail.com", "jafer21");
+            User microsoftUser = new User("helen@microsoft.com", "helen21");
+            User googleUser = new User("josefin@google.com", "jojo21");
+            //add roles
+            eyuel.getRoles().add(roleStudent);
+            jafer.getRoles().add(roleStudent);
+            microsoftUser.getRoles().add(roleEmployee);
+            googleUser.getRoles().add(roleEmployee);
+            //save in repo
             userRepository.save(eyuel);
             userRepository.save(jafer);
+            userRepository.save(microsoftUser);
+            userRepository.save(googleUser);
+
             registerStudent(eyuel, jafer);
             registerCompany();
 
@@ -45,11 +71,12 @@ public class LoadDataService implements CommandLineRunner {
            }
    }
     private void registerEmployee( Company companyGoogle, Company companyMicrosoft){
-        User microsoftUser = new User("helen@microsoft.com", "helen@microsoft.com","helen21",EnumRole.ROLE_EMPLOYEE);
-        User googleUser = new User("josefin@google.com", "josefin@google.com","jojo21",EnumRole.ROLE_EMPLOYEE);
-        userRepository.save(microsoftUser);
-        userRepository.save(googleUser);
+        final List<Role> role_employee = roleRepositories.findAll().stream().filter(role -> role.getName().equals("ROLE_EMPLOYEE")).collect(Collectors.toList());
+        final Stream<User> userStream = userRepository.findAll().stream().filter(user -> user.getRoles().equals(role_employee));
+        final var microsoftUser = userStream.filter(u -> u.getUsername().contains("microsoft.com")).findFirst().get();
+        final var googleUser = userStream.filter(u -> u.getUsername().contains("google.com")).findFirst().get();
         if(employeeRepository.findAll().isEmpty()){
+            //
 
             Employee employeeMicrosoft = new Employee("Lisa", "Johansson", "lias@microsoft.com", microsoftUser);
             Employee employeeGoogle = new Employee("Linda", "Eriksson", "linda@google.com",googleUser);
@@ -58,8 +85,13 @@ public class LoadDataService implements CommandLineRunner {
             employeeMicrosoft.setCompany(companyMicrosoft);
             employeeRepository.save(employeeMicrosoft);
             employeeRepository.save(employeeGoogle);
-
-
+            // add employees in company
+            final var googleCompany = companyRepository.findAll().stream().filter(c -> c.getName().contains("Google")).findFirst().get();
+            final var microsoftCompany = companyRepository.findAll().stream().filter(c -> c.getName().contains("Microsoft")).findFirst().get();
+            companyGoogle.getEmployees().add(employeeGoogle);
+            companyMicrosoft.getEmployees().add(employeeMicrosoft);
+            companyRepository.save(googleCompany);
+            companyRepository.save(microsoftCompany);
         }
     }
    private void registerCompany(){
@@ -94,7 +126,6 @@ public class LoadDataService implements CommandLineRunner {
     }
     @Override
     public void run(String... args) {
-        registerUser();
-
+        registerRole();
    }
 }

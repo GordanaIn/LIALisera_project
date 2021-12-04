@@ -43,7 +43,7 @@ public class SchoolController {
                 school.getOrgNumber(),
                 user.getId(),
                 user.getUsername(),
-                user.getRole().toString()
+                user.getRoles().stream().toList()
         );
     }
 }

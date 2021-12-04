@@ -1,5 +1,6 @@
 package com.liserabackend.services;
 
+import com.liserabackend.entity.repository.RoleRepositories;
 import com.liserabackend.dto.CreateSchool;
 import com.liserabackend.entity.School;
 import com.liserabackend.entity.User;
@@ -13,21 +14,20 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.liserabackend.enums.EnumRole.ROLE_SCHOOL;
-
 @Service
 @AllArgsConstructor
 public class SchoolService {
     private final SchoolRepository schoolRepository;
     private final UserRepository userRepository;
-
+    private final RoleRepositories roleRepositories;
     public School saveStudent(School school) {
         return schoolRepository.save(school);
     }
 
 
     public Stream<School> getSchools() {
-        return schoolRepository.findAll().stream().filter(s->s.getUser().getRole().equals(ROLE_SCHOOL));
+        //Get role
+        return schoolRepository.findAll().stream();
     }
 
 
@@ -47,7 +47,7 @@ public class SchoolService {
     public Optional<School> addSchool(CreateSchool createSchool) throws UseException {
         //check if user found on user, then on company
 
-        User user=new User(createSchool.getUsername(), createSchool.getUserEmail(),createSchool.getPassword(), ROLE_SCHOOL);
+        User user=new User(createSchool.getUsername(),createSchool.getPassword());
         user=userRepository.save(user);
         School school=new School(createSchool.getName(),createSchool.getPhone(),createSchool.getOrganizationNumber(), createSchool.getSchoolEmail(), user);
         school=schoolRepository.save(school);

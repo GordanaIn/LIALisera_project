@@ -3,7 +3,10 @@ package com.liserabackend.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.liserabackend.entity.Role;
 import lombok.Value;
+
+import java.util.List;
 
 @Value
 public class StudentDTO {
@@ -15,7 +18,7 @@ public class StudentDTO {
     String email;
     String phone;
     String linkedIn;
-    String role;
+    List<Role> role;
     String schoolName;
 
     @JsonCreator
@@ -28,7 +31,7 @@ public class StudentDTO {
             @JsonProperty("email") String email,
             @JsonProperty("phone") String phone,
             @JsonProperty("linkedIn") String linkedIn,
-            @JsonProperty("role") String role,
+            @JsonProperty("role")     List<Role> role,
             @JsonProperty("schoolName") String schoolName){
         this.studentId=studentId;
         this.firstName=firstName;

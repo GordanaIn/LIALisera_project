@@ -10,6 +10,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.*;
 
+import static javax.persistence.FetchType.EAGER;
+
 @Data
 @Entity(name="users")
 @NoArgsConstructor
@@ -17,22 +19,15 @@ import java.util.*;
 public class User {
     @Id @Column(columnDefinition = "varchar(100)") private String id;
 
-    @NotBlank
-    @Size(max = 50)
-    @Email
     private String username;
-    @Size(max = 120)
-    private String password; /** byte[] encryptedPassword; */
+    private String password;
 
-    /**  A user has set of Role but in these scenarios A user has only one role */
-    @Enumerated(EnumType.STRING)
-    @Column(length = 25)
-    private EnumRole role;
+    @ManyToMany(fetch=EAGER)
+    Collection<Role> roles=new ArrayList<>();
 
-    public User(String username, String password, EnumRole role){
+    public User(String username, String password){
         this.id= UUID.randomUUID().toString();
         this.username = username;
         this.password = password;
-        this.role=role;
     }
 }
