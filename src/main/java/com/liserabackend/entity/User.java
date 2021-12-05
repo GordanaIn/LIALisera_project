@@ -17,7 +17,8 @@ import static javax.persistence.FetchType.EAGER;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-    @Id @Column(columnDefinition = "varchar(100)") private String id;
+    @Id @Column(columnDefinition = "varchar(100)")
+    private String id;
 
     private String username;
     private String password;

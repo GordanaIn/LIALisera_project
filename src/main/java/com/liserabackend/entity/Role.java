@@ -12,7 +12,8 @@ import java.util.UUID;
 @Entity(name = "roles") @AllArgsConstructor @NoArgsConstructor @Data
 public class Role {
     @Id
-    @Column(columnDefinition = "varchar(100)") private String id;
+    @Column(columnDefinition = "varchar(100)")
+    private String id;
     private String name;
 
     public Role(String name) {

@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,7 +26,9 @@ import static com.liserabackend.exceptions.UseExceptionType.USER_ALREADY_EXIST;
 import static com.liserabackend.exceptions.UseExceptionType.USER_NOT_FOUND;
 
 @Service
-@AllArgsConstructor @Slf4j
+@AllArgsConstructor
+@Transactional
+@Slf4j
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
@@ -54,11 +57,38 @@ public class UserService implements UserDetailsService {
             return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
         }
     }
+
+
     //Users
     public User saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
+
+    //saveRole??
+
+    public Role saveRole(Role role){
+        return roleRepositories.save(role);
+    }
+
+    public void addRoleToUser(String username, String roleName) {
+        User user=userRepository.findByUsername(username).get();
+        Role role=roleRepositories.findByName(roleName);
+        user.getRoles().add(role);//get role from user and add new role
+        userRepository.save(user);
+    }
+
+    public Optional<User> getUserByUserName(String username) throws UseException {
+        final var user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        return Optional.ofNullable(user);
+    }
+
+
+
+
+
+
     public Optional<User> updatePassword(String userId, String password) throws UseException {
         final var user = userRepository.findById(userId)
                 .orElseThrow(() -> new UseException(USER_NOT_FOUND));
@@ -66,6 +96,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(password);
         return Optional.of(saveUser(user));
     }
+
     public Optional<User> modifyPassword(ModifyPasswordDTO modifyPasswordDTO) throws UseException {
         final var user = userRepository.findAll().stream()
                .filter(u -> u.getPassword().equals(modifyPasswordDTO.getCurrentPassword()))
@@ -73,13 +104,6 @@ public class UserService implements UserDetailsService {
         user.setPassword(modifyPasswordDTO.getNewPassword());
         userRepository.save(user);
         return Optional.of(saveUser(user));
-    }
-    // check if below methods should be used in the filter above?
-
-    public Optional<User> getUserByUserName(String username) throws UseException {
-        final var user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UseException(USER_NOT_FOUND));
-        return Optional.ofNullable(user);
     }
 
     public Optional<User> updateEmail(String userId, String email) throws UseException {
@@ -93,13 +117,5 @@ public class UserService implements UserDetailsService {
         userRepository.findByUsername(createUser.getEmail()).orElseThrow( ()->new UseException(USER_ALREADY_EXIST));
         return  Optional.of(userRepository.save(new User(createUser.getEmail(), createUser.getPassword())));
     }
-    public void addRoleToUser(String username, String roleName) {
-        User user=userRepository.findByUsername(username).get();
-        Role role=roleRepositories.findByName(roleName);
-        user.getRoles().add(role);//get role from user and add new role
-        userRepository.save(user);
-    }
-
-
 
 }
