@@ -84,11 +84,6 @@ public class UserService implements UserDetailsService {
         return Optional.ofNullable(user);
     }
 
-
-
-
-
-
     public Optional<User> updatePassword(String userId, String password) throws UseException {
         final var user = userRepository.findById(userId)
                 .orElseThrow(() -> new UseException(USER_NOT_FOUND));

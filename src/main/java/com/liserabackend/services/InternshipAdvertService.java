@@ -18,5 +18,8 @@ public class InternshipAdvertService {
     public Optional<InternshipAdvert> getInternshipVacancy(String id) {
         return internshipVacancyRepository.findById(id);
     }
+    public InternshipAdvert addInternshipAdvert(InternshipAdvert internshipAdvert){
+        return internshipVacancyRepository.save(internshipAdvert);
+    }
 
 }

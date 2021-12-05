@@ -24,7 +24,7 @@ public class StudentController {
     private final StudentService studentService;
     private final UserService userService;
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
     @GetMapping()
     public List<StudentDTO> getStudents() {
         return studentService.getStudents()

@@ -125,6 +125,9 @@ public class StudentService {
         return true;
     }
 
+    public Student saveStudent(Student student) {
+       return studentRepository.save(student);
+    }
 
 
 }

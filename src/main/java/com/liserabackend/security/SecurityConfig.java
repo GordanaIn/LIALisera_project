@@ -3,6 +3,7 @@ package com.liserabackend.security;
 import com.liserabackend.filter.CustomAuthenticationFilter;
 import com.liserabackend.filter.CustomAuthorizationFilter;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +20,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 
 @Configuration  @EnableWebSecurity @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final UserDetailsService userDetailsService;
+    @Autowired private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
@@ -33,8 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-        http.authorizeRequests().antMatchers("api//login/**").permitAll();
-        http.authorizeRequests().antMatchers("/api/student").permitAll();
+        http.authorizeRequests().antMatchers("api/login/**", "/api/token/refresh/**").permitAll();
+        http.authorizeRequests().antMatchers(GET, "/api/student/**").hasAnyAuthority("ROLE_STUDENT");
         //http.authorizeRequests().antMatchers("/api/login/**").permitAll();
         //http.authorizeRequests().antMatchers(GET, "/api/student/**").hasAnyAuthority("ROLE_USER");
 
@@ -48,4 +49,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.liserabackend.services;
 
+import com.liserabackend.entity.Employee;
 import com.liserabackend.entity.repository.RoleRepositories;
 import com.liserabackend.dto.CreateCompany;
 import com.liserabackend.dto.CreateInternship;
@@ -84,6 +85,12 @@ public class CompanyServiceImpl {
         updateInternship(oldInternship, internship);
 
         return Optional.of(oldInternship);
+    }
+    public Employee saveEmployee(Employee employee) {
+      return employeeRepository.save(employee);
+    }
+    public Company getCompanyByName(String name){
+        return companyRepository.findByName(name).get();
     }
     private InternshipAdvert updateInternship(InternshipAdvert oldInternship, InternshipAdvert internshipVacancy) {
         oldInternship.setContactEmployer(internshipVacancy.getContactEmployer());

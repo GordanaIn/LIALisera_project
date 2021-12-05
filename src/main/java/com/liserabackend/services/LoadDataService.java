@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Component
+//@Component
 public class LoadDataService implements CommandLineRunner {
     @Autowired
     UserRepository userRepository;
@@ -32,6 +32,7 @@ public class LoadDataService implements CommandLineRunner {
     EmployeeRepository employeeRepository;
     @Autowired
     RoleRepositories roleRepositories;
+    private PasswordEncoder passwordEncoder;
 
     private void registerRole() {
         if (roleRepositories.findAll().isEmpty()) {
@@ -49,8 +50,11 @@ public class LoadDataService implements CommandLineRunner {
         if (userRepository.findAll().isEmpty()) {
             //create user
             User eyuel = new User("eyuel@gmail.com", "eyuel21");
+            eyuel.setPassword(passwordEncoder.encode(eyuel.getPassword()));
             User jafer = new User("jafer@gmail.com", "jafer21");
+            jafer.setPassword(passwordEncoder.encode(jafer.getPassword()));
             User microsoftUser = new User("helen@microsoft.com", "helen21");
+
             User googleUser = new User("josefin@google.com", "jojo21");
             //add roles
 
