@@ -77,11 +77,20 @@ public class StudentController {
                 .orElseThrow(() -> new UseException(UseExceptionType.USER_NOT_FOUND));
     }
 
-    //check again
     @PatchMapping("/{userId}/{internshipId}")
-    public boolean applyInternship(@PathVariable("userId") String userId,
+    public boolean applyInternshipAdvert(@PathVariable("userId") String userId,
                                    @PathVariable("internshipId") String internshipId) throws UseException {
-        return studentService.applyInternship(userId, internshipId);
+        return studentService.applyInternshipAdvert(userId, internshipId);
+    }
+
+    @GetMapping("/appliedInternshipAdvertList/{userId}")
+    public List<InternshipAdvertDTO> getAppliedInternshipAdvertList(@PathVariable("userId") String userId) throws UseException {
+        return studentService.getAppliedInternshipAdvertList(userId).map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO).collect(Collectors.toList());
+    }
+
+    @GetMapping("/favorites/{userId}")
+    public List<InternshipAdvertDTO> getFavoritesList(@PathVariable("userId") String userId){
+        return studentService.getFavoritesList(userId).map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO).collect(Collectors.toList());
     }
 
     @PatchMapping("/addFavorite/{userId}/{internshipId}")
@@ -94,16 +103,6 @@ public class StudentController {
     public void removeFavorite(@PathVariable("userId") String userId,
                                @PathVariable("internshipId") String internshipId) throws Exception {
         studentService.removeFavorite(userId, internshipId);
-    }
-
-
-    @GetMapping("/vacancyLists/{userId}")
-    public List<InternshipAdvertDTO> getVacancyLists(@PathVariable("userId") String userId) throws UseException {
-        return studentService.getVacancyLists(userId).map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO).collect(Collectors.toList());
-    }
-    @GetMapping("/favorites/{userId}")
-    public List<InternshipAdvertDTO> getFavoritesList(@PathVariable("userId") String userId){
-        return studentService.getFavoritesList(userId).map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO).collect(Collectors.toList());
     }
 
     private StudentDTO toStudentDTO(Student student) {

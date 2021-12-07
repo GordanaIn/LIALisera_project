@@ -47,14 +47,16 @@ public class CompanyController {
                 .orElseThrow(() -> new UseException(UseExceptionType.COMPANY_NOT_FOUND));
     }
 
+    //employee save + edit
+
     @PostMapping()
     public Optional<InternshipAdvertDTO> addInternship(@RequestBody CreateInternship createInternship) throws UseException {
         return companyService.addInternship(createInternship).map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO);
     }
-    @PatchMapping("/editInternship/{id}")
-    public InternshipAdvertDTO updateInternship(@PathVariable("id") String Id,
+    @PatchMapping("/updateInternship/{employeeId}")
+    public InternshipAdvertDTO updateInternship(@PathVariable("employeeId") String employeeId,
                                                 @RequestBody InternshipAdvert internship) throws UseException {
-        return companyService.updateInternship(Id,internship).map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO).get();
+        return companyService.updateInternship(employeeId,internship).map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO).get();
     }
     @DeleteMapping("/deleteInternship/{employerId}/{internshipId}")
     public void delete(@PathVariable("employerId") String employerId,

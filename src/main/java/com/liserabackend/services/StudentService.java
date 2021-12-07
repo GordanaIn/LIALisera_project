@@ -109,11 +109,11 @@ public class StudentService {
         studentRepository.save(student);
     }
 
-    public Stream<InternshipAdvert> getVacancyLists(String userId) throws UseException {
+    public Stream<InternshipAdvert> getAppliedInternshipAdvertList(String userId) throws UseException {
         var student = studentRepository.findByUserId(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
         return student.getAppliedVacancies().stream();
     }
-    public boolean applyInternship(String userId, String internshipId) throws UseException {
+    public boolean applyInternshipAdvert(String userId, String internshipId) throws UseException {
         Student student = getStudentByUserId(userId).get();
         final InternshipAdvert internshipVacancy = internshipAdvertRepository.findById(internshipId)
                 .orElseThrow(() -> new UseException(INTERNSHIP_NOT_FOUND));
