@@ -46,20 +46,25 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         String access_token= JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000)) //10 mim
-                .withIssuer(request.getRequestURI())
+                .withIssuer(request.getRequestURL().toString())
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
 
         String refresh_token= JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
-                .withIssuer(request.getRequestURI())
+                .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000)) //30 min
+                .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
 
         Map<String,String> tokens=new HashMap<>();
         tokens.put("access_token", access_token);
         tokens.put("refresh_token", refresh_token);
         response.setContentType(APPLICATION_JSON_VALUE);
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "*");
+        response.setHeader("Access-Control-Allow-Headers", "*");
+        response.setHeader("Access-Control-Allow-Credentials", "false");
+        response.setHeader("Access-Control-Max-Age", "3600");
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);
     }
 }

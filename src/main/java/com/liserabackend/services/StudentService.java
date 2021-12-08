@@ -29,10 +29,7 @@ public class StudentService {
     public Stream<Student> getStudents() {
        return studentRepository.findAll(Pageable.ofSize(1))
                .stream();
-        //Remark-No need to filter by role since only student role is saved when object is created
-       // return studentRepository.findAll()
-         //       .stream()
-           //     .filter(s -> s.getUser().getRole().equals(ROLE_STUDENT));
+
     }
 
     public Optional<Student> getStudentByUserId(String userId) throws UseException {

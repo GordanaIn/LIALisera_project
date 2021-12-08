@@ -33,7 +33,7 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final RoleRepositories roleRepositories;
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     /*
        User service for all the methods that have to do with creating the different users
        login
