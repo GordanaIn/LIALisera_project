@@ -1,5 +1,6 @@
 package com.liserabackend.services;
 
+import com.liserabackend.dto.CreateEmployee;
 import com.liserabackend.entity.Employee;
 import com.liserabackend.entity.repository.RoleRepositories;
 import com.liserabackend.dto.CreateCompany;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
 import static com.liserabackend.exceptions.UseExceptionType.*;
@@ -100,5 +102,11 @@ public class CompanyServiceImpl {
 
         oldInternship.setTitle(internshipVacancy.getTitle());
         return oldInternship;
+    }
+
+    public Employee addEmlpoyee(CreateEmployee createEmployee) {
+        User user = userRepository.findByUsername(createEmployee.getEmail()).get();
+        Employee employee = new Employee(createEmployee.getFirstName(),createEmployee.getLastName(),createEmployee.getEmail(),user);
+        return employeeRepository.save(employee);
     }
 }

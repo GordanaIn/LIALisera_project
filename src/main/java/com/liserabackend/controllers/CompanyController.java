@@ -1,10 +1,7 @@
 package com.liserabackend.controllers;
 
 import com.liserabackend.dto.*;
-import com.liserabackend.entity.Company;
-import com.liserabackend.entity.Employee;
-import com.liserabackend.entity.InternshipAdvert;
-import com.liserabackend.entity.User;
+import com.liserabackend.entity.*;
 import com.liserabackend.exceptions.UseException;
 import com.liserabackend.exceptions.UseExceptionType;
 import com.liserabackend.services.CompanyServiceImpl;
@@ -48,6 +45,10 @@ public class CompanyController {
     }
 
     //employee save + edit
+    @PostMapping ("/addEmployee")
+    public EmployeeDTO addEmployee(@RequestBody CreateEmployee createEmployee) throws UseException {
+        return toEmployeeDTO(companyService.addEmlpoyee(createEmployee));
+    }
 
     @PostMapping()
     public Optional<InternshipAdvertDTO> addInternship(@RequestBody CreateInternship createInternship) throws UseException {
@@ -72,6 +73,19 @@ public class CompanyController {
                 company.getOrgNumber(),
                 (List<Employee>) company.getEmployees()
 
+        );
+    }
+    private EmployeeDTO toEmployeeDTO (Employee employee){
+        User user = employee.getUser();
+
+        return new EmployeeDTO(
+                employee.getId(),
+                employee.getFirstName(),
+                employee.getLastName(),
+                employee.getCompany().toString(),
+                user.getPassword(),
+                user.getUsername(),
+                user.getRoles().stream().toList()
         );
     }
 
