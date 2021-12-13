@@ -1,4 +1,4 @@
-package com.liserabackend.controllers;
+package com.liserabackend.dto;
 
 import com.liserabackend.dto.InternshipAdvertDTO;
 import com.liserabackend.entity.Company;

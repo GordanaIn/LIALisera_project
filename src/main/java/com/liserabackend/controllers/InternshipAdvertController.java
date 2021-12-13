@@ -1,6 +1,7 @@
 package com.liserabackend.controllers;
 
 import com.liserabackend.dto.InternshipAdvertDTO;
+import com.liserabackend.dto.InternshipAdvertEntityToDTO;
 import com.liserabackend.services.InternshipAdvertService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

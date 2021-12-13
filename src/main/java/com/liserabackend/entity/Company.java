@@ -32,8 +32,8 @@ public class Company {
    @JoinColumn(name = "employee_id")
    private Set<Employee> employees = new HashSet<>();
 
-    private String name;
-    private String orgNumber;
+   private String name;
+   private String orgNumber;
 
     /** Company email */
     private EnumStatus status; /** To handle if a company is potential and valid candidate for Advert Internship */

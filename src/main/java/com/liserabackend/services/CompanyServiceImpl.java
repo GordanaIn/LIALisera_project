@@ -41,8 +41,12 @@ public class CompanyServiceImpl {
 
     public Company getCompanyByEmployeeUserId(String userId) throws UseException {
 
-        final var role_employee = roleRepositories.findAll().stream().filter(role -> role.getName().equals("ROLE_EMPLOYEE")).findAny().get();
+        final var role_employee = roleRepositories.findByName("ROLE_EMPLOYEE");
         final var employee = employeeRepository.findByUserId(userId).filter(user -> user.getUser().getRoles().equals(role_employee)).orElseThrow(() -> new UseException(EMPLOYEE_NOT_FOUND));
+        //how to get companyId inside employee
+        final String id = employee.getCompany().getId();
+
+        System.out.println(employee.getId());
         return companyRepository.findAll().stream().filter(company -> company.getEmployees().contains(employee)).findAny().get();
     }
 
@@ -104,9 +108,5 @@ public class CompanyServiceImpl {
         return oldInternship;
     }
 
-    public Employee addEmlpoyee(CreateEmployee createEmployee) {
-        User user = userRepository.findByUsername(createEmployee.getEmail()).get();
-        Employee employee = new Employee(createEmployee.getFirstName(),createEmployee.getLastName(),createEmployee.getEmail(),user);
-        return employeeRepository.save(employee);
-    }
+
 }

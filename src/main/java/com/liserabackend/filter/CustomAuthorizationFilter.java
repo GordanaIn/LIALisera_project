@@ -1,5 +1,6 @@
 package com.liserabackend.filter;
 
+/*
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -31,11 +32,22 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        System.out.println("1");
         if(request.getServletPath().equals("/api/login") || request.getServletPath().equals("/api/token/refresh")){
+            System.out.println("2");
             filterChain.doFilter(request,response);
         }else{
+            System.out.println("3");
             String authorizationHeader = request.getHeader(AUTHORIZATION);
+            System.out.println(authorizationHeader);
             if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
+                System.out.println("4");
+                response.setHeader("Access-Control-Allow-Origin", "*");
+                response.setHeader("Access-Control-Allow-Methods", "*");
+                response.setHeader("Access-Control-Allow-Headers", "*");
+                response.setHeader("Access-Control-Allow-Credentials", "true");
+                response.setHeader("Access-Control-Max-Age", "3600");
+
                 try{
                     String token = authorizationHeader.substring("Bearer ".length()); //get token
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes()); //get the algorithm
@@ -67,3 +79,4 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
         }
     }
 }
+*/

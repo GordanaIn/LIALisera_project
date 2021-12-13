@@ -1,5 +1,6 @@
 package com.liserabackend.filter;
 
+/*
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -59,12 +60,17 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         Map<String,String> tokens=new HashMap<>();
         tokens.put("access_token", access_token);
         tokens.put("refresh_token", refresh_token);
+        System.out.println("Hello ");
         response.setContentType(APPLICATION_JSON_VALUE);
-        response.setHeader("Access-Control-Allow-Origin", "*");
+       */
+/* response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "*");
         response.setHeader("Access-Control-Allow-Headers", "*");
-        response.setHeader("Access-Control-Allow-Credentials", "false");
-        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Max-Age", "3600");*//*
+
+
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);
     }
 }
+*/

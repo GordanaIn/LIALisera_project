@@ -1,25 +1,23 @@
 package com.liserabackend.services;
 
-import com.liserabackend.entity.repository.RoleRepositories;
-import com.liserabackend.dto.CreateUser;
+import com.liserabackend.dto.CreateEmployee;
+import com.liserabackend.dto.CreateStudent;
 import com.liserabackend.dto.ModifyPasswordDTO;
+import com.liserabackend.entity.Employee;
 import com.liserabackend.entity.Role;
+import com.liserabackend.entity.Student;
 import com.liserabackend.entity.User;
+import com.liserabackend.entity.repository.EmployeeRepository;
+import com.liserabackend.entity.repository.RoleRepositories;
+import com.liserabackend.entity.repository.StudentRepository;
 import com.liserabackend.entity.repository.UserRepository;
 import com.liserabackend.exceptions.UseException;
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Optional;
 
 import static com.liserabackend.exceptions.UseExceptionType.USER_ALREADY_EXIST;
@@ -29,11 +27,13 @@ import static com.liserabackend.exceptions.UseExceptionType.USER_NOT_FOUND;
 @AllArgsConstructor
 @Transactional
 @Slf4j
-public class UserService implements UserDetailsService {
+public class UserService  { //implements UserDetailsService
 
     private final UserRepository userRepository;
     private final RoleRepositories roleRepositories;
     private final PasswordEncoder passwordEncoder;
+    private final StudentRepository studentRepository;
+    private final EmployeeRepository employeeRepository;
     /*
        User service for all the methods that have to do with creating the different users
        login
@@ -41,7 +41,7 @@ public class UserService implements UserDetailsService {
        changing password
      */
 
-    @SneakyThrows
+    /*@SneakyThrows
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UseException(USER_NOT_FOUND));
@@ -56,7 +56,7 @@ public class UserService implements UserDetailsService {
             });
             return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
         }
-    }
+    }*/
 
 
     //Users
@@ -107,10 +107,25 @@ public class UserService implements UserDetailsService {
         user.setUsername(email);
         return Optional.ofNullable(saveUser(user));
     }
+    public Optional<Student> createStudent(CreateStudent createStudent) throws UseException {
+        if(userRepository.findByUsername(createStudent.getUsername()).isPresent())
+            new UseException(USER_ALREADY_EXIST);
+        User user=new User(createStudent.getUsername(), passwordEncoder.encode(createStudent.getPassword()));
+        user.getRoles().add(roleRepositories.findByName("ROLE_STUDENT"));
+        userRepository.save(user);
+        final Student stud = new Student(createStudent.getFirstName(), createStudent.getLastName(), createStudent.getPhone(), user);
+        stud.setSchoolName(createStudent.getSchoolName());
+        return  Optional.of(studentRepository.save(stud));
+    }
 
-    public Optional<User> createUser(CreateUser createUser) throws UseException {
-        userRepository.findByUsername(createUser.getEmail()).orElseThrow( ()->new UseException(USER_ALREADY_EXIST));
-        return  Optional.of(userRepository.save(new User(createUser.getEmail(), createUser.getPassword())));
+    public Optional<Employee> createEmployee(CreateEmployee createEmployee)  {
+        if(userRepository.findByUsername(createEmployee.getUsername()).isPresent())
+            new UseException(USER_ALREADY_EXIST);
+        User user=new User(createEmployee.getUsername(), passwordEncoder.encode(createEmployee.getPassword()));
+        user.getRoles().add(roleRepositories.findByName("ROLE_EMPLOYEE"));
+        userRepository.save(user);
+        Employee employee = new Employee(createEmployee.getFirstName(),createEmployee.getLastName(),createEmployee.getEmail(),user);
+        return  Optional.of(employeeRepository.save(employee));
     }
 
 }

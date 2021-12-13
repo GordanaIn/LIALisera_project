@@ -5,19 +5,21 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.liserabackend.dto.LoginDTO;
 import com.liserabackend.entity.Role;
 import com.liserabackend.entity.User;
 import com.liserabackend.services.LoginService;
 import com.liserabackend.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +31,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @AllArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin()
 @RequestMapping("/api")
 public class LoginController {
     private final UserService userService;
@@ -37,6 +39,12 @@ public class LoginController {
 
 
 
+    @GetMapping("/getRole")
+    public ResponseEntity<String> getRole(Principal principal){
+        System.out.println( principal.getClass().getName() + " " + principal.getName());
+
+        return ResponseEntity.ok(null);
+    }
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
@@ -61,7 +69,8 @@ public class LoginController {
                 response.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
             } catch (Exception exception) {
-                response.setHeader("error", exception.getMessage());
+                response.setHeader("error",exception.getMessage());
+
                 response.setStatus(FORBIDDEN.value());
                 Map<String,String> error=new HashMap<>();
                 error.put("error_message", exception.getMessage());

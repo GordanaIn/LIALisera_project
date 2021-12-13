@@ -1,7 +1,6 @@
 package com.liserabackend;
 
 import com.liserabackend.entity.*;
-import com.liserabackend.exceptions.UseException;
 import com.liserabackend.services.CompanyServiceImpl;
 import com.liserabackend.services.InternshipAdvertService;
 import com.liserabackend.services.StudentService;
@@ -24,6 +23,7 @@ public class LiserabackendApplication {
     }
     @Bean
     PasswordEncoder passwordEncoder(){ return new BCryptPasswordEncoder();  }
+
     @Bean
     CommandLineRunner run(UserService userService, StudentService studentService, CompanyServiceImpl companyService, InternshipAdvertService internshipAdvertService) {
         return args -> {
@@ -90,5 +90,5 @@ public class LiserabackendApplication {
                 e.printStackTrace();
             }
         };
-    };
+    }
 }

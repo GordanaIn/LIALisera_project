@@ -11,6 +11,7 @@ import com.liserabackend.entity.repository.UserRepository;
 import com.liserabackend.exceptions.UseException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -49,8 +50,8 @@ public class StudentService {
     }
 
     public Optional<Student> updateProfile(String userId, CreateStudent student) throws UseException {
-        final var role_student = roleRepositories.findAll().stream().filter(role -> role.getName().equals("ROLE_STUDENT")).findAny().get();
-        final var user = userRepository.findById(userId).filter(u->u.getRoles().equals(role_student)).orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        //final var role_student = roleRepositories.findByName("ROLE_STUDENT");
+        final var user = userRepository.findById(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
         final Student oldStudent = studentRepository.findByUserId(user.getId())
                 .orElseThrow(() -> new UseException(STUDENT_NOT_FOUND));
 
@@ -62,7 +63,7 @@ public class StudentService {
 
     private void updateProfile(CreateStudent student, User user, Student oldStudent) {
         user.setPassword(student.getPassword());
-        user.setUsername(student.getEmail()); /** Email should not be modified */
+        //user.setUsername(student.getUsername()); /** Email should not be modified */
         oldStudent.setFirstName(student.getFirstName());
         oldStudent.setLastName(student.getLastName());
         oldStudent.setPhone(student.getPhone());

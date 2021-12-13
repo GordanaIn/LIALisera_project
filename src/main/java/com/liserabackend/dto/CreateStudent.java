@@ -6,7 +6,7 @@ import lombok.Value;
 public class CreateStudent {
     String firstName;
     String lastName;
-    String email;
+    String username;
     String phone;
     String password;
     String schoolName;

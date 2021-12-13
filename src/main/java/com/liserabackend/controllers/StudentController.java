@@ -18,13 +18,14 @@ import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
+
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/student")
 public class StudentController {
     private final StudentService studentService;
     private final UserService userService;
 
-    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    //@PreAuthorize("hasRole('ROLE_STUDENT')")
     @GetMapping()
     public List<StudentDTO> getStudents() {
         return studentService.getStudents()
@@ -41,9 +42,8 @@ public class StudentController {
 
     @PostMapping("")
     public ResponseEntity<?> saveStudent(@RequestBody CreateStudent createStudent) throws UseException {
-        return null;
-       /* return ResponseEntity.ok(userService.createUser(createStudent)
-                .map(this::toStudentDTO));*/
+       return ResponseEntity.ok(userService.createStudent(createStudent)
+                .map(this::toStudentDTO));
     }
 
     @PatchMapping("/email/{userId}")

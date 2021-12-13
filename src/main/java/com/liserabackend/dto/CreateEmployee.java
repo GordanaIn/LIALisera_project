@@ -6,7 +6,7 @@ import lombok.Value;
 public class CreateEmployee {
     String firstName;
     String lastName;
-    String company;
     String email;
+    String username;
     String password;
 }

@@ -5,6 +5,7 @@ import com.liserabackend.entity.*;
 import com.liserabackend.exceptions.UseException;
 import com.liserabackend.exceptions.UseExceptionType;
 import com.liserabackend.services.CompanyServiceImpl;
+import com.liserabackend.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/company")
 public class CompanyController {
     private final CompanyServiceImpl companyService;
-
+    private final UserService userService;
     @GetMapping()
     public List<CompanyDTO> getCompanies() {
         return companyService.getCompanies()
@@ -47,7 +48,7 @@ public class CompanyController {
     //employee save + edit
     @PostMapping ("/addEmployee")
     public EmployeeDTO addEmployee(@RequestBody CreateEmployee createEmployee) throws UseException {
-        return toEmployeeDTO(companyService.addEmlpoyee(createEmployee));
+        return userService.createEmployee(createEmployee).map(this::toEmployeeDTO).get();
     }
 
     @PostMapping()
