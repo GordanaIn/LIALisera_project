@@ -28,9 +28,8 @@ public class StudentService {
     private final InternshipAdvertRepository internshipAdvertRepository;
     private final RoleRepositories roleRepositories;
     public Stream<Student> getStudents() {
-       return studentRepository.findAll(Pageable.ofSize(1))
-               .stream();
-
+      // return studentRepository.findAll(Pageable.ofSize(1)) .stream();
+        return studentRepository.findAll() .stream();
     }
 
     public Optional<Student> getStudentByUserId(String userId) throws UseException {

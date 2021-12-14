@@ -9,4 +9,5 @@ public class CreateEmployee {
     String email;
     String username;
     String password;
+    String userId;
 }

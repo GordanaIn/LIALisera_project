@@ -16,8 +16,7 @@ public class InternshipAdvertEntityToDTO {
                 internshipAdvert.getDescription(),
                 internshipAdvert.getStatus().toString(),
                 internshipAdvert.getDatePosted(),
-                internshipAdvert.getContactPhone(),
-                internshipAdvert.getDuration(),
+                 internshipAdvert.getDuration(),
                 internshipAdvert.getNumberAvailablePositions(),
                 company.getName(),
                 company.getOrgNumber()

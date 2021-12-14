@@ -131,10 +131,10 @@ public class LoadDataService implements CommandLineRunner {
 
         if (internshipAdvertRepository.findAll().isEmpty()) {
             InternshipAdvert internshipVacancyGoogle = new InternshipAdvert("Junior Java Developer", "Junior Java developer that has a good skill in react and springboot",
-                    "5 month duration", LocalDate.of(2021, 10, 20), "Mr Google Expert", "+745672391", 2, companyGoogle);
+                    "5 month duration", LocalDate.of(2021, 10, 20), "Mr Google Expert", 2, companyGoogle);
 
             InternshipAdvert internshipVacancyMicrosoft = new InternshipAdvert("Junior C# Developer", "Junior C# developer that has a good skill in react and typescript",
-                    "5 month duration", LocalDate.of(2021, 10, 21), "Mr Microsoft Expert", " 08-7525600", 1, companyMicrosoft);
+                    "5 month duration", LocalDate.of(2021, 10, 21), "Mr Microsoft Expert",  1, companyMicrosoft);
 
             companyGoogle.getInternshipAdvertList().add(internshipVacancyGoogle);
             companyMicrosoft.getInternshipAdvertList().add(internshipVacancyMicrosoft);

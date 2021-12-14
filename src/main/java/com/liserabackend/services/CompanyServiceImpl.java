@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static com.liserabackend.exceptions.UseExceptionType.*;
@@ -40,14 +41,10 @@ public class CompanyServiceImpl {
     }
 
     public Company getCompanyByEmployeeUserId(String userId) throws UseException {
-
         final var role_employee = roleRepositories.findByName("ROLE_EMPLOYEE");
-        final var employee = employeeRepository.findByUserId(userId).filter(user -> user.getUser().getRoles().equals(role_employee)).orElseThrow(() -> new UseException(EMPLOYEE_NOT_FOUND));
-        //how to get companyId inside employee
-        final String id = employee.getCompany().getId();
-
-        System.out.println(employee.getId());
-        return companyRepository.findAll().stream().filter(company -> company.getEmployees().contains(employee)).findAny().get();
+        final Employee employee = employeeRepository.findByUserId(userId).orElseThrow(() -> new UseException(EMPLOYEE_NOT_FOUND));
+        final Company company = companyRepository.findById(employee.getCompany().getId()).get();
+        return company;
     }
 
     public Optional<Company> addCompany(CreateCompany createCompany) throws UseException {
@@ -66,14 +63,13 @@ public class CompanyServiceImpl {
 
         final var oldCompany  = getCompanyByEmployeeUserId(company.getUserId());
         oldCompany.setName((company.getName() == null) ? oldCompany.getName() : company.getName());
-        oldCompany.setOrgNumber((company.getOrgNumber() == null) ? oldCompany.getOrgNumber() : company.getOrgNumber());
+        //oldCompany.setOrgNumber((company.getOrgNumber() == null) ? oldCompany.getOrgNumber() : company.getOrgNumber());
         return Optional.of(saveCompany(oldCompany));
     }
     public Optional<InternshipAdvert> addInternship(CreateInternship createInternship) throws UseException {
         final User user = userRepository.findById(createInternship.getUserId()).orElseThrow(() -> new UseException(USER_NOT_FOUND));
         final Company company = getCompanyByEmployeeUserId(user.getId());
-        return Optional.of(internshipAdvertRepository.save(new InternshipAdvert(createInternship.getTitle(), createInternship.getDescription(), createInternship.getDuration(), createInternship.getDatePosted(), createInternship.getEmployerName(),
-                createInternship.getContactPhone(), createInternship.getRequiredNumber(), company)));
+        return Optional.of(internshipAdvertRepository.save(new InternshipAdvert(createInternship.getTitle(), createInternship.getDescription(), createInternship.getDuration(), createInternship.getDatePosted(), createInternship.getEmployerName(), createInternship.getRequiredNumber(), company)));
     }
 
     public void deleteInternship(String userId, String internshipId) throws UseException {
@@ -109,4 +105,17 @@ public class CompanyServiceImpl {
     }
 
 
+    public Employee getEmployeeProfile(String userId) {
+        return employeeRepository.findByUserId(userId).get();
+    }
+
+    public Optional<Employee> updateEmployeeInformation(CreateEmployee employee) {
+        System.out.println("Hello "+ employee.getUserId());
+        final Employee oldEmployee = employeeRepository.findByUserId(employee.getUserId()).get();
+        System.out.println("old name "+ oldEmployee.getFirstName());
+        oldEmployee.setFirstName(employee.getFirstName());
+        System.out.println("new name "+ oldEmployee.getFirstName());
+        oldEmployee.setLastName(employee.getLastName());
+        return Optional.of(employeeRepository.save(oldEmployee));
+    }
 }

@@ -59,7 +59,7 @@ class KeyCloakToken {
     }
 
     public static void main(String[] args) {
-        KeyCloakToken token = acquire("http://localhost:8000/", "test", "test-client", "christian", "password")
+        KeyCloakToken token = acquire("http://localhost:8000/", "test", "test-client", "eyuel@gmail.com", "eyuel21")
                 .block();
         System.out.println(token);
         System.out.println("KeyCloakToken.main ************************************");
@@ -67,3 +67,4 @@ class KeyCloakToken {
         System.out.println("KeyCloakToken.main ************************************");
     }
 }
+

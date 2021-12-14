@@ -27,7 +27,6 @@ public class InternshipAdvert {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate datePosted;
     private String contactEmployer;
-    private String contactPhone;
     private int numberAvailablePositions;
 
     /** A single advert associated with one company only but a company can post several advert */
@@ -39,7 +38,7 @@ public class InternshipAdvert {
     private EnumStatus isApproved;/** To be proved by the School Admin */
 
     public InternshipAdvert(String title, String description, String duration, LocalDate datePosted, String contactPerson,
-                             String contactPhone, int numberAvailablePositions, Company company ){
+                            int numberAvailablePositions, Company company ){
         this.id= UUID.randomUUID().toString();
         this.title = title;
         this.description = description;
@@ -47,7 +46,6 @@ public class InternshipAdvert {
         this.status=InternshipVacancyStatus.OPEN;
         this.datePosted = datePosted;
         this.contactEmployer=contactPerson;
-        this.contactPhone=contactPhone;
         this.numberAvailablePositions = numberAvailablePositions;
         this.company=company;
         isApproved=EnumStatus.NOT_APPROVED;

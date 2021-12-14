@@ -12,17 +12,16 @@ public class CompanyDTO {
     String id;
     String name;
     String orgNumber;
-    List<Employee> employees;
+    //List<Employee> employees;
 
     @JsonCreator
     public CompanyDTO(
             @JsonProperty("id")String id,
             @JsonProperty("name")String name,
-            @JsonProperty("orgNumber")String orgNumber,
-            @JsonProperty("employees")List<Employee> employees){
+            @JsonProperty("orgNumber")String orgNumber){
         this.id=id;
         this.name=name;
         this.orgNumber=orgNumber;
-        this.employees=employees;
+
     }
 }

@@ -51,6 +51,16 @@ public class CompanyController {
         return userService.createEmployee(createEmployee).map(this::toEmployeeDTO).get();
     }
 
+    @GetMapping("/getEmployeeProfile/{userId}")
+    public EmployeeDTO getEmployeeProfile(@PathVariable("userId") String userId) throws UseException {
+        return toEmployeeDTO(companyService.getEmployeeProfile(userId));
+    }
+    @PatchMapping("/updateEmployeeInfo")
+    public EmployeeDTO updateEmployeeInfo(@RequestBody CreateEmployee employee) throws UseException {
+        return companyService.updateEmployeeInformation(employee)
+                .map(this::toEmployeeDTO)
+                .orElseThrow(() -> new UseException(UseExceptionType.COMPANY_NOT_FOUND));
+    }
     @PostMapping()
     public Optional<InternshipAdvertDTO> addInternship(@RequestBody CreateInternship createInternship) throws UseException {
         return companyService.addInternship(createInternship).map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO);
@@ -71,8 +81,7 @@ public class CompanyController {
         return new CompanyDTO(
                 company.getId(),
                 company.getName(),
-                company.getOrgNumber(),
-                (List<Employee>) company.getEmployees()
+                company.getOrgNumber()
 
         );
     }

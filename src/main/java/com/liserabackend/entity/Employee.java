@@ -37,7 +37,7 @@ public class Employee {
     private Company company;
 
     public Employee(String firstName,String lastName,String email, User user ){
-        assert user!=null; /** A student without user not allowed */
+        assert user!=null; /** An Employee without user not allowed */
         this.id = UUID.randomUUID().toString();
         this.firstName = firstName;
         this.lastName = lastName;
