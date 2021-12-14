@@ -33,6 +33,7 @@ public class StudentController {
                 .collect(Collectors.toList());
     }
 
+    //@RolesAllowed("user")
     @GetMapping("/{userId}")
     public StudentDTO getStudentByUserId(@PathVariable("userId") String userId) throws UseException {
         return studentService.getStudentByUserId(userId)

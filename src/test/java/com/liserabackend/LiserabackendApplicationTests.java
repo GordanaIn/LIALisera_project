@@ -1,5 +1,6 @@
 package com.liserabackend;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -12,6 +13,19 @@ class LiserabackendApplicationTests {
 
     @Autowired
     WebTestClient webTestClient;
+     /*TokenString tokenString;
+
+    @BeforeEach
+    void setUp() {
+        tokenString = KeyCloakToken.acquire("http://localhost:8000/",
+                        "test",
+                        "test-client",
+                        "christian",
+                        "password")
+                .block()
+                .getAccessToken();
+    }*/
+
 
         /* @Autowired
     JwtTokenProvider jwtTokenProvider;
@@ -28,5 +42,11 @@ class LiserabackendApplicationTests {
                 .exchange()
                 .expectStatus().isOk();
     }
-
+    @Test
+    void test_users_access_failed_because_denied() {
+        webTestClient
+                .get().uri("/users")
+                .exchange()
+                .expectStatus().isUnauthorized();
+    }
 }
