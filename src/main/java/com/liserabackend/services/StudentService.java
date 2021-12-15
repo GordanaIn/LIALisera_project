@@ -51,12 +51,14 @@ public class StudentService {
     public Optional<Student> updateProfile(String userId, CreateStudent student) throws UseException {
         //final var role_student = roleRepositories.findByName("ROLE_STUDENT");
         final var user = userRepository.findById(userId).orElseThrow(() -> new UseException(USER_NOT_FOUND));
+        System.out.println(user.getUsername());
         final Student oldStudent = studentRepository.findByUserId(user.getId())
                 .orElseThrow(() -> new UseException(STUDENT_NOT_FOUND));
 
         updateProfile(student, user, oldStudent);
         userRepository.save(user);
         studentRepository.save(oldStudent);
+        System.out.println(oldStudent.getFirstName());
         return Optional.ofNullable(oldStudent);
     }
 

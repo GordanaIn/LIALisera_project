@@ -12,7 +12,6 @@ public class InternshipAdvertDTO {
     String contactEmployer;
     String title;
     String description;
-    String status;
     LocalDate datePosted;
     String duration; //how long the internship last ex- 3 months
     int requiredNumber;
@@ -21,10 +20,9 @@ public class InternshipAdvertDTO {
     @JsonCreator
     public InternshipAdvertDTO(
             @JsonProperty("id") String id,
-            @JsonProperty("employersName") String contactEmployer,
+            @JsonProperty("contactEmployer") String contactEmployer,
             @JsonProperty("title")  String title,
             @JsonProperty("description") String description,
-            @JsonProperty("status") String status,
             @JsonProperty("datePosted") LocalDate datePosted,
             @JsonProperty("duration")  String duration,
             @JsonProperty("requiredNumber")  int requiredNumber,
@@ -34,7 +32,6 @@ public class InternshipAdvertDTO {
         this.contactEmployer=contactEmployer;
         this.title=title;
         this.description=description;
-        this.status=status;
         this.datePosted=datePosted;
         this.duration=duration;
         this.requiredNumber=requiredNumber;

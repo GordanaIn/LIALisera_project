@@ -82,25 +82,24 @@ public class CompanyServiceImpl {
                 .collect(Collectors.toSet()));
         companyRepository.save(company);
     }
-    public Optional<InternshipAdvert> updateInternship(String Id, InternshipAdvert internship) throws UseException {
-        InternshipAdvert oldInternship = internshipAdvertRepository.findById(Id).orElseThrow(() -> new UseException(INTERNSHIP_NOT_FOUND));
+    public Optional<InternshipAdvert> updateInternship(String vacancyId, CreateInternship internship) throws UseException {
+        InternshipAdvert oldInternship = internshipAdvertRepository.findById(vacancyId).orElseThrow(() -> new UseException(INTERNSHIP_NOT_FOUND));
+        System.out.println("Advert Id" + oldInternship.getId());
         updateInternship(oldInternship, internship);
 
-        return Optional.of(oldInternship);
+        return Optional.of(internshipAdvertRepository.save(oldInternship));
     }
     public Employee saveEmployee(Employee employee) {
       return employeeRepository.save(employee);
     }
-    public Company getCompanyByName(String name){
-        return companyRepository.findByName(name).get();
-    }
-    private InternshipAdvert updateInternship(InternshipAdvert oldInternship, InternshipAdvert internshipVacancy) {
-        oldInternship.setContactEmployer(internshipVacancy.getContactEmployer());
+
+    private InternshipAdvert updateInternship(InternshipAdvert oldInternship, CreateInternship internshipVacancy) {
+        oldInternship.setContactEmployer(internshipVacancy.getEmployerName());
         oldInternship.setTitle(internshipVacancy.getTitle());
         oldInternship.setDescription(internshipVacancy.getDescription());
-        oldInternship.setStatus(internshipVacancy.getStatus());
+        oldInternship.setDuration(internshipVacancy.getDuration());
 
-        oldInternship.setTitle(internshipVacancy.getTitle());
+        oldInternship.setDatePosted(internshipVacancy.getDatePosted());
         return oldInternship;
     }
 

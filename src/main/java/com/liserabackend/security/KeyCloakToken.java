@@ -1,5 +1,5 @@
 package com.liserabackend.security;
-
+/*
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Value;
@@ -66,5 +66,5 @@ class KeyCloakToken {
         System.out.println(token.accessToken);
         System.out.println("KeyCloakToken.main ************************************");
     }
-}
+}*/
 

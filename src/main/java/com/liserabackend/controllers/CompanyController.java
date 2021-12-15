@@ -65,10 +65,10 @@ public class CompanyController {
     public Optional<InternshipAdvertDTO> addInternship(@RequestBody CreateInternship createInternship) throws UseException {
         return companyService.addInternship(createInternship).map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO);
     }
-    @PatchMapping("/updateInternship/{employeeId}")
-    public InternshipAdvertDTO updateInternship(@PathVariable("employeeId") String employeeId,
-                                                @RequestBody InternshipAdvert internship) throws UseException {
-        return companyService.updateInternship(employeeId,internship).map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO).get();
+    @PatchMapping("/updateInternship/{vacancyId}")
+    public InternshipAdvertDTO updateInternship(@PathVariable("vacancyId") String vacancyId,
+                                                @RequestBody CreateInternship internship) throws UseException {
+        return companyService.updateInternship(vacancyId,internship).map(InternshipAdvertEntityToDTO::getInternshipAdvertDTO).get();
     }
     @DeleteMapping("/deleteInternship/{employerId}/{internshipId}")
     public void delete(@PathVariable("employerId") String employerId,
